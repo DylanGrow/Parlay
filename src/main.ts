@@ -7,14 +7,19 @@ const formatOdds = (price: number) => `+${Math.round((price - 1) * 100)}`;
 function renderBets(bets: ValueBet[]) {
   const table = document.createElement('table');
   table.className = 'w-full text-sm border-collapse';
+  table.setAttribute('role', 'table');
+  const caption = document.createElement('caption');
+  caption.className = 'sr-only';
+  caption.textContent = 'Value bets ranked by expected value';
+  table.appendChild(caption);
   const thead = document.createElement('thead');
   thead.innerHTML = `<tr class="bg-gray-800 text-white">
-    <th class="p-2 text-left">Sport</th>
-    <th class="p-2 text-left">Market</th>
-    <th class="p-2 text-left">Selection</th>
-    <th class="p-2 text-left">Odds</th>
-    <th class="p-2 text-left">EV</th>
-    <th class="p-2 text-left">Why</th>
+    <th scope="col" class="p-2 text-left">Sport</th>
+    <th scope="col" class="p-2 text-left">Market</th>
+    <th scope="col" class="p-2 text-left">Selection</th>
+    <th scope="col" class="p-2 text-left">Odds</th>
+    <th scope="col" class="p-2 text-left">EV</th>
+    <th scope="col" class="p-2 text-left">Why</th>
   </tr>`;
   table.appendChild(thead);
   const tbody = document.createElement('tbody');

@@ -2,12 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Parlay – a dark-mode betting odds dashboard showing pre-computed value bets and multi-sport parlays with expected-value analysis." />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Parlay – Betting Odds Dashboard</title>
   </head>
   <body>
-    <div id="app"></div>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-500 focus:text-white focus:rounded">Skip to content</a>
+    <main id="main-content" role="main">
+      <div id="app" aria-label="Betting odds dashboard" aria-live="polite"></div>
+    </main>
+    <noscript>
+      <p style="color:#fff;text-align:center;padding:2rem;">JavaScript is required to run the Parlay dashboard.</p>
+    </noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
