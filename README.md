@@ -1,4 +1,4 @@
-# modest‑meitner – Betting Odds PWA
+# Parlay – Betting Odds PWA
 
 A full‑screen dark‑mode betting dashboard built with **Vite**, **TypeScript**, and **Tailwind v4**. It displays pre‑computed value bets and a demo 3‑leg parlay from a static `public/bets.json` file. No runtime API calls – the site can be hosted on any static‑file host (GitHub Pages, Netlify, Vercel, etc.).
 
