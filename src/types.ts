@@ -51,6 +51,15 @@ export interface Parlay {
   tier: 'elite' | 'strong' | 'solid'; // EV quality tier
 }
 
+export interface AIAnalysis {
+  summary: string;
+  topPickId: string; // references a ValueBet ID
+  topPickRationale: string;
+  parlayAnalysis: string;
+  riskRating: 'Low' | 'Medium' | 'High';
+  lastUpdated: string;
+}
+
 export interface BetsData {
   generatedAt: string; // ISO 8601 UTC
   nextUpdateAt: string; // ISO 8601 UTC — next scheduled build
@@ -60,6 +69,7 @@ export interface BetsData {
   parlays: Parlay[];
   lastSportsQueried: string[];
   disclaimer: string;
+  aiAnalysis?: AIAnalysis;
 }
 
 export interface SportSchedule {

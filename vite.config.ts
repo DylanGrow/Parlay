@@ -20,6 +20,6 @@ export default defineConfig({
       },
     },
   },
-  // Base must be '/' for username.github.io root deployment
-  base: '/',
+  // Base must be './' for subfolder deployment (e.g. GitHub Pages)
+  base: './',
 })

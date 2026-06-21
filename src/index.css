@@ -4,25 +4,7 @@
 
 @import "tailwindcss";
 
-/* ------------------------------------------------------------
-   Self‑hosted Inter font (WOFF2). Place the font files in
-   public/fonts/ – the build will copy them unchanged.
-   ------------------------------------------------------------ */
-@font-face {
-  font-family: 'Inter';
-  src: url('/fonts/Inter-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Inter';
-  src: url('/fonts/Inter-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
+/* Inter font is loaded via Google Fonts CDN in index.html to ensure optimal performance and avoid local asset warnings. */
 /* ------------------------------------------------------------
    Theme configuration – CSS variables for Tailwind v4.
    This replaces the old tailwind.config.js.

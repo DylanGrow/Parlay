@@ -3,7 +3,12 @@
   "nextUpdateAt": "2026-06-20T05:34:12.000Z",
   "activeCreditsUsed": 15,
   "creditsRemaining": 485,
-  "lastSportsQueried": ["basketball_nba", "baseball_mlb", "soccer_epl", "mma_mixed_martial_arts"],
+  "lastSportsQueried": [
+    "basketball_nba",
+    "baseball_mlb",
+    "soccer_epl",
+    "mma_mixed_martial_arts"
+  ],
   "disclaimer": "BetRadar is an informational tool only. This is DEMO DATA — not live odds. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
   "topValueBets": [
     {
@@ -27,14 +32,46 @@
       "evPercent": 0.112,
       "reasoning": "Memphis Grizzlies are priced at +385 on FanDuel, while the consensus across 8 books sets the true fair price at +405. This represents 11.2% positive expected value — the market is mispricing this outcome in your favor.",
       "allOdds": [
-        {"bookmaker": "fanduel", "bookmakerTitle": "FanDuel", "price": 385},
-        {"bookmaker": "draftkings", "bookmakerTitle": "DraftKings", "price": 360},
-        {"bookmaker": "betmgm", "bookmakerTitle": "BetMGM", "price": 340},
-        {"bookmaker": "caesars", "bookmakerTitle": "Caesars", "price": 355},
-        {"bookmaker": "bovada", "bookmakerTitle": "Bovada", "price": 330},
-        {"bookmaker": "pointsbet", "bookmakerTitle": "PointsBet", "price": 350},
-        {"bookmaker": "bet365", "bookmakerTitle": "Bet365", "price": 370},
-        {"bookmaker": "williamhill", "bookmakerTitle": "William Hill", "price": 345}
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 385
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 360
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 340
+        },
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 355
+        },
+        {
+          "bookmaker": "bovada",
+          "bookmakerTitle": "Bovada",
+          "price": 330
+        },
+        {
+          "bookmaker": "pointsbet",
+          "bookmakerTitle": "PointsBet",
+          "price": 350
+        },
+        {
+          "bookmaker": "bet365",
+          "bookmakerTitle": "Bet365",
+          "price": 370
+        },
+        {
+          "bookmaker": "williamhill",
+          "bookmakerTitle": "William Hill",
+          "price": 345
+        }
       ]
     },
     {
@@ -58,13 +95,41 @@
       "evPercent": 0.094,
       "reasoning": "Oakland Athletics are priced at +520 on Bet365, while the consensus across 7 books sets the true fair price at +533. This represents 9.4% positive expected value — the market is mispricing this outcome in your favor.",
       "allOdds": [
-        {"bookmaker": "bet365", "bookmakerTitle": "Bet365", "price": 520},
-        {"bookmaker": "fanduel", "bookmakerTitle": "FanDuel", "price": 480},
-        {"bookmaker": "draftkings", "bookmakerTitle": "DraftKings", "price": 495},
-        {"bookmaker": "betmgm", "bookmakerTitle": "BetMGM", "price": 475},
-        {"bookmaker": "bovada", "bookmakerTitle": "Bovada", "price": 460},
-        {"bookmaker": "caesars", "bookmakerTitle": "Caesars", "price": 490},
-        {"bookmaker": "unibet", "bookmakerTitle": "Unibet", "price": 500}
+        {
+          "bookmaker": "bet365",
+          "bookmakerTitle": "Bet365",
+          "price": 520
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 480
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 495
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 475
+        },
+        {
+          "bookmaker": "bovada",
+          "bookmakerTitle": "Bovada",
+          "price": 460
+        },
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 490
+        },
+        {
+          "bookmaker": "unibet",
+          "bookmakerTitle": "Unibet",
+          "price": 500
+        }
       ]
     },
     {
@@ -88,15 +153,51 @@
       "evPercent": 0.183,
       "reasoning": "Brentford are priced at +650 on William Hill, while the consensus across 9 books sets the true fair price at +681. This represents 18.3% positive expected value — the market is significantly mispricing this outcome in your favor.",
       "allOdds": [
-        {"bookmaker": "williamhill", "bookmakerTitle": "William Hill", "price": 650},
-        {"bookmaker": "bet365", "bookmakerTitle": "Bet365", "price": 620},
-        {"bookmaker": "betfair", "bookmakerTitle": "Betfair", "price": 610},
-        {"bookmaker": "ladbrokes", "bookmakerTitle": "Ladbrokes", "price": 600},
-        {"bookmaker": "unibet", "bookmakerTitle": "Unibet", "price": 595},
-        {"bookmaker": "fanduel", "bookmakerTitle": "FanDuel", "price": 580},
-        {"bookmaker": "draftkings", "bookmakerTitle": "DraftKings", "price": 590},
-        {"bookmaker": "betmgm", "bookmakerTitle": "BetMGM", "price": 575},
-        {"bookmaker": "pinnacle", "bookmakerTitle": "Pinnacle", "price": 605}
+        {
+          "bookmaker": "williamhill",
+          "bookmakerTitle": "William Hill",
+          "price": 650
+        },
+        {
+          "bookmaker": "bet365",
+          "bookmakerTitle": "Bet365",
+          "price": 620
+        },
+        {
+          "bookmaker": "betfair",
+          "bookmakerTitle": "Betfair",
+          "price": 610
+        },
+        {
+          "bookmaker": "ladbrokes",
+          "bookmakerTitle": "Ladbrokes",
+          "price": 600
+        },
+        {
+          "bookmaker": "unibet",
+          "bookmakerTitle": "Unibet",
+          "price": 595
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 580
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 590
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 575
+        },
+        {
+          "bookmaker": "pinnacle",
+          "bookmakerTitle": "Pinnacle",
+          "price": 605
+        }
       ]
     }
   ],
@@ -184,9 +285,21 @@
       "combinedDecimalOdds": 390,
       "impliedProbability": 0.00256,
       "estimatedEvPercent": 0.264,
-      "sports": ["soccer_epl", "basketball_nba", "baseball_mlb"],
+      "sports": [
+        "soccer_epl",
+        "basketball_nba",
+        "baseball_mlb"
+      ],
       "reasoning": "3-leg parlay paying +38900. Each leg independently identified as +EV vs. the market consensus. Leg 1: Brentford (EPL, +650) | Leg 2: Memphis Grizzlies (NBA, +385) | Leg 3: Colorado Rockies (MLB, +760). All legs span different sports/events for maximum independence.",
       "tier": "elite"
     }
-  ]
+  ],
+  "aiAnalysis": {
+    "summary": "Analyzed 3 value bets and 1 parlay cards. Strong market pricing discrepancies detected in NBA, MLB, Soccer moneyline underdogs, indicating an edge vs consensus books.",
+    "topPickId": "demo-epl-03-h2h-brentford",
+    "topPickRationale": "Brentford is currently mispriced at +650 on William Hill. Sharp market consensus sets the fair true odds closer to +681, resulting in a 18.3% mathematical expected value edge.",
+    "parlayAnalysis": "The featured 3-leg parlay combines independent value legs paying +38900 with a combined estimated EV of 26.4%. Recommend small stake sizing.",
+    "riskRating": "High",
+    "lastUpdated": "2026-06-21T01:38:49.697Z"
+  }
 }
