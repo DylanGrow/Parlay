@@ -20,6 +20,6 @@ export default defineConfig({
       },
     },
   },
-  // Base must be './' for subfolder deployment (e.g. GitHub Pages)
-  base: './',
+  // Base must match the repository name for subfolder deployment on GitHub Pages
+  base: '/Parlay/',
 })
