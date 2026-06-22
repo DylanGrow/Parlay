@@ -17,6 +17,7 @@ export function americanToDecimal(american: number): number {
 
 /** Convert decimal odds to American odds */
 export function decimalToAmerican(decimal: number): number {
+  if (decimal <= 1) return 0; // Guard against division by zero and invalid odds
   if (decimal >= 2) {
     return Math.round((decimal - 1) * 100)
   } else {
@@ -40,6 +41,7 @@ export function americanToImpliedProb(american: number): number {
  */
 export function removeVig(impliedProbs: number[]): number[] {
   const total = impliedProbs.reduce((sum, p) => sum + p, 0)
+  if (total === 0) return impliedProbs; // Guard against division by zero
   return impliedProbs.map(p => p / total)
 }
 
@@ -50,7 +52,8 @@ export function removeVig(impliedProbs: number[]): number[] {
 export function calcConsensusTrueProb(
   outcomePrices: number[], // American odds from each bookmaker
   totalOutcomes: number,   // number of outcomes in this market (2 for h2h)
-  allOutcomePricesByBook: number[][] // [outcome0prices, outcome1prices, ...]
+  allOutcomePricesByBook: number[][], // [outcome0prices, outcome1prices, ...]
+  targetOutcomeIdx: number // The index of the outcome we want to calculate true prob for
 ): number {
   // For each bookmaker, remove vig and get true prob for this outcome
   const trueProbs: number[] = []
@@ -67,10 +70,8 @@ export function calcConsensusTrueProb(
     const impliedProbs = (bookPrices as number[]).map(p => americanToImpliedProb(p))
     const noVigProbs = removeVig(impliedProbs)
 
-    // Find index of this outcome in the book's prices
-    const outcomeIdx = allOutcomePricesByBook.findIndex(prices => prices[bookIdx] === outcomePrices[bookIdx])
-    if (outcomeIdx >= 0 && noVigProbs[outcomeIdx] !== undefined) {
-      trueProbs.push(noVigProbs[outcomeIdx])
+    if (noVigProbs[targetOutcomeIdx] !== undefined) {
+      trueProbs.push(noVigProbs[targetOutcomeIdx])
     }
   }
 
@@ -191,7 +192,8 @@ export function analyzeEventOdds(
       const trueProb = calcConsensusTrueProb(
         pricesForThisOutcome,
         outcomeNames.length,
-        allOutcomePricesByOutcome
+        allOutcomePricesByOutcome,
+        i
       )
 
       if (trueProb <= 0) continue
