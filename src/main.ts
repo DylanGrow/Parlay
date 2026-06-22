@@ -1,3 +1,4 @@
+console.log('[Parlay] Script execution started.');
 import './index.css';
 import type { ValueBet, Parlay, BetsData } from './types';
 
@@ -386,16 +387,28 @@ async function init() {
 
 init();
 
-// Active Service Worker unregistration to prevent cached blank pages
+// Active Service Worker unregistration to prevent cached blank pages and loops
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then((registrations) => {
-    for (const registration of registrations) {
-      registration.unregister().then((success) => {
-        if (success) {
-          console.log('[PWA] Service Worker unregistered successfully.');
+    let unregisteredAny = false;
+    const unregisterPromises = registrations.map(registration => {
+      if (registration.scope.includes('/Parlay/') || registration.scope.includes('/parlay/')) {
+        unregisteredAny = true;
+        return registration.unregister();
+      }
+      return Promise.resolve(false);
+    });
+
+    Promise.all(unregisterPromises).then((results) => {
+      if (unregisteredAny && results.some(r => r === true)) {
+        console.log('[PWA] Service Worker unregistered successfully to clear cache.');
+        const lastReload = sessionStorage.getItem('sw-reload');
+        const now = Date.now();
+        if (!lastReload || now - parseInt(lastReload, 10) > 5000) {
+          sessionStorage.setItem('sw-reload', now.toString());
           window.location.reload();
         }
-      });
-    }
+      }
+    });
   });
 }
