@@ -21,7 +21,32 @@
       <p style="color:#fff;text-align:center;padding:2rem;">JavaScript is required to run the Parlay dashboard.</p>
     </noscript>
     <script>
-      console.log('[Parlay] index.html body parsed. Loading application module...');
+      console.log('[Parlay] index.html body parsed. Checking for service worker deadlock...');
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          let unregisteredAny = false;
+          const unregisterPromises = registrations.map(r => {
+            if (r.scope.includes('/Parlay/') || r.scope.includes('/parlay/')) {
+              unregisteredAny = true;
+              return r.unregister();
+            }
+            return Promise.resolve(false);
+          });
+          Promise.all(unregisterPromises).then((results) => {
+            if (unregisteredAny && results.some(res => res === true)) {
+              console.log('[Parlay] Active Service Worker unregistered to break cache deadlock.');
+              const lastReload = sessionStorage.getItem('sw-reload');
+              const now = Date.now();
+              if (!lastReload || now - parseInt(lastReload, 10) > 5000) {
+                sessionStorage.setItem('sw-reload', now.toString());
+                window.location.reload();
+              }
+            } else {
+              console.log('[Parlay] No conflicting service workers active.');
+            }
+          });
+        });
+      }
     </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
