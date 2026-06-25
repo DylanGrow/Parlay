@@ -103,6 +103,24 @@
   animation: highlightNew 1.2s ease-out;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* Accessibility: respect user preferences for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
@@ -115,7 +133,7 @@
     transition-delay: 0s !important;
   }
   
-  .animate-ping, .animate-pulse, .new-bet-row {
+  .animate-ping, .animate-pulse, .new-bet-row, .animate-fade-in, .animate-scale-up {
     animation: none !important;
   }
 }
