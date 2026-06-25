@@ -68,7 +68,7 @@
 
 @layer components {
   .card {
-    @apply rounded-xl p-5 backdrop-blur-md border border-neutral-700;
+    @apply rounded-xl p-5 backdrop-blur-md border border-neutral-800;
     background: var(--bg-glass);
   }
   .btn-primary {
@@ -85,6 +85,24 @@
   }
 }
 
+#app {
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+#app.loaded {
+  opacity: 1;
+}
+
+@keyframes highlightNew {
+  0% { background-color: rgba(0, 198, 162, 0.15); }
+  100% { background-color: transparent; }
+}
+
+.new-bet-row {
+  animation: highlightNew 1.2s ease-out;
+}
+
 /* Accessibility: respect user preferences for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
@@ -97,7 +115,7 @@
     transition-delay: 0s !important;
   }
   
-  .animate-ping, .animate-pulse {
+  .animate-ping, .animate-pulse, .new-bet-row {
     animation: none !important;
   }
 }
