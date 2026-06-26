@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00c6a2"/>
+      <stop offset="100%" stop-color="#009278"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect width="48" height="48" rx="10" fill="url(#bg)"/>
+  <!-- Dollar sign / betting symbol -->
+  <text x="24" y="36" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="700" fill="#0a0a0a" text-anchor="middle">P</text>
+  <!-- Small bar chart bars for "odds" motif -->
+  <rect x="6" y="38" width="4" height="6" rx="1" fill="rgba(0,0,0,0.25)"/>
+  <rect x="12" y="35" width="4" height="9" rx="1" fill="rgba(0,0,0,0.25)"/>
+  <rect x="32" y="36" width="4" height="8" rx="1" fill="rgba(0,0,0,0.25)"/>
+  <rect x="38" y="33" width="4" height="11" rx="1" fill="rgba(0,0,0,0.25)"/>
+</svg>

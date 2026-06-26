@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Parlay – a dark-mode betting odds dashboard showing pre-computed value bets and multi-sport parlays with expected-value analysis." />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <title>Parlay – Betting Odds Dashboard</title>
+    <script type="module" crossorigin src="./assets/app.C8q3fu4-.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index.B3WZ9w7L.css">
+  </head>
+  <body>
+    <main id="main-content">
+      <div id="app" aria-label="Betting odds dashboard" aria-live="polite"></div>
+    </main>
+    <noscript>
+      <p style="color:#fff;text-align:center;padding:2rem;">JavaScript is required to run the Parlay dashboard.</p>
+    </noscript>
+    <script>
+      console.log('[Parlay] index.html body parsed. Checking for service worker deadlock...');
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          let unregisteredAny = false;
+          const unregisterPromises = registrations.map(r => {
+            if (r.scope.includes('/Parlay/') || r.scope.includes('/parlay/')) {
+              unregisteredAny = true;
+              return r.unregister();
+            }
+            return Promise.resolve(false);
+          });
+          Promise.all(unregisterPromises).then((results) => {
+            if (unregisteredAny && results.some(res => res === true)) {
+              console.log('[Parlay] Active Service Worker unregistered to break cache deadlock.');
+              const lastReload = sessionStorage.getItem('sw-reload');
+              const now = Date.now();
+              if (!lastReload || now - parseInt(lastReload, 10) > 5000) {
+                sessionStorage.setItem('sw-reload', now.toString());
+                window.location.reload();
+              }
+            } else {
+              console.log('[Parlay] No conflicting service workers active.');
+            }
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
