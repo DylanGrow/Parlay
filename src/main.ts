@@ -1,13 +1,22 @@
 console.log('[Parlay] Script execution started.');
 import './index.css';
-import type { ValueBet, Parlay, BetsData } from './types';
-import { americanToDecimal } from './ev-engine';
+import type { ValueBet, Parlay, BetsData, TrackedBet } from './types';
+import { americanToDecimal, decimalToAmerican } from './ev-engine';
+
+// Helper function to calculate combined American odds for N-leg parlay
+function calculateCombinedAmerican(prices: number[]): number {
+  if (prices.length === 0) return 0;
+  const decimalOdds = prices.map(p => americanToDecimal(p));
+  const combinedDecimal = decimalOdds.reduce((product, odd) => product * odd, 1);
+  return decimalToAmerican(combinedDecimal);
+}
 
 // State management
 let currentData: BetsData | null = null;
 let currentSportFilter: string = 'All';
 let searchQuery: string = '';
 let watchlist: string[] = [];
+let trackedBets: TrackedBet[] = [];
 let sortColumn: 'ev' | 'odds' | 'none' = 'none';
 let sortDirection: 'asc' | 'desc' = 'desc';
 
@@ -59,21 +68,174 @@ function updateTabTitle() {
   }
 }
 
-// Utility to format odds to +X or -X format
-const formatOdds = (price: number) => price >= 0 ? `+${price}` : `${price}`;
-
-// Convert American odds list to combined American odds payout multiplier
-function calculateCombinedAmerican(prices: number[]): number {
-  if (prices.length === 0) return 0;
-  const decimals = prices.map(price => americanToDecimal(price));
-  const product = decimals.reduce((acc, dec) => acc * dec, 1);
-  
-  if (product >= 2) {
-    return Math.round((product - 1) * 100);
-  } else {
-    return Math.round(-100 / (product - 1));
+// Load Tracked Bets from Local Storage
+function loadTrackedBets() {
+  try {
+    const saved = localStorage.getItem('parlay_tracked_bets');
+    if (saved) {
+      trackedBets = JSON.parse(saved);
+    }
+  } catch (e) {
+    console.error('Failed to load tracked bets from localStorage', e);
   }
 }
+
+// Save Tracked Bets to Local Storage
+function saveTrackedBets() {
+  try {
+    localStorage.setItem('parlay_tracked_bets', JSON.stringify(trackedBets));
+  } catch (e) {
+    console.error('Failed to save tracked bets to localStorage', e);
+  }
+}
+
+// Open Track Bet Confirmation Modal
+function openTrackBetModal(outcome: string, matchup: string, price: number, sport: string, marketLabel: string) {
+  const oldModal = document.getElementById('track-modal');
+  if (oldModal) oldModal.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'track-modal';
+  modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/80 backdrop-blur-sm animate-fade-in';
+  
+  modal.innerHTML = `
+    <div class="card max-w-sm w-full border border-neutral-800 bg-neutral-900 shadow-2xl p-6 relative animate-scale-up">
+      <h3 class="font-black text-sm text-neutral-250 border-b border-neutral-800 pb-3 mb-4">🎯 Track This Bet</h3>
+      <div class="space-y-3 text-xs mb-6">
+        <div class="flex justify-between"><span class="text-neutral-500">Selection:</span><span class="font-bold text-neutral-200">${outcome}</span></div>
+        <div class="flex justify-between"><span class="text-neutral-500">Matchup:</span><span class="font-semibold text-neutral-350">${matchup}</span></div>
+        <div class="flex justify-between"><span class="text-neutral-500">Odds:</span><span class="font-black text-primary-400">${formatOdds(price)}</span></div>
+        <div class="flex flex-col gap-2 pt-3 border-t border-neutral-850">
+          <label for="track-stake-input" class="font-bold text-neutral-400">Stake Amount ($)</label>
+          <input id="track-stake-input" type="number" min="1" value="${betStake}" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs text-right" />
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <button id="cancel-track-btn" class="flex-1 py-2 bg-neutral-800 hover:bg-neutral-750 text-neutral-300 font-bold rounded-lg cursor-pointer transition-all active:scale-95 text-xs">Cancel</button>
+        <button id="confirm-track-btn" class="flex-1 py-2 bg-primary-500 hover:bg-primary-400 text-neutral-950 font-bold rounded-lg cursor-pointer transition-all active:scale-95 text-xs">Track Bet</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const closeModal = () => modal.remove();
+  modal.querySelector('#cancel-track-btn')?.addEventListener('click', closeModal);
+  modal.querySelector('#confirm-track-btn')?.addEventListener('click', () => {
+    const input = modal.querySelector('#track-stake-input') as HTMLInputElement;
+    const stake = parseFloat(input.value);
+    if (!isNaN(stake) && stake > 0) {
+      const newBet: TrackedBet = {
+        id: `tracked-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        outcome,
+        matchup,
+        price,
+        sport,
+        marketLabel,
+        stake,
+        status: 'pending',
+        trackedAt: new Date().toISOString()
+      };
+      trackedBets.push(newBet);
+      saveTrackedBets();
+      closeModal();
+      renderApp();
+    } else {
+      alert('Please enter a valid stake amount.');
+    }
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+}
+
+// Track Simulated Parlay Card
+function trackSimulatedParlay() {
+  if (simulatedLegs.length === 0) return;
+  const combinedOdds = calculateCombinedAmerican(simulatedLegs.map(l => l.price));
+  const parlayMatchup = simulatedLegs.map(l => l.outcome).join(' + ');
+
+  const oldModal = document.getElementById('track-modal');
+  if (oldModal) oldModal.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'track-modal';
+  modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/80 backdrop-blur-sm animate-fade-in';
+  
+  modal.innerHTML = `
+    <div class="card max-w-sm w-full border border-neutral-800 bg-neutral-900 shadow-2xl p-6 relative animate-scale-up">
+      <h3 class="font-black text-sm text-neutral-250 border-b border-neutral-800 pb-3 mb-4">🚀 Track Custom Parlay</h3>
+      <div class="space-y-3 text-xs mb-6">
+        <div class="flex justify-between"><span class="text-neutral-500">Selection:</span><span class="font-bold text-neutral-250">${simulatedLegs.length}-Leg Parlay</span></div>
+        <div class="flex justify-between"><span class="text-neutral-500 font-semibold">Combined Odds:</span><span class="font-black text-primary-400">${formatOdds(combinedOdds)}</span></div>
+        <div class="flex flex-col gap-2 pt-3 border-t border-neutral-850">
+          <label for="track-stake-input" class="font-bold text-neutral-400">Total Parlay Stake ($)</label>
+          <input id="track-stake-input" type="number" min="1" value="${betStake}" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs text-right" />
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <button id="cancel-track-btn" class="flex-1 py-2 bg-neutral-800 hover:bg-neutral-750 text-neutral-300 font-bold rounded-lg cursor-pointer transition-all active:scale-95 text-xs">Cancel</button>
+        <button id="confirm-track-btn" class="flex-1 py-2 bg-primary-500 hover:bg-primary-400 text-neutral-950 font-bold rounded-lg cursor-pointer transition-all active:scale-95 text-xs">Track Parlay</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const closeModal = () => modal.remove();
+  modal.querySelector('#cancel-track-btn')?.addEventListener('click', closeModal);
+  modal.querySelector('#confirm-track-btn')?.addEventListener('click', () => {
+    const input = modal.querySelector('#track-stake-input') as HTMLInputElement;
+    const stake = parseFloat(input.value);
+    if (!isNaN(stake) && stake > 0) {
+      const newBet: TrackedBet = {
+        id: `tracked-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        outcome: `${simulatedLegs.length}-Leg Parlay`,
+        matchup: parlayMatchup,
+        price: combinedOdds,
+        sport: 'Multi-Sport',
+        marketLabel: 'Parlay Combo',
+        stake,
+        status: 'pending',
+        trackedAt: new Date().toISOString()
+      };
+      trackedBets.push(newBet);
+      saveTrackedBets();
+      closeModal();
+      simulatedLegs = []; // Clear simulator on tracking success
+      renderApp();
+    } else {
+      alert('Please enter a valid stake amount.');
+    }
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+}
+
+// Update Tracked Bet Status (won / lost / pending)
+function updateBetStatus(trackedId: string, status: 'won' | 'lost' | 'pending') {
+  const bet = trackedBets.find(b => b.id === trackedId);
+  if (bet) {
+    bet.status = status;
+    saveTrackedBets();
+    renderApp();
+  }
+}
+
+// Delete Tracked Bet from History
+function deleteTrackedBet(trackedId: string) {
+  if (confirm('Are you sure you want to delete this tracked bet from your history?')) {
+    trackedBets = trackedBets.filter(b => b.id !== trackedId);
+    saveTrackedBets();
+    renderApp();
+  }
+}
+
+// Utility to format odds to +X or -X format
+const formatOdds = (price: number) => price >= 0 ? `+${price}` : `${price}`;
 
 // Get emoji based on sport key and accessibility text
 const getSportIcon = (sportKey: string): { emoji: string; label: string } => {
@@ -88,7 +250,6 @@ const getSportIcon = (sportKey: string): { emoji: string; label: string } => {
 
 // Open Bookmaker Odds Comparison Modal
 function openComparisonModal(bet: ValueBet) {
-  // Remove existing modal if any
   const oldModal = document.getElementById('odds-modal');
   if (oldModal) oldModal.remove();
 
@@ -98,7 +259,6 @@ function openComparisonModal(bet: ValueBet) {
   
   const sportInfo = getSportIcon(bet.sportKey);
 
-  // Generate odds items list
   const oddsListHtml = bet.allOdds.map(odd => {
     const isBest = odd.price === bet.bestPrice;
     return `
@@ -131,7 +291,6 @@ function openComparisonModal(bet: ValueBet) {
 
   document.body.appendChild(modal);
 
-  // Close modal logic
   const closeModal = () => modal.remove();
   modal.querySelector('#close-modal-btn')?.addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => {
@@ -165,7 +324,6 @@ function renderAIAnalysis(data: BetsData): HTMLElement | null {
   container.className = 'card relative overflow-hidden border border-neutral-800 bg-neutral-900/40 shadow-2xl p-6 mb-8';
   container.setAttribute('aria-labelledby', 'ai-analyst-title');
 
-  // Pulsing glow bg accent
   const glow = document.createElement('div');
   glow.className = 'absolute -right-20 -top-20 w-80 h-80 rounded-full bg-primary-500/10 blur-3xl pointer-events-none';
   container.appendChild(glow);
@@ -200,7 +358,7 @@ function renderAIAnalysis(data: BetsData): HTMLElement | null {
                 ${isWatched ? '★' : '☆'}
               </button>
             </div>
-            <div class="text-xs text-neutral-450 mt-0.5">${topPick.awayTeam} @ ${topPick.homeTeam}</div>
+            <div class="text-xs text-neutral-455 mt-0.5">${topPick.awayTeam} @ ${topPick.homeTeam}</div>
           </div>
           <div class="flex items-center gap-5">
             <div class="text-center">
@@ -259,7 +417,6 @@ function renderAIAnalysis(data: BetsData): HTMLElement | null {
     </div>
   `;
 
-  // Attach event listener for top pick watchlist button
   const topWatchBtn = container.querySelector('.watchlist-btn');
   if (topWatchBtn) {
     topWatchBtn.addEventListener('click', (e) => {
@@ -285,13 +442,16 @@ function renderFilters(data: BetsData): HTMLElement {
   const sports = new Set<string>();
   data.topValueBets.forEach(bet => sports.add(bet.sport));
 
-  const allCategories = ['All', 'Watchlist', ...Array.from(sports)];
+  const allCategories = ['All', 'Watchlist', 'Tracker', ...Array.from(sports)];
 
   allCategories.forEach(category => {
     const btn = document.createElement('button');
     let label = category;
     if (category === 'Watchlist') {
       label = `⭐ Watchlist (${watchlist.length})`;
+    } else if (category === 'Tracker') {
+      const pendingCount = trackedBets.filter(b => b.status === 'pending').length;
+      label = `📈 Bet Tracker (${trackedBets.length})${pendingCount > 0 ? ` [${pendingCount}]` : ''}`;
     } else if (category !== 'All') {
       const matchingBet = data.topValueBets.find(b => b.sport === category);
       if (matchingBet) {
@@ -326,12 +486,10 @@ function renderFilters(data: BetsData): HTMLElement {
   filterRow.appendChild(searchWrapper);
   container.appendChild(filterRow);
 
-  // Attach search event listener
   const searchInput = searchWrapper.querySelector('#search-input') as HTMLInputElement;
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       searchQuery = (e.target as HTMLInputElement).value.trim();
-      // Render without rebuilding entire DOM structure to preserve input focus
       debounceRenderBets();
     });
   }
@@ -339,7 +497,7 @@ function renderFilters(data: BetsData): HTMLElement {
   return container;
 }
 
-// Debounce helper to prevent input stuttering on typing search queries
+// Debounce helper to prevent input stuttering
 let debounceTimer: number | null = null;
 function debounceRenderBets() {
   if (debounceTimer) clearTimeout(debounceTimer);
@@ -348,7 +506,6 @@ function debounceRenderBets() {
     if (betsContainer && currentData) {
       const parent = betsContainer.parentNode;
       if (parent) {
-        renderBets(currentData.topValueBets);
         const newSection = renderBets(currentData.topValueBets);
         parent.replaceChild(newSection, betsContainer);
       }
@@ -363,7 +520,6 @@ function renderBets(bets: ValueBet[]): HTMLElement {
   container.className = 'mb-10';
   container.setAttribute('aria-labelledby', 'bets-heading');
 
-  // Filter logic: Sport Filter + Search Query
   let filteredBets = bets.filter(b => {
     if (currentSportFilter === 'All') return true;
     if (currentSportFilter === 'Watchlist') return watchlist.includes(b.id);
@@ -379,7 +535,6 @@ function renderBets(bets: ValueBet[]): HTMLElement {
     );
   }
 
-  // Sort logic
   if (sortColumn === 'ev') {
     filteredBets.sort((a, b) => sortDirection === 'desc' ? b.evPercent - a.evPercent : a.evPercent - b.evPercent);
   } else if (sortColumn === 'odds') {
@@ -409,7 +564,6 @@ function renderBets(bets: ValueBet[]): HTMLElement {
     return container;
   }
 
-  // Desktop Table View
   const tableWrapper = document.createElement('div');
   tableWrapper.className = 'hidden md:block overflow-x-auto rounded-xl border border-neutral-850 bg-neutral-900/20 backdrop-blur-sm shadow-xl';
 
@@ -429,8 +583,9 @@ function renderBets(bets: ValueBet[]): HTMLElement {
   const thead = document.createElement('thead');
   thead.innerHTML = `
     <tr class="border-b border-neutral-800 bg-neutral-900/60 text-[10px] font-bold text-neutral-450 uppercase tracking-wider select-none">
-      <th scope="col" class="px-4 py-3 w-10 text-center">Add</th>
+      <th scope="col" class="px-4 py-3 w-10 text-center">Sim</th>
       <th scope="col" class="px-4 py-3 w-10 text-center">Watch</th>
+      <th scope="col" class="px-4 py-3 w-10 text-center">Track</th>
       <th scope="col" class="px-4 py-3">Event / Selection</th>
       <th scope="col" class="px-4 py-3">Market</th>
       <th scope="col" class="px-4 py-3 text-center cursor-pointer hover:text-neutral-100 transition-colors" id="sort-odds">Best Odds ${getSortIconIndicator('odds')}</th>
@@ -441,14 +596,12 @@ function renderBets(bets: ValueBet[]): HTMLElement {
   `;
   table.appendChild(thead);
 
-  // Attach Sort Header Event Handlers
   thead.querySelector('#sort-odds')?.addEventListener('click', () => handleSort('odds'));
   thead.querySelector('#sort-ev')?.addEventListener('click', () => handleSort('ev'));
 
   const tbody = document.createElement('tbody');
   tbody.className = 'divide-y divide-neutral-850';
 
-  // Mobile Grid View
   const mobileGrid = document.createElement('div');
   mobileGrid.className = 'grid grid-cols-1 gap-4 md:hidden';
 
@@ -464,7 +617,6 @@ function renderBets(bets: ValueBet[]): HTMLElement {
 
     const isAddedToSim = simulatedLegs.some(l => l.betId === b.id);
 
-    // EV Pill Style scale
     let evBadgeStyle = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
     if (b.evPercent >= 0.08) {
       evBadgeStyle = 'text-emerald-300 bg-emerald-500/25 border-emerald-500/40 font-black animate-pulse';
@@ -472,10 +624,8 @@ function renderBets(bets: ValueBet[]): HTMLElement {
       evBadgeStyle = 'text-neutral-400 bg-neutral-800 border-neutral-700';
     }
 
-    // Implied true probability calculation
     const trueProbPct = Math.round(b.consensusImpliedProb * 100);
 
-    // 1. Desktop Row
     const tr = document.createElement('tr');
     tr.className = 'hover:bg-neutral-850/30 transition-colors group new-bet-row';
     tr.innerHTML = `
@@ -488,13 +638,19 @@ function renderBets(bets: ValueBet[]): HTMLElement {
           ${isWatched ? '★' : '☆'}
         </button>
       </td>
+      <td class="px-4 py-3.5 text-center">
+        <button class="track-bet-btn text-xs bg-neutral-800 hover:bg-neutral-750 text-neutral-200 border border-neutral-700 hover:border-primary-500/50 rounded px-1.5 py-0.5 cursor-pointer font-bold transition-all"
+                data-outcome="${b.outcome}" data-matchup="${b.awayTeam} @ ${b.homeTeam}" data-price="${b.bestPrice}" data-sport="${b.sport}" data-market="${b.marketLabel}">
+          🎯 Track
+        </button>
+      </td>
       <td class="px-4 py-3.5">
         <div class="flex items-start gap-2.5">
           <span class="text-base select-none mt-0.5" role="img" aria-label="${sportInfo.label}">${sportInfo.emoji}</span>
           <div class="w-full">
             <div class="font-extrabold text-neutral-100 group-hover:text-primary-400 transition-colors flex items-center gap-2">
               <span>${b.outcome}</span>
-              <span class="text-[9px] text-neutral-500 font-bold">📈</span>
+              <span class="text-[9px] text-neutral-550 font-bold">📈</span>
             </div>
             <div class="text-[10px] text-neutral-400 font-semibold mt-0.5">${b.awayTeam} @ ${b.homeTeam}</div>
             <div class="text-[9px] text-neutral-500 font-semibold mt-0.5">${commenceDate}</div>
@@ -526,7 +682,6 @@ function renderBets(bets: ValueBet[]): HTMLElement {
     `;
     tbody.appendChild(tr);
 
-    // 2. Mobile Card
     const card = document.createElement('div');
     card.className = 'card border border-neutral-800 bg-neutral-900/40 p-4 space-y-3 relative overflow-hidden new-bet-row';
     card.innerHTML = `
@@ -541,9 +696,9 @@ function renderBets(bets: ValueBet[]): HTMLElement {
         <div class="flex items-center gap-3">
           <label class="flex items-center gap-1 text-[10px] font-bold text-neutral-450 cursor-pointer">
             <input type="checkbox" class="sim-checkbox" data-id="${b.id}" data-outcome="${b.outcome}" data-price="${b.bestPrice}" data-sport="${b.sport}" ${isAddedToSim ? 'checked' : ''} />
-            Add
+            Sim
           </label>
-          <button class="watchlist-btn text-lg text-neutral-600 hover:text-amber-400 transition-colors focus:outline-none" 
+          <button class="watchlist-btn text-lg text-neutral-600 hover:text-amber-400 transition-colors" 
                   data-id="${b.id}" aria-label="${isWatched ? 'Remove from Watchlist' : 'Add to Watchlist'}">
             ${isWatched ? '★' : '☆'}
           </button>
@@ -579,13 +734,15 @@ function renderBets(bets: ValueBet[]): HTMLElement {
         </div>
       </div>
 
-      <p class="text-[10px] text-neutral-400 leading-relaxed border-t border-neutral-850 pt-2 font-medium">
-        ${b.reasoning}
-      </p>
+      <div class="flex gap-2 border-t border-neutral-850 pt-2.5">
+        <button class="track-bet-btn flex-1 py-1.5 bg-neutral-800 hover:bg-neutral-750 text-neutral-200 border border-neutral-700 hover:border-primary-500/50 rounded text-[11px] font-bold cursor-pointer transition-all text-center"
+                data-outcome="${b.outcome}" data-matchup="${b.awayTeam} @ ${b.homeTeam}" data-price="${b.bestPrice}" data-sport="${b.sport}" data-market="${b.marketLabel}">
+          🎯 Track Bet
+        </button>
+      </div>
     `;
     mobileGrid.appendChild(card);
 
-    // Click handler to open Compare Odds Modal
     setTimeout(() => {
       tr.querySelector(`#compare-btn-${b.id}`)?.addEventListener('click', () => openComparisonModal(b));
       card.querySelector(`#compare-btn-mobile-${b.id}`)?.addEventListener('click', () => openComparisonModal(b));
@@ -597,12 +754,23 @@ function renderBets(bets: ValueBet[]): HTMLElement {
   container.appendChild(tableWrapper);
   container.appendChild(mobileGrid);
 
-  // Attach event listener delegation for watchlist buttons & simulator checkboxes
   setTimeout(() => {
     container.querySelectorAll('.watchlist-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const id = (e.currentTarget as HTMLElement).getAttribute('data-id');
         if (id) toggleWatchlistItem(id);
+      });
+    });
+
+    container.querySelectorAll('.track-bet-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLElement;
+        const outcome = target.getAttribute('data-outcome')!;
+        const matchup = target.getAttribute('data-matchup')!;
+        const price = parseInt(target.getAttribute('data-price')!, 10);
+        const sport = target.getAttribute('data-sport')!;
+        const market = target.getAttribute('data-market')!;
+        openTrackBetModal(outcome, matchup, price, sport, market);
       });
     });
 
@@ -621,6 +789,276 @@ function renderBets(bets: ValueBet[]): HTMLElement {
           simulatedLegs = simulatedLegs.filter(l => l.betId !== id);
         }
         renderSimulatorApp();
+      });
+    });
+  }, 0);
+
+  return container;
+}
+
+// Render Tracked Bets Dashboard View
+function renderTrackerView(): HTMLElement {
+  const container = document.createElement('section');
+  container.className = 'mb-10 animate-fade-in';
+  container.setAttribute('aria-labelledby', 'tracker-heading');
+
+  const total = trackedBets.length;
+  const wins = trackedBets.filter(b => b.status === 'won').length;
+  const losses = trackedBets.filter(b => b.status === 'lost').length;
+  const pending = trackedBets.filter(b => b.status === 'pending').length;
+  const winRate = (total - pending) > 0 ? (wins / (wins + losses)) * 100 : 0;
+
+  const totalRisked = trackedBets.reduce((sum, b) => sum + b.stake, 0);
+  const totalProfit = trackedBets.reduce((sum, b) => {
+    if (b.status === 'pending') return sum;
+    if (b.status === 'lost') return sum - b.stake;
+    const multiplier = americanToDecimal(b.price);
+    const profit = b.stake * (multiplier - 1);
+    return sum + profit;
+  }, 0);
+  const roi = totalRisked > 0 ? (totalProfit / totalRisked) * 100 : 0;
+
+  // Stats widgets header row
+  const statsHtml = `
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center">
+        <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Record (W - L)</span>
+        <span class="text-lg font-black text-neutral-100 mt-1 block">${wins} - ${losses}</span>
+        <span class="text-[9px] text-neutral-500 mt-0.5 block">${pending} Pending Bets</span>
+      </div>
+      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center">
+        <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Win Rate</span>
+        <span class="text-lg font-black text-primary-400 mt-1 block">${winRate.toFixed(1)}%</span>
+        <span class="text-[9px] text-neutral-500 mt-0.5 block">Excl. Pending</span>
+      </div>
+      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center relative overflow-hidden">
+        <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Net Profit / Loss</span>
+        <span class="text-lg font-black mt-1 block ${totalProfit >= 0 ? 'text-emerald-400' : 'text-rose-400'}">
+          ${totalProfit >= 0 ? '+' : ''}$${totalProfit.toFixed(2)}
+        </span>
+        <span class="text-[9px] text-neutral-500 mt-0.5 block">Stake basis</span>
+      </div>
+      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center">
+        <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Total ROI / Risked</span>
+        <span class="text-lg font-black mt-1 block ${totalProfit >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${totalProfit >= 0 ? '+' : ''}${roi.toFixed(1)}%</span>
+        <span class="text-[9px] text-neutral-500 mt-0.5 block">Risked: $${totalRisked.toFixed(2)}</span>
+      </div>
+    </div>
+  `;
+
+  let logListHtml = '';
+  if (total === 0) {
+    logListHtml = `
+      <div class="card border border-neutral-800 bg-neutral-900/10 p-12 text-center text-neutral-550 text-xs">
+        <span class="text-3xl mb-3 block" role="img" aria-label="Target Icon">🎯</span>
+        Your Tracked Bets Log is empty.<br>Click "🎯 Track" next to any Value Bet or simulated parlay to start recording wins and losses.
+      </div>
+    `;
+  } else {
+    // Reverse chronological order (latest tracked first)
+    const reversedBets = [...trackedBets].reverse();
+
+    const tableRowsHtml = reversedBets.map((b) => {
+      const formattedDate = new Date(b.trackedAt).toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      const multiplier = americanToDecimal(b.price);
+      const toReturn = b.stake * multiplier;
+      const profitVal = toReturn - b.stake;
+
+      let statusBadge = '';
+      let payoutText = '';
+      let actionButtons = '';
+
+      if (b.status === 'pending') {
+        statusBadge = `<span class="px-2 py-0.5 text-[9px] font-black border border-amber-500/20 bg-amber-500/10 text-amber-400 rounded-full uppercase">Pending</span>`;
+        payoutText = `<span class="text-neutral-400 font-semibold">$0.00</span>`;
+        actionButtons = `
+          <button class="win-btn bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-[10px] font-bold border border-emerald-500/20 transition-all cursor-pointer" data-id="${b.id}">✓ Won</button>
+          <button class="loss-btn bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 px-2 py-1 rounded text-[10px] font-bold border border-rose-500/20 transition-all cursor-pointer" data-id="${b.id}">✗ Lost</button>
+        `;
+      } else if (b.status === 'won') {
+        statusBadge = `<span class="px-2 py-0.5 text-[9px] font-black border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 rounded-full uppercase">Won</span>`;
+        payoutText = `<span class="text-emerald-400 font-extrabold">+$${profitVal.toFixed(2)}</span>`;
+        actionButtons = `<button class="revert-btn bg-neutral-800 hover:bg-neutral-750 text-neutral-350 px-2 py-1 rounded text-[10px] font-bold border border-neutral-700 transition-all cursor-pointer" data-id="${b.id}">↩ Revert</button>`;
+      } else {
+        statusBadge = `<span class="px-2 py-0.5 text-[9px] font-black border border-rose-500/20 bg-rose-500/10 text-rose-400 rounded-full uppercase">Lost</span>`;
+        payoutText = `<span class="text-rose-400 font-extrabold">-$${b.stake.toFixed(2)}</span>`;
+        actionButtons = `<button class="revert-btn bg-neutral-800 hover:bg-neutral-750 text-neutral-350 px-2 py-1 rounded text-[10px] font-bold border border-neutral-700 transition-all cursor-pointer" data-id="${b.id}">↩ Revert</button>`;
+      }
+
+      return `
+        <tr class="hover:bg-neutral-850/20 transition-colors text-xs border-b border-neutral-850">
+          <td class="px-4 py-3.5">
+            <div class="font-extrabold text-neutral-100">${b.outcome}</div>
+            <div class="text-[10px] text-neutral-450 font-semibold mt-0.5">${b.matchup}</div>
+            <span class="text-[9px] bg-neutral-800 text-neutral-400 px-1 rounded inline-block mt-1 font-bold">${b.sport} • ${b.marketLabel}</span>
+          </td>
+          <td class="px-4 py-3.5 text-center font-black text-neutral-200">${formatOdds(b.price)}</td>
+          <td class="px-4 py-3.5 text-center font-bold text-neutral-300">$${b.stake.toFixed(2)}</td>
+          <td class="px-4 py-3.5 text-center">${payoutText}</td>
+          <td class="px-4 py-3.5 text-center">${statusBadge}</td>
+          <td class="px-4 py-3.5 text-center text-[9px] text-neutral-500 font-semibold">${formattedDate}</td>
+          <td class="px-4 py-3.5 text-center">
+            <div class="flex items-center justify-center gap-1.5">
+              ${actionButtons}
+              <button class="delete-tracked-btn text-rose-500 hover:text-rose-400 px-1.5 py-1 text-sm font-extrabold cursor-pointer transition-all" data-id="${b.id}" title="Delete Record">🗑</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    const mobileCardsHtml = reversedBets.map((b) => {
+      const formattedDate = new Date(b.trackedAt).toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      const multiplier = americanToDecimal(b.price);
+      const toReturn = b.stake * multiplier;
+      const profitVal = toReturn - b.stake;
+
+      let statusBadge = '';
+      let payoutText = '';
+      let actionButtons = '';
+
+      if (b.status === 'pending') {
+        statusBadge = `<span class="px-2 py-0.5 text-[9px] font-black border border-amber-500/20 bg-amber-500/10 text-amber-400 rounded-full uppercase">Pending</span>`;
+        payoutText = `<span class="text-neutral-450 font-semibold">$0.00</span>`;
+        actionButtons = `
+          <button class="win-btn flex-1 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded text-[11px] font-bold border border-emerald-500/20 cursor-pointer transition-all" data-id="${b.id}">Won</button>
+          <button class="loss-btn flex-1 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 rounded text-[11px] font-bold border border-rose-500/20 cursor-pointer transition-all" data-id="${b.id}">Lost</button>
+        `;
+      } else if (b.status === 'won') {
+        statusBadge = `<span class="px-2 py-0.5 text-[9px] font-black border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 rounded-full uppercase">Won</span>`;
+        payoutText = `<span class="text-emerald-400 font-extrabold">+$${profitVal.toFixed(2)}</span>`;
+        actionButtons = `<button class="revert-btn flex-1 py-1.5 bg-neutral-800 hover:bg-neutral-750 text-neutral-350 rounded text-[11px] font-bold border border-neutral-700 cursor-pointer transition-all" data-id="${b.id}">Revert to Pending</button>`;
+      } else {
+        statusBadge = `<span class="px-2 py-0.5 text-[9px] font-black border border-rose-500/20 bg-rose-500/10 text-rose-400 rounded-full uppercase">Lost</span>`;
+        payoutText = `<span class="text-rose-400 font-extrabold">-$${b.stake.toFixed(2)}</span>`;
+        actionButtons = `<button class="revert-btn flex-1 py-1.5 bg-neutral-800 hover:bg-neutral-750 text-neutral-350 rounded text-[11px] font-bold border border-neutral-700 cursor-pointer transition-all" data-id="${b.id}">Revert to Pending</button>`;
+      }
+
+      return `
+        <div class="card border border-neutral-850 bg-neutral-900/40 p-4 space-y-3 relative">
+          <div class="flex items-start justify-between border-b border-neutral-800 pb-2">
+            <div>
+              <div class="font-extrabold text-neutral-150 text-sm">${b.outcome}</div>
+              <div class="text-[10px] text-neutral-500 font-semibold">${b.sport} • ${b.marketLabel}</div>
+            </div>
+            <button class="delete-tracked-btn text-rose-500 hover:text-rose-400 text-lg focus:outline-none cursor-pointer" data-id="${b.id}">🗑</button>
+          </div>
+          
+          <div class="text-[10px] text-neutral-400 font-semibold leading-relaxed">${b.matchup}</div>
+          
+          <div class="grid grid-cols-3 gap-2 bg-neutral-950/40 p-2.5 rounded-lg border border-neutral-850 text-center">
+            <div>
+              <span class="text-[8px] text-neutral-500 font-bold uppercase tracking-wider block">Odds</span>
+              <span class="text-xs font-extrabold text-neutral-250 mt-0.5 block">${formatOdds(b.price)}</span>
+            </div>
+            <div>
+              <span class="text-[8px] text-neutral-500 font-bold uppercase tracking-wider block">Stake</span>
+              <span class="text-xs font-extrabold text-neutral-300 mt-0.5 block">$${b.stake.toFixed(2)}</span>
+            </div>
+            <div>
+              <span class="text-[8px] text-neutral-500 font-bold uppercase tracking-wider block">Payout</span>
+              <span class="text-xs font-black mt-0.5 block">${payoutText}</span>
+            </div>
+          </div>
+          
+          <div class="flex items-center justify-between border-t border-neutral-850 pt-2">
+            <div class="text-[9px] text-neutral-550 font-bold">${formattedDate}</div>
+            ${statusBadge}
+          </div>
+          
+          <div class="flex gap-2 pt-1 border-t border-neutral-850/40">
+            ${actionButtons}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    logListHtml = `
+      <div class="hidden md:block overflow-x-auto rounded-xl border border-neutral-850 bg-neutral-900/20 backdrop-blur-sm shadow-xl">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b border-neutral-800 bg-neutral-900/60 text-[10px] font-bold text-neutral-450 uppercase tracking-wider select-none">
+              <th scope="col" class="px-4 py-3">Bet Selection</th>
+              <th scope="col" class="px-4 py-3 text-center">Odds</th>
+              <th scope="col" class="px-4 py-3 text-center">Stake</th>
+              <th scope="col" class="px-4 py-3 text-center">Payout</th>
+              <th scope="col" class="px-4 py-3 text-center">Status</th>
+              <th scope="col" class="px-4 py-3 text-center">Date Tracked</th>
+              <th scope="col" class="px-4 py-3 text-center">Resolve Record</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-neutral-850">
+            ${tableRowsHtml}
+          </tbody>
+        </table>
+      </div>
+      <div class="grid grid-cols-1 gap-4 md:hidden">
+        ${mobileCardsHtml}
+      </div>
+    `;
+  }
+
+  container.innerHTML = `
+    <div class="flex items-center justify-between mb-4 border-b border-neutral-850 pb-3">
+      <h2 id="tracker-heading" class="text-lg font-black text-neutral-100 flex items-center gap-2">
+        <span>📈</span> Bet Performance Record
+      </h2>
+      <button id="clear-history-btn" class="px-2.5 py-1 text-[10px] font-bold border border-rose-500/25 bg-rose-500/5 hover:bg-rose-500/10 text-rose-400 rounded-lg transition-all cursor-pointer">
+        Clear History
+      </button>
+    </div>
+    
+    ${statsHtml}
+    
+    <div class="text-[10px] text-neutral-450 font-bold uppercase tracking-wider mb-3">Tracked Bets History Log</div>
+    ${logListHtml}
+  `;
+
+  // Attach dynamic resolvers listeners
+  setTimeout(() => {
+    container.querySelector('#clear-history-btn')?.addEventListener('click', () => {
+      if (confirm('Are you sure you want to delete ALL tracked bets from history? This action is permanent.')) {
+        trackedBets = [];
+        saveTrackedBets();
+        renderApp();
+      }
+    });
+
+    container.querySelectorAll('.win-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = (e.currentTarget as HTMLElement).getAttribute('data-id')!;
+        updateBetStatus(id, 'won');
+      });
+    });
+
+    container.querySelectorAll('.loss-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = (e.currentTarget as HTMLElement).getAttribute('data-id')!;
+        updateBetStatus(id, 'lost');
+      });
+    });
+
+    container.querySelectorAll('.revert-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = (e.currentTarget as HTMLElement).getAttribute('data-id')!;
+        updateBetStatus(id, 'pending');
+      });
+    });
+
+    container.querySelectorAll('.delete-tracked-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = (e.currentTarget as HTMLElement).getAttribute('data-id')!;
+        deleteTrackedBet(id);
       });
     });
   }, 0);
@@ -809,10 +1247,14 @@ function renderParlayCalculator(): HTMLElement {
             <span class="font-bold text-neutral-400">Potential Return</span>
             <span class="font-black text-emerald-400">$${potentialReturn.toFixed(2)}</span>
           </div>
-          <div class="flex items-center justify-between text-xs">
+          <div class="flex items-center justify-between text-xs border-b border-neutral-805 pb-3">
             <span class="font-bold text-neutral-400">Net Profit</span>
             <span class="font-bold text-neutral-200">$${potentialProfit.toFixed(2)}</span>
           </div>
+          
+          <button id="track-parlay-btn" class="w-full py-2 bg-primary-500 hover:bg-primary-400 text-neutral-950 font-black rounded-lg cursor-pointer transition-all active:scale-95 text-xs text-center">
+            🎯 Track Custom Parlay
+          </button>
         </div>
       </div>
     </div>
@@ -820,7 +1262,6 @@ function renderParlayCalculator(): HTMLElement {
 
   // Attach interactive listeners
   setTimeout(() => {
-    // Stake input change
     container.querySelector('#stake-input')?.addEventListener('input', (e) => {
       const value = parseFloat((e.target as HTMLInputElement).value);
       if (!isNaN(value) && value > 0) {
@@ -829,7 +1270,10 @@ function renderParlayCalculator(): HTMLElement {
       }
     });
 
-    // Remove single leg
+    container.querySelector('#track-parlay-btn')?.addEventListener('click', () => {
+      trackSimulatedParlay();
+    });
+
     container.querySelectorAll('.remove-leg-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const id = (e.currentTarget as HTMLElement).getAttribute('data-id')!;
@@ -871,6 +1315,11 @@ function renderApp() {
   // Reset container and layout
   app.innerHTML = '';
 
+  // Get active win/loss tracker record details for header bar
+  const wins = trackedBets.filter(b => b.status === 'won').length;
+  const losses = trackedBets.filter(b => b.status === 'lost').length;
+  const pending = trackedBets.filter(b => b.status === 'pending').length;
+
   // Header Logo & Dashboard Meta
   const header = document.createElement('header');
   header.className = 'flex flex-wrap items-center justify-between gap-4 border-b border-neutral-800 pb-6 mb-8 mt-4';
@@ -893,6 +1342,11 @@ function renderApp() {
       </button>
       <div class="w-px h-7 bg-neutral-800 hidden sm:block"></div>
       <div class="text-right">
+        <div class="text-[9px] text-neutral-500 font-extrabold uppercase tracking-wider cursor-pointer hover:underline" id="go-to-tracker">Record (W-L) 🏆</div>
+        <div class="text-emerald-450 font-black text-[11px] mt-0.5 cursor-pointer hover:underline" id="go-to-tracker-val">${wins}W - ${losses}L ${pending > 0 ? `[${pending}P]` : ''}</div>
+      </div>
+      <div class="w-px h-7 bg-neutral-800"></div>
+      <div class="text-right">
         <div class="text-[9px] text-neutral-500 font-extrabold uppercase tracking-wider">Watchlist ⭐</div>
         <div class="text-amber-400 font-extrabold text-[11px] mt-0.5">${watchlist.length} Starred</div>
       </div>
@@ -910,29 +1364,41 @@ function renderApp() {
   `;
   app.appendChild(header);
 
-  // Attach refresh listener
+  // Attach refresh listener & header navigation tracker links
   const refreshBtn = header.querySelector('#refresh-btn');
   if (refreshBtn) {
     refreshBtn.addEventListener('click', handleRefresh);
   }
+  const goToTracker = () => {
+    currentSportFilter = 'Tracker';
+    renderApp();
+  };
+  header.querySelector('#go-to-tracker')?.addEventListener('click', goToTracker);
+  header.querySelector('#go-to-tracker-val')?.addEventListener('click', goToTracker);
 
-  // AI Daily Insights panel
-  const aiPanel = renderAIAnalysis(currentData);
-  if (aiPanel) {
-    app.appendChild(aiPanel);
+  // Render tracker tab view exclusively or normal dashboard sections
+  if (currentSportFilter === 'Tracker') {
+    app.appendChild(renderFilters(currentData));
+    app.appendChild(renderTrackerView());
+  } else {
+    // AI Daily Insights panel
+    const aiPanel = renderAIAnalysis(currentData);
+    if (aiPanel) {
+      app.appendChild(aiPanel);
+    }
+
+    // Render Calculator Simulator
+    app.appendChild(renderParlayCalculator());
+
+    // Add filters toolbar
+    app.appendChild(renderFilters(currentData));
+
+    // Value bets grid/table
+    app.appendChild(renderBets(currentData.topValueBets));
+
+    // Parlay list
+    app.appendChild(renderParlays(currentData.parlays));
   }
-
-  // Render Calculator Simulator
-  app.appendChild(renderParlayCalculator());
-
-  // Add filters toolbar
-  app.appendChild(renderFilters(currentData));
-
-  // Value bets grid/table
-  app.appendChild(renderBets(currentData.topValueBets));
-
-  // Parlay list
-  app.appendChild(renderParlays(currentData.parlays));
 
   // Footer Disclaimer
   const footer = document.createElement('footer');
@@ -986,9 +1452,9 @@ async function init() {
   `;
 
   loadWatchlist();
+  loadTrackedBets();
 
   try {
-    // Simulate real brief delay to showcase loading skeletons
     await new Promise(resolve => setTimeout(resolve, 600));
     currentData = await loadData();
     renderApp();

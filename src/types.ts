@@ -79,3 +79,15 @@ export interface SportSchedule {
   active: boolean;
   hasEvents: boolean;
 }
+
+export interface TrackedBet {
+  id: string;
+  outcome: string;
+  matchup: string;
+  price: number;
+  sport: string;
+  marketLabel: string;
+  stake: number;
+  status: 'won' | 'lost' | 'pending';
+  trackedAt: string;
+}
