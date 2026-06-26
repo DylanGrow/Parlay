@@ -1,192 +1,96 @@
 {
-  "generatedAt": "2026-06-20T01:34:12.000Z",
-  "nextUpdateAt": "2026-06-20T05:34:12.000Z",
-  "activeCreditsUsed": 15,
-  "creditsRemaining": 485,
+  "generatedAt": "2026-06-26T08:30:00.000Z",
+  "nextUpdateAt": "2026-06-26T12:30:00.000Z",
+  "activeCreditsUsed": 24,
+  "creditsRemaining": 476,
   "lastSportsQueried": [
-    "basketball_nba",
-    "baseball_mlb",
-    "soccer_epl",
-    "mma_mixed_martial_arts"
+    "soccer_world_cup"
   ],
-  "disclaimer": "BetRadar is an informational tool only. This is DEMO DATA — not live odds. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
+  "disclaimer": "BetRadar is an informational tool only. This is simulated expected value data for the 2026 FIFA World Cup matches. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
   "topValueBets": [
     {
-      "id": "demo-nba-01-h2h-grizzlies",
-      "sport": "NBA",
-      "sportKey": "basketball_nba",
-      "sportTitle": "NBA",
-      "league": "NBA",
-      "eventId": "demo-nba-01",
-      "homeTeam": "Memphis Grizzlies",
-      "awayTeam": "Golden State Warriors",
-      "commenceTime": "2026-06-20T07:34:12.000Z",
-      "outcome": "Memphis Grizzlies",
+      "id": "wc-2026-usa-england-h2h-usa",
+      "sport": "World Cup",
+      "sportKey": "soccer_world_cup",
+      "sportTitle": "World Cup 2026",
+      "league": "FIFA World Cup Group Stage",
+      "eventId": "wc-2026-usa-england",
+      "homeTeam": "USA",
+      "awayTeam": "England",
+      "commenceTime": "2026-06-26T20:00:00.000Z",
+      "outcome": "USA",
       "market": "h2h",
       "marketLabel": "Moneyline",
-      "bestPrice": 385,
+      "bestPrice": 450,
       "bestBookmaker": "fanduel",
       "bestBookmakerTitle": "FanDuel",
-      "consensusImpliedProb": 0.198,
-      "trueOdds": 405,
-      "evPercent": 0.112,
-      "reasoning": "Memphis Grizzlies are priced at +385 on FanDuel, while the consensus across 8 books sets the true fair price at +405. This represents 11.2% positive expected value — the market is mispricing this outcome in your favor.",
+      "consensusImpliedProb": 0.175,
+      "trueOdds": 471,
+      "evPercent": 0.088,
+      "reasoning": "USA is priced at +450 on FanDuel, while the consensus across major books sets the true fair odds at +471. This offers a 8.8% positive expected value edge on the home nation.",
       "allOdds": [
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": 385
+          "price": 450
         },
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": 360
+          "price": 420
         },
         {
           "bookmaker": "betmgm",
           "bookmakerTitle": "BetMGM",
-          "price": 340
+          "price": 410
         },
         {
           "bookmaker": "caesars",
           "bookmakerTitle": "Caesars",
-          "price": 355
-        },
-        {
-          "bookmaker": "bovada",
-          "bookmakerTitle": "Bovada",
-          "price": 330
-        },
-        {
-          "bookmaker": "pointsbet",
-          "bookmakerTitle": "PointsBet",
-          "price": 350
+          "price": 425
         },
         {
           "bookmaker": "bet365",
           "bookmakerTitle": "Bet365",
-          "price": 370
-        },
-        {
-          "bookmaker": "williamhill",
-          "bookmakerTitle": "William Hill",
-          "price": 345
+          "price": 430
         }
       ]
     },
     {
-      "id": "demo-mlb-02-h2h-athletics",
-      "sport": "MLB",
-      "sportKey": "baseball_mlb",
-      "sportTitle": "MLB",
-      "league": "MLB",
-      "eventId": "demo-mlb-02",
-      "homeTeam": "Oakland Athletics",
-      "awayTeam": "New York Yankees",
-      "commenceTime": "2026-06-20T10:34:12.000Z",
-      "outcome": "Oakland Athletics",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": 520,
-      "bestBookmaker": "bet365",
-      "bestBookmakerTitle": "Bet365",
-      "consensusImpliedProb": 0.158,
-      "trueOdds": 533,
-      "evPercent": 0.094,
-      "reasoning": "Oakland Athletics are priced at +520 on Bet365, while the consensus across 7 books sets the true fair price at +533. This represents 9.4% positive expected value — the market is mispricing this outcome in your favor.",
-      "allOdds": [
-        {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
-          "price": 520
-        },
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 480
-        },
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": 495
-        },
-        {
-          "bookmaker": "betmgm",
-          "bookmakerTitle": "BetMGM",
-          "price": 475
-        },
-        {
-          "bookmaker": "bovada",
-          "bookmakerTitle": "Bovada",
-          "price": 460
-        },
-        {
-          "bookmaker": "caesars",
-          "bookmakerTitle": "Caesars",
-          "price": 490
-        },
-        {
-          "bookmaker": "unibet",
-          "bookmakerTitle": "Unibet",
-          "price": 500
-        }
-      ]
-    },
-    {
-      "id": "demo-epl-03-h2h-brentford",
-      "sport": "Soccer",
-      "sportKey": "soccer_epl",
-      "sportTitle": "EPL",
-      "league": "English Premier League",
-      "eventId": "demo-epl-03",
-      "homeTeam": "Brentford",
-      "awayTeam": "Arsenal",
-      "commenceTime": "2026-06-20T16:34:12.000Z",
-      "outcome": "Brentford",
+      "id": "wc-2026-canada-spain-h2h-canada",
+      "sport": "World Cup",
+      "sportKey": "soccer_world_cup",
+      "sportTitle": "World Cup 2026",
+      "league": "FIFA World Cup Group Stage",
+      "eventId": "wc-2026-canada-spain",
+      "homeTeam": "Canada",
+      "awayTeam": "Spain",
+      "commenceTime": "2026-06-27T18:00:00.000Z",
+      "outcome": "Canada",
       "market": "h2h",
       "marketLabel": "Moneyline",
       "bestPrice": 650,
-      "bestBookmaker": "williamhill",
-      "bestBookmakerTitle": "William Hill",
-      "consensusImpliedProb": 0.128,
-      "trueOdds": 681,
-      "evPercent": 0.183,
-      "reasoning": "Brentford are priced at +650 on William Hill, while the consensus across 9 books sets the true fair price at +681. This represents 18.3% positive expected value — the market is significantly mispricing this outcome in your favor.",
+      "bestBookmaker": "bet365",
+      "bestBookmakerTitle": "Bet365",
+      "consensusImpliedProb": 0.125,
+      "trueOdds": 700,
+      "evPercent": 0.115,
+      "reasoning": "Canada is priced at +650 on Bet365, while the consensus across major books sets the true fair odds at +700. This represents an 11.5% positive expected value edge.",
       "allOdds": [
-        {
-          "bookmaker": "williamhill",
-          "bookmakerTitle": "William Hill",
-          "price": 650
-        },
         {
           "bookmaker": "bet365",
           "bookmakerTitle": "Bet365",
-          "price": 620
-        },
-        {
-          "bookmaker": "betfair",
-          "bookmakerTitle": "Betfair",
-          "price": 610
-        },
-        {
-          "bookmaker": "ladbrokes",
-          "bookmakerTitle": "Ladbrokes",
-          "price": 600
-        },
-        {
-          "bookmaker": "unibet",
-          "bookmakerTitle": "Unibet",
-          "price": 595
+          "price": 650
         },
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": 580
+          "price": 600
         },
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": 590
+          "price": 580
         },
         {
           "bookmaker": "betmgm",
@@ -194,112 +98,318 @@
           "price": 575
         },
         {
-          "bookmaker": "pinnacle",
-          "bookmakerTitle": "Pinnacle",
-          "price": 605
+          "bookmaker": "bovada",
+          "bookmakerTitle": "Bovada",
+          "price": 610
+        }
+      ]
+    },
+    {
+      "id": "wc-2026-germany-morocco-h2h-morocco",
+      "sport": "World Cup",
+      "sportKey": "soccer_world_cup",
+      "sportTitle": "World Cup 2026",
+      "league": "FIFA World Cup Group Stage",
+      "eventId": "wc-2026-germany-morocco",
+      "homeTeam": "Germany",
+      "awayTeam": "Morocco",
+      "commenceTime": "2026-06-26T15:00:00.000Z",
+      "outcome": "Morocco",
+      "market": "h2h",
+      "marketLabel": "Moneyline",
+      "bestPrice": 550,
+      "bestBookmaker": "draftkings",
+      "bestBookmakerTitle": "DraftKings",
+      "consensusImpliedProb": 0.145,
+      "trueOdds": 590,
+      "evPercent": 0.103,
+      "reasoning": "Morocco is priced at +550 on DraftKings, while the consensus across major books sets the true fair odds at +590. This represents a 10.3% positive expected value edge.",
+      "allOdds": [
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 550
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 520
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 500
+        },
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 515
+        },
+        {
+          "bookmaker": "bovada",
+          "bookmakerTitle": "Bovada",
+          "price": 530
+        }
+      ]
+    },
+    {
+      "id": "wc-2026-mexico-italy-h2h-draw",
+      "sport": "World Cup",
+      "sportKey": "soccer_world_cup",
+      "sportTitle": "World Cup 2026",
+      "league": "FIFA World Cup Group Stage",
+      "eventId": "wc-2026-mexico-italy",
+      "homeTeam": "Mexico",
+      "awayTeam": "Italy",
+      "commenceTime": "2026-06-26T23:00:00.000Z",
+      "outcome": "Draw",
+      "market": "h2h",
+      "marketLabel": "Moneyline",
+      "bestPrice": 275,
+      "bestBookmaker": "caesars",
+      "bestBookmakerTitle": "Caesars",
+      "consensusImpliedProb": 0.255,
+      "trueOdds": 292,
+      "evPercent": 0.082,
+      "reasoning": "The Draw is priced at +275 on Caesars, while the consensus across major books sets the true fair odds at +292. This represents an 8.2% positive expected value edge.",
+      "allOdds": [
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 275
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 260
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 250
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 255
+        },
+        {
+          "bookmaker": "bet365",
+          "bookmakerTitle": "Bet365",
+          "price": 265
+        }
+      ]
+    },
+    {
+      "id": "wc-2026-argentina-poland-h2h-poland",
+      "sport": "World Cup",
+      "sportKey": "soccer_world_cup",
+      "sportTitle": "World Cup 2026",
+      "league": "FIFA World Cup Group Stage",
+      "eventId": "wc-2026-argentina-poland",
+      "homeTeam": "Argentina",
+      "awayTeam": "Poland",
+      "commenceTime": "2026-06-28T14:00:00.000Z",
+      "outcome": "Poland",
+      "market": "h2h",
+      "marketLabel": "Moneyline",
+      "bestPrice": 800,
+      "bestBookmaker": "bovada",
+      "bestBookmakerTitle": "Bovada",
+      "consensusImpliedProb": 0.105,
+      "trueOdds": 852,
+      "evPercent": 0.096,
+      "reasoning": "Poland is priced at +800 on Bovada, while the consensus across major books sets the true fair odds at +852. This represents a 9.6% positive expected value edge.",
+      "allOdds": [
+        {
+          "bookmaker": "bovada",
+          "bookmakerTitle": "Bovada",
+          "price": 800
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 750
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 720
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 700
+        },
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 760
         }
       ]
     }
   ],
   "parlays": [
     {
-      "id": "parlay-3leg-demo-a",
+      "id": "parlay-2leg-wc-usa-morocco",
       "legs": [
         {
           "bet": {
-            "id": "demo-epl-03-h2h-brentford",
-            "sport": "EPL",
-            "sportKey": "soccer_epl",
-            "sportTitle": "EPL",
-            "league": "English Premier League",
-            "eventId": "demo-epl-03",
-            "homeTeam": "Brentford",
-            "awayTeam": "Arsenal",
-            "commenceTime": "2026-06-20T16:34:12.000Z",
-            "outcome": "Brentford",
+            "id": "wc-2026-usa-england-h2h-usa",
+            "sport": "World Cup",
+            "sportKey": "soccer_world_cup",
+            "sportTitle": "World Cup 2026",
+            "league": "FIFA World Cup Group Stage",
+            "eventId": "wc-2026-usa-england",
+            "homeTeam": "USA",
+            "awayTeam": "England",
+            "commenceTime": "2026-06-26T20:00:00.000Z",
+            "outcome": "USA",
             "market": "h2h",
             "marketLabel": "Moneyline",
-            "bestPrice": 650,
-            "bestBookmaker": "williamhill",
-            "bestBookmakerTitle": "William Hill",
-            "consensusImpliedProb": 0.128,
-            "trueOdds": 681,
-            "evPercent": 0.183,
-            "reasoning": "",
-            "allOdds": []
-          },
-          "price": 650
-        },
-        {
-          "bet": {
-            "id": "demo-nba-01-h2h-grizzlies",
-            "sport": "NBA",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "league": "NBA",
-            "eventId": "demo-nba-01",
-            "homeTeam": "Memphis Grizzlies",
-            "awayTeam": "Golden State Warriors",
-            "commenceTime": "2026-06-20T07:34:12.000Z",
-            "outcome": "Memphis Grizzlies",
-            "market": "h2h",
-            "marketLabel": "Moneyline",
-            "bestPrice": 385,
+            "bestPrice": 450,
             "bestBookmaker": "fanduel",
             "bestBookmakerTitle": "FanDuel",
-            "consensusImpliedProb": 0.198,
-            "trueOdds": 405,
-            "evPercent": 0.112,
+            "consensusImpliedProb": 0.175,
+            "trueOdds": 471,
+            "evPercent": 0.088,
             "reasoning": "",
             "allOdds": []
           },
-          "price": 385
+          "price": 450
         },
         {
           "bet": {
-            "id": "demo-mlb-06-h2h-rockies",
-            "sport": "MLB",
-            "sportKey": "baseball_mlb",
-            "sportTitle": "MLB",
-            "league": "MLB",
-            "eventId": "demo-mlb-06",
-            "homeTeam": "Colorado Rockies",
-            "awayTeam": "Los Angeles Dodgers",
-            "commenceTime": "2026-06-20T12:34:12.000Z",
-            "outcome": "Colorado Rockies",
+            "id": "wc-2026-germany-morocco-h2h-morocco",
+            "sport": "World Cup",
+            "sportKey": "soccer_world_cup",
+            "sportTitle": "World Cup 2026",
+            "league": "FIFA World Cup Group Stage",
+            "eventId": "wc-2026-germany-morocco",
+            "homeTeam": "Germany",
+            "awayTeam": "Morocco",
+            "commenceTime": "2026-06-26T15:00:00.000Z",
+            "outcome": "Morocco",
             "market": "h2h",
             "marketLabel": "Moneyline",
-            "bestPrice": 760,
-            "bestBookmaker": "caesars",
-            "bestBookmakerTitle": "Caesars",
-            "consensusImpliedProb": 0.111,
-            "trueOdds": 800,
-            "evPercent": 0.149,
+            "bestPrice": 550,
+            "bestBookmaker": "draftkings",
+            "bestBookmakerTitle": "DraftKings",
+            "consensusImpliedProb": 0.145,
+            "trueOdds": 590,
+            "evPercent": 0.103,
             "reasoning": "",
             "allOdds": []
           },
-          "price": 760
+          "price": 550
         }
       ],
-      "combinedAmericanOdds": 38900,
-      "combinedDecimalOdds": 390,
-      "impliedProbability": 0.00256,
-      "estimatedEvPercent": 0.264,
+      "combinedAmericanOdds": 3475,
+      "combinedDecimalOdds": 35.75,
+      "impliedProbability": 0.028,
+      "estimatedEvPercent": 0.135,
       "sports": [
-        "soccer_epl",
-        "basketball_nba",
-        "baseball_mlb"
+        "soccer_world_cup"
       ],
-      "reasoning": "3-leg parlay paying +38900. Each leg independently identified as +EV vs. the market consensus. Leg 1: Brentford (EPL, +650) | Leg 2: Memphis Grizzlies (NBA, +385) | Leg 3: Colorado Rockies (MLB, +760). All legs span different sports/events for maximum independence.",
+      "reasoning": "2-leg World Cup underdog parlay paying +3475. Combines USA (+450) and Morocco (+550) with a compounding estimated EV of +13.5%.",
+      "tier": "strong"
+    },
+    {
+      "id": "parlay-3leg-wc-combo",
+      "legs": [
+        {
+          "bet": {
+            "id": "wc-2026-usa-england-h2h-usa",
+            "sport": "World Cup",
+            "sportKey": "soccer_world_cup",
+            "sportTitle": "World Cup 2026",
+            "league": "FIFA World Cup Group Stage",
+            "eventId": "wc-2026-usa-england",
+            "homeTeam": "USA",
+            "awayTeam": "England",
+            "commenceTime": "2026-06-26T20:00:00.000Z",
+            "outcome": "USA",
+            "market": "h2h",
+            "marketLabel": "Moneyline",
+            "bestPrice": 450,
+            "bestBookmaker": "fanduel",
+            "bestBookmakerTitle": "FanDuel",
+            "consensusImpliedProb": 0.175,
+            "trueOdds": 471,
+            "evPercent": 0.088,
+            "reasoning": "",
+            "allOdds": []
+          },
+          "price": 450
+        },
+        {
+          "bet": {
+            "id": "wc-2026-germany-morocco-h2h-morocco",
+            "sport": "World Cup",
+            "sportKey": "soccer_world_cup",
+            "sportTitle": "World Cup 2026",
+            "league": "FIFA World Cup Group Stage",
+            "eventId": "wc-2026-germany-morocco",
+            "homeTeam": "Germany",
+            "awayTeam": "Morocco",
+            "commenceTime": "2026-06-26T15:00:00.000Z",
+            "outcome": "Morocco",
+            "market": "h2h",
+            "marketLabel": "Moneyline",
+            "bestPrice": 550,
+            "bestBookmaker": "draftkings",
+            "bestBookmakerTitle": "DraftKings",
+            "consensusImpliedProb": 0.145,
+            "trueOdds": 590,
+            "evPercent": 0.103,
+            "reasoning": "",
+            "allOdds": []
+          },
+          "price": 550
+        },
+        {
+          "bet": {
+            "id": "wc-2026-mexico-italy-h2h-draw",
+            "sport": "World Cup",
+            "sportKey": "soccer_world_cup",
+            "sportTitle": "World Cup 2026",
+            "league": "FIFA World Cup Group Stage",
+            "eventId": "wc-2026-mexico-italy",
+            "homeTeam": "Mexico",
+            "awayTeam": "Italy",
+            "commenceTime": "2026-06-26T23:00:00.000Z",
+            "outcome": "Draw",
+            "market": "h2h",
+            "marketLabel": "Moneyline",
+            "bestPrice": 275,
+            "bestBookmaker": "caesars",
+            "bestBookmakerTitle": "Caesars",
+            "consensusImpliedProb": 0.255,
+            "trueOdds": 292,
+            "evPercent": 0.082,
+            "reasoning": "",
+            "allOdds": []
+          },
+          "price": 275
+        }
+      ],
+      "combinedAmericanOdds": 13306,
+      "combinedDecimalOdds": 134.06,
+      "impliedProbability": 0.0075,
+      "estimatedEvPercent": 0.158,
+      "sports": [
+        "soccer_world_cup"
+      ],
+      "reasoning": "3-leg World Cup value card paying +13306. Combines USA (+450), Morocco (+550) and Draw (Mexico vs Italy, +275) with a compounding estimated EV of +15.8%.",
       "tier": "elite"
     }
   ],
   "aiAnalysis": {
-    "summary": "Analyzed 3 value bets and 1 parlay cards. Strong market pricing discrepancies detected in NBA, MLB, Soccer moneyline underdogs, indicating an edge vs consensus books.",
-    "topPickId": "demo-epl-03-h2h-brentford",
-    "topPickRationale": "Brentford is currently mispriced at +650 on William Hill. Sharp market consensus sets the fair true odds closer to +681, resulting in a 18.3% mathematical expected value edge.",
-    "parlayAnalysis": "The featured 3-leg parlay combines independent value legs paying +38900 with a combined estimated EV of 26.4%. Recommend small stake sizing.",
+    "summary": "Analyzed 5 value bets and 2 parlay cards. Strong market pricing discrepancies detected in World Cup moneyline underdogs, indicating an edge vs consensus books.",
+    "topPickId": "wc-2026-canada-spain-h2h-canada",
+    "topPickRationale": "Canada is currently mispriced at +650 on Bet365. Sharp market consensus sets the fair true odds closer to +700, resulting in a 11.5% mathematical expected value edge.",
+    "parlayAnalysis": "The featured 2-leg parlay combines independent value legs paying +3475 with a combined estimated EV of 13.5%. Recommend small stake sizing.",
     "riskRating": "High",
-    "lastUpdated": "2026-06-22T00:25:25.011Z"
+    "lastUpdated": "2026-06-26T08:37:33.447Z"
   }
 }
