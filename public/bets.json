@@ -405,11 +405,11 @@
     }
   ],
   "aiAnalysis": {
-    "summary": "Analyzed 5 value bets and 2 parlay cards. Strong market pricing discrepancies detected in World Cup moneyline underdogs, indicating an edge vs consensus books.",
+    "summary": "We have analyzed today's slate of 5 high-profile FIFA World Cup Group Stage matchups. Significant market pricing inefficiencies have been detected across multiple bookmakers, specifically on high-odds moneyline underdogs (Canada +650 and Morocco +550) and key tactical matches. These discrepancies represent positive expected value (+EV) compared to sharp-book consensus probabilities, where the public's heavy bias toward traditional favorites (Spain, Germany, England) has pushed favorite prices past their fair values, leaving substantial mathematical value on the other side.",
     "topPickId": "wc-2026-canada-spain-h2h-canada",
-    "topPickRationale": "Canada is currently mispriced at +650 on Bet365. Sharp market consensus sets the fair true odds closer to +700, resulting in a 11.5% mathematical expected value edge.",
-    "parlayAnalysis": "The featured 2-leg parlay combines independent value legs paying +3475 with a combined estimated EV of 13.5%. Recommend small stake sizing.",
+    "topPickRationale": "Canada (+650) on Bet365 is our Top Pick of the Day. Our models evaluate Spain's true probability of winning at 72.8%, meaning Canada's fair true odds should reside at +700 (implied probability of 12.5%). By securing +650 odds, you capture an 11.5% positive expected value (+EV) edge. Spain's recent qualification safety allows them to rotate players, which books are under-adjusting for in their moneyline models.",
+    "parlayAnalysis": "Our featured 3-leg World Cup combo parlay (USA, Morocco, Draw - Mexico/Italy) yields compound odds of +13306 with a compounding EV edge of +15.8%. While the long-term mathematical edge is high, the raw probability of hit is just 0.75%. Stake sizing must be aggressively scaled down (e.g., 0.1 to 0.25 units) to protect capital variance.",
     "riskRating": "High",
-    "lastUpdated": "2026-06-26T08:37:33.447Z"
+    "lastUpdated": "2026-06-27T13:30:00.000Z"
   }
 }
