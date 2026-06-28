@@ -240,11 +240,12 @@ const formatOdds = (price: number) => price >= 0 ? `+${price}` : `${price}`;
 // Get emoji based on sport key and accessibility text
 const getSportIcon = (sportKey: string): { emoji: string; label: string } => {
   const key = sportKey.toLowerCase();
-  if (key.includes('nba') || key.includes('basketball')) return { emoji: '🏀', label: 'Basketball' };
+  if (key.includes('nba') || key.includes('basketball') || key.includes('california_classic')) return { emoji: '🏀', label: 'Basketball' };
   if (key.includes('mlb') || key.includes('baseball')) return { emoji: '⚾', label: 'Baseball' };
-  if (key.includes('soccer') || key.includes('epl')) return { emoji: '⚽', label: 'Soccer' };
+  if (key.includes('soccer') || key.includes('epl') || key.includes('world_cup')) return { emoji: '⚽', label: 'Soccer' };
   if (key.includes('mma') || key.includes('ufc')) return { emoji: '🥊', label: 'MMA' };
   if (key.includes('football') || key.includes('nfl')) return { emoji: '🏈', label: 'Football' };
+  if (key.includes('nascar') || key.includes('racing')) return { emoji: '🏎️', label: 'Racing' };
   return { emoji: '🏆', label: 'Championship' };
 };
 
