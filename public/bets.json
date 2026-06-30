@@ -1,74 +1,242 @@
 {
-  "generatedAt": "2026-06-28T19:30:00.000Z",
-  "nextUpdateAt": "2026-06-29T00:30:00.000Z",
-  "activeCreditsUsed": 45,
-  "creditsRemaining": 455,
+  "generatedAt": "2026-06-30T08:30:00.000Z",
+  "nextUpdateAt": "2026-06-30T12:30:00.000Z",
+  "activeCreditsUsed": 58,
+  "creditsRemaining": 442,
   "lastSportsQueried": [
     "soccer_world_cup",
-    "nascar_cup_series",
+    "soccer_uefa_euro",
+    "baseball_mlb",
     "basketball_california_classic",
-    "baseball_mlb"
+    "nascar_cup_series"
   ],
-  "disclaimer": "BetRadar is an informational tool only. This is simulated expected value data covering NASCAR Cup Series, FIFA World Cup, California Classic Summer League, and MLB. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
+  "disclaimer": "BetRadar is an informational tool only. This is simulated expected value data for the FIFA World Cup Round of 16, UEFA Euro 2026, MLB, California Classic, and NASCAR. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
   "topValueBets": [
     {
-      "id": "wc-2026-canada-spain-h2h-canada",
+      "id": "wc-2026-england-colombia-h2h-colombia",
       "sport": "World Cup",
       "sportKey": "soccer_world_cup",
       "sportTitle": "World Cup 2026",
-      "league": "FIFA World Cup Group Stage",
-      "eventId": "wc-2026-canada-spain",
-      "homeTeam": "Canada",
-      "awayTeam": "Spain",
-      "commenceTime": "2026-06-27T18:00:00.000Z",
-      "outcome": "Canada",
+      "league": "FIFA World Cup Round of 16",
+      "eventId": "wc-2026-england-colombia",
+      "homeTeam": "England",
+      "awayTeam": "Colombia",
+      "commenceTime": "2026-06-30T20:00:00.000Z",
+      "outcome": "Colombia",
       "market": "h2h",
       "marketLabel": "Moneyline",
-      "bestPrice": 650,
+      "bestPrice": 380,
       "bestBookmaker": "bet365",
       "bestBookmakerTitle": "Bet365",
-      "consensusImpliedProb": 0.125,
-      "trueOdds": 700,
-      "evPercent": 0.115,
-      "reasoning": "Canada is priced at +650 on Bet365, while the consensus across major books sets the true fair odds at +700. This represents an 11.5% positive expected value edge.",
+      "consensusImpliedProb": 0.196,
+      "trueOdds": 410,
+      "evPercent": 0.061,
+      "reasoning": "Colombia is priced at +380 on Bet365, while the consensus across major books sets the true fair odds at +410. This represents a 6.1% positive expected value edge on the South American side.",
       "allOdds": [
         {
           "bookmaker": "bet365",
           "bookmakerTitle": "Bet365",
-          "price": 650
+          "price": 380
         },
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": 600
+          "price": 360
         },
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": 580
+          "price": 350
         },
         {
           "bookmaker": "betmgm",
           "bookmakerTitle": "BetMGM",
-          "price": 575
-        },
-        {
-          "bookmaker": "bovada",
-          "bookmakerTitle": "Bovada",
-          "price": 610
+          "price": 340
         }
       ]
     },
     {
-      "id": "nascar-2026-nashville-h2h-reddick",
+      "id": "wc-2026-usa-italy-h2h-usa",
+      "sport": "World Cup",
+      "sportKey": "soccer_world_cup",
+      "sportTitle": "World Cup 2026",
+      "league": "FIFA World Cup Round of 16",
+      "eventId": "wc-2026-usa-italy",
+      "homeTeam": "USA",
+      "awayTeam": "Italy",
+      "commenceTime": "2026-06-30T17:00:00.000Z",
+      "outcome": "USA",
+      "market": "h2h",
+      "marketLabel": "Moneyline",
+      "bestPrice": 310,
+      "bestBookmaker": "fanduel",
+      "bestBookmakerTitle": "FanDuel",
+      "consensusImpliedProb": 0.23,
+      "trueOdds": 335,
+      "evPercent": 0.057,
+      "reasoning": "USA is priced at +310 on FanDuel, while the consensus fair odds sit at +335. This represents a 5.7% expected value edge on the host nation in a crucial knockout clash.",
+      "allOdds": [
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 310
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 290
+        },
+        {
+          "bookmaker": "bet365",
+          "bookmakerTitle": "Bet365",
+          "price": 300
+        },
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 295
+        }
+      ]
+    },
+    {
+      "id": "euro-2026-portugal-switzerland-h2h-switzerland",
+      "sport": "Soccer",
+      "sportKey": "soccer_uefa_euro",
+      "sportTitle": "Euro 2026",
+      "league": "UEFA Euro Round of 16",
+      "eventId": "euro-2026-portugal-switzerland",
+      "homeTeam": "Portugal",
+      "awayTeam": "Switzerland",
+      "commenceTime": "2026-06-30T19:00:00.000Z",
+      "outcome": "Switzerland",
+      "market": "h2h",
+      "marketLabel": "Moneyline",
+      "bestPrice": 340,
+      "bestBookmaker": "caesars",
+      "bestBookmakerTitle": "Caesars",
+      "consensusImpliedProb": 0.213,
+      "trueOdds": 370,
+      "evPercent": 0.058,
+      "reasoning": "Switzerland is priced at +340 on Caesars, while the consensus sets the true fair odds at +370. This represents a 5.8% positive expected value edge based on the Swiss team's organized structure.",
+      "allOdds": [
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 340
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 320
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 310
+        },
+        {
+          "bookmaker": "bet365",
+          "bookmakerTitle": "Bet365",
+          "price": 330
+        }
+      ]
+    },
+    {
+      "id": "wc-2026-france-belgium-h2h-draw",
+      "sport": "World Cup",
+      "sportKey": "soccer_world_cup",
+      "sportTitle": "World Cup 2026",
+      "league": "FIFA World Cup Round of 16",
+      "eventId": "wc-2026-france-belgium",
+      "homeTeam": "France",
+      "awayTeam": "Belgium",
+      "commenceTime": "2026-06-30T15:00:00.000Z",
+      "outcome": "Draw",
+      "market": "h2h",
+      "marketLabel": "Moneyline",
+      "bestPrice": 240,
+      "bestBookmaker": "draftkings",
+      "bestBookmakerTitle": "DraftKings",
+      "consensusImpliedProb": 0.282,
+      "trueOdds": 255,
+      "evPercent": 0.044,
+      "reasoning": "The Draw is priced at +240 on DraftKings, while the consensus across major books sets the true fair odds at +255. This offers a 4.4% positive expected value edge.",
+      "allOdds": [
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 240
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 225
+        },
+        {
+          "bookmaker": "bet365",
+          "bookmakerTitle": "Bet365",
+          "price": 230
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 220
+        }
+      ]
+    },
+    {
+      "id": "mlb-2026-dodgers-giants-h2h-giants",
+      "sport": "MLB",
+      "sportKey": "baseball_mlb",
+      "sportTitle": "MLB",
+      "league": "MLB",
+      "eventId": "mlb-2026-dodgers-giants",
+      "homeTeam": "Los Angeles Dodgers",
+      "awayTeam": "San Francisco Giants",
+      "commenceTime": "2026-06-30T22:00:00.000Z",
+      "outcome": "San Francisco Giants",
+      "market": "h2h",
+      "marketLabel": "Moneyline",
+      "bestPrice": 165,
+      "bestBookmaker": "bet365",
+      "bestBookmakerTitle": "Bet365",
+      "consensusImpliedProb": 0.357,
+      "trueOdds": 180,
+      "evPercent": 0.057,
+      "reasoning": "San Francisco Giants are priced at +165 on Bet365, while the consensus fair odds sit at +180. Giants match up well with Giants' starting pitcher showing strong historical stats.",
+      "allOdds": [
+        {
+          "bookmaker": "bet365",
+          "bookmakerTitle": "Bet365",
+          "price": 165
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 155
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 150
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 148
+        }
+      ]
+    },
+    {
+      "id": "nascar-2026-chicago-h2h-reddick",
       "sport": "NASCAR",
       "sportKey": "nascar_cup_series",
       "sportTitle": "Cup Series",
       "league": "NASCAR Cup Series",
-      "eventId": "nascar-2026-nashville",
-      "homeTeam": "Nashville Superspeedway",
-      "awayTeam": "Ally 400",
-      "commenceTime": "2026-06-28T19:30:00.000Z",
+      "eventId": "nascar-2026-chicago",
+      "homeTeam": "Grant Park",
+      "awayTeam": "Chicago Street Race",
+      "commenceTime": "2026-07-05T19:30:00.000Z",
       "outcome": "Tyler Reddick",
       "market": "h2h",
       "marketLabel": "To Win Race",
@@ -78,7 +246,7 @@
       "consensusImpliedProb": 0.098,
       "trueOdds": 920,
       "evPercent": 0.076,
-      "reasoning": "Tyler Reddick is priced at +850 on DraftKings, while the consensus across 6 books sets his true fair odds closer to +920. This offers a 7.6% positive expected value edge based on recent Nashville track history.",
+      "reasoning": "Tyler Reddick is priced at +850 on DraftKings, while the consensus sets his true fair odds closer to +920. This offers a 7.6% positive expected value edge based on recent street course history.",
       "allOdds": [
         {
           "bookmaker": "draftkings",
@@ -89,16 +257,6 @@
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
           "price": 750
-        },
-        {
-          "bookmaker": "betmgm",
-          "bookmakerTitle": "BetMGM",
-          "price": 700
-        },
-        {
-          "bookmaker": "caesars",
-          "bookmakerTitle": "Caesars",
-          "price": 800
         },
         {
           "bookmaker": "bet365",
@@ -126,7 +284,7 @@
       "consensusImpliedProb": 0.328,
       "trueOdds": 205,
       "evPercent": 0.065,
-      "reasoning": "Sacramento Kings are priced at +185 on Caesars, while the consensus fair true odds sit at +205. The Kings boast a Summer League roster featuring multiple second-year players with NBA experience.",
+      "reasoning": "Sacramento Kings are priced at +185 on Caesars, while the consensus fair true odds sit at +205. The Kings boast multiple second-year players with NBA experience.",
       "allOdds": [
         {
           "bookmaker": "caesars",
@@ -142,254 +300,147 @@
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
           "price": 165
-        },
-        {
-          "bookmaker": "betmgm",
-          "bookmakerTitle": "BetMGM",
-          "price": 160
-        },
-        {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
-          "price": 175
-        }
-      ]
-    },
-    {
-      "id": "mlb-2026-dodgers-giants-h2h-giants",
-      "sport": "MLB",
-      "sportKey": "baseball_mlb",
-      "sportTitle": "MLB",
-      "league": "MLB",
-      "eventId": "mlb-2026-dodgers-giants",
-      "homeTeam": "Los Angeles Dodgers",
-      "awayTeam": "San Francisco Giants",
-      "commenceTime": "2026-06-29T02:00:00.000Z",
-      "outcome": "San Francisco Giants",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": 165,
-      "bestBookmaker": "bet365",
-      "bestBookmakerTitle": "Bet365",
-      "consensusImpliedProb": 0.357,
-      "trueOdds": 180,
-      "evPercent": 0.057,
-      "reasoning": "San Francisco Giants are priced at +165 on Bet365, while the consensus fair odds sit at +180. Giants match up well with Giants' starting pitcher showing strong historical stats at Oracle Park.",
-      "allOdds": [
-        {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
-          "price": 165
-        },
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 155
-        },
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": 150
-        },
-        {
-          "bookmaker": "betmgm",
-          "bookmakerTitle": "BetMGM",
-          "price": 148
-        },
-        {
-          "bookmaker": "caesars",
-          "bookmakerTitle": "Caesars",
-          "price": 152
-        }
-      ]
-    },
-    {
-      "id": "mlb-2026-redsox-yankees-h2h-redsox",
-      "sport": "MLB",
-      "sportKey": "baseball_mlb",
-      "sportTitle": "MLB",
-      "league": "MLB",
-      "eventId": "mlb-2026-redsox-yankees",
-      "homeTeam": "Boston Red Sox",
-      "awayTeam": "New York Yankees",
-      "commenceTime": "2026-06-29T18:00:00.000Z",
-      "outcome": "Boston Red Sox",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": 145,
-      "bestBookmaker": "fanduel",
-      "bestBookmakerTitle": "FanDuel",
-      "consensusImpliedProb": 0.392,
-      "trueOdds": 155,
-      "evPercent": 0.039,
-      "reasoning": "Boston Red Sox are priced at +145 on FanDuel, while the consensus sets the true fair odds at +155. Value exists on the home underdog tag.",
-      "allOdds": [
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 145
-        },
-        {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
-          "price": 138
-        },
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": 135
-        },
-        {
-          "bookmaker": "betmgm",
-          "bookmakerTitle": "BetMGM",
-          "price": 132
-        },
-        {
-          "bookmaker": "caesars",
-          "bookmakerTitle": "Caesars",
-          "price": 136
         }
       ]
     }
   ],
   "parlays": [
     {
-      "id": "parlay-2leg-cc-mlb-giants",
+      "id": "parlay-2leg-wc-france-euro-swiss",
       "legs": [
         {
           "bet": {
-            "id": "cc-2026-lakers-kings-h2h-kings",
-            "sport": "California Classic",
-            "sportKey": "basketball_california_classic",
-            "sportTitle": "California Classic",
-            "league": "NBA Summer League",
-            "eventId": "cc-2026-lakers-kings",
-            "homeTeam": "Sacramento Kings",
-            "awayTeam": "Los Angeles Lakers",
-            "commenceTime": "2026-07-03T21:00:00.000Z",
-            "outcome": "Sacramento Kings",
+            "id": "wc-2026-france-belgium-h2h-draw",
+            "sport": "World Cup",
+            "sportKey": "soccer_world_cup",
+            "sportTitle": "World Cup 2026",
+            "league": "FIFA World Cup Round of 16",
+            "eventId": "wc-2026-france-belgium",
+            "homeTeam": "France",
+            "awayTeam": "Belgium",
+            "commenceTime": "2026-06-30T15:00:00.000Z",
+            "outcome": "Draw",
             "market": "h2h",
             "marketLabel": "Moneyline",
-            "bestPrice": 185,
-            "bestBookmaker": "caesars",
-            "bestBookmakerTitle": "Caesars",
-            "consensusImpliedProb": 0.328,
-            "trueOdds": 205,
-            "evPercent": 0.065,
+            "bestPrice": 240,
+            "bestBookmaker": "draftkings",
+            "bestBookmakerTitle": "DraftKings",
+            "consensusImpliedProb": 0.282,
+            "trueOdds": 255,
+            "evPercent": 0.044,
             "reasoning": "",
             "allOdds": []
           },
-          "price": 185
+          "price": 240
         },
         {
           "bet": {
-            "id": "mlb-2026-dodgers-giants-h2h-giants",
-            "sport": "MLB",
-            "sportKey": "baseball_mlb",
-            "sportTitle": "MLB",
-            "league": "MLB",
-            "eventId": "mlb-2026-dodgers-giants",
-            "homeTeam": "Los Angeles Dodgers",
-            "awayTeam": "San Francisco Giants",
-            "commenceTime": "2026-06-29T02:00:00.000Z",
-            "outcome": "San Francisco Giants",
+            "id": "euro-2026-portugal-switzerland-h2h-switzerland",
+            "sport": "Soccer",
+            "sportKey": "soccer_uefa_euro",
+            "sportTitle": "Euro 2026",
+            "league": "UEFA Euro Round of 16",
+            "eventId": "euro-2026-portugal-switzerland",
+            "homeTeam": "Portugal",
+            "awayTeam": "Switzerland",
+            "commenceTime": "2026-06-30T19:00:00.000Z",
+            "outcome": "Switzerland",
             "market": "h2h",
             "marketLabel": "Moneyline",
-            "bestPrice": 165,
+            "bestPrice": 340,
+            "bestBookmaker": "caesars",
+            "bestBookmakerTitle": "Caesars",
+            "consensusImpliedProb": 0.213,
+            "trueOdds": 370,
+            "evPercent": 0.058,
+            "reasoning": "",
+            "allOdds": []
+          },
+          "price": 340
+        }
+      ],
+      "combinedAmericanOdds": 1396,
+      "combinedDecimalOdds": 14.96,
+      "impliedProbability": 0.067,
+      "estimatedEvPercent": 0.072,
+      "sports": [
+        "soccer_world_cup",
+        "soccer_uefa_euro"
+      ],
+      "reasoning": "2-leg European knockout double card paying +1396. Combines Draw (France vs Belgium, +240) and Switzerland (+340) to win, yielding +7.2% compound expected value.",
+      "tier": "strong"
+    },
+    {
+      "id": "parlay-2leg-wc-colombia-usa",
+      "legs": [
+        {
+          "bet": {
+            "id": "wc-2026-england-colombia-h2h-colombia",
+            "sport": "World Cup",
+            "sportKey": "soccer_world_cup",
+            "sportTitle": "World Cup 2026",
+            "league": "FIFA World Cup Round of 16",
+            "eventId": "wc-2026-england-colombia",
+            "homeTeam": "England",
+            "awayTeam": "Colombia",
+            "commenceTime": "2026-06-30T20:00:00.000Z",
+            "outcome": "Colombia",
+            "market": "h2h",
+            "marketLabel": "Moneyline",
+            "bestPrice": 380,
             "bestBookmaker": "bet365",
             "bestBookmakerTitle": "Bet365",
-            "consensusImpliedProb": 0.357,
-            "trueOdds": 180,
+            "consensusImpliedProb": 0.196,
+            "trueOdds": 410,
+            "evPercent": 0.061,
+            "reasoning": "",
+            "allOdds": []
+          },
+          "price": 380
+        },
+        {
+          "bet": {
+            "id": "wc-2026-usa-italy-h2h-usa",
+            "sport": "World Cup",
+            "sportKey": "soccer_world_cup",
+            "sportTitle": "World Cup 2026",
+            "league": "FIFA World Cup Round of 16",
+            "eventId": "wc-2026-usa-italy",
+            "homeTeam": "USA",
+            "awayTeam": "Italy",
+            "commenceTime": "2026-06-30T17:00:00.000Z",
+            "outcome": "USA",
+            "market": "h2h",
+            "marketLabel": "Moneyline",
+            "bestPrice": 310,
+            "bestBookmaker": "fanduel",
+            "bestBookmakerTitle": "FanDuel",
+            "consensusImpliedProb": 0.23,
+            "trueOdds": 335,
             "evPercent": 0.057,
             "reasoning": "",
             "allOdds": []
           },
-          "price": 165
+          "price": 310
         }
       ],
-      "combinedAmericanOdds": 655,
-      "combinedDecimalOdds": 7.55,
-      "impliedProbability": 0.132,
-      "estimatedEvPercent": 0.086,
+      "combinedAmericanOdds": 1868,
+      "combinedDecimalOdds": 19.68,
+      "impliedProbability": 0.051,
+      "estimatedEvPercent": 0.083,
       "sports": [
-        "basketball_california_classic",
-        "baseball_mlb"
-      ],
-      "reasoning": "2-leg multi-sport card paying +655. Combines Kings (+185) from the California Classic and Giants (+165) from MLB, carrying a compound expected value of +8.6%.",
-      "tier": "strong"
-    },
-    {
-      "id": "parlay-2leg-nascar-wc",
-      "legs": [
-        {
-          "bet": {
-            "id": "nascar-2026-nashville-h2h-reddick",
-            "sport": "NASCAR",
-            "sportKey": "nascar_cup_series",
-            "sportTitle": "Cup Series",
-            "league": "NASCAR Cup Series",
-            "eventId": "nascar-2026-nashville",
-            "homeTeam": "Nashville Superspeedway",
-            "awayTeam": "Ally 400",
-            "commenceTime": "2026-06-28T19:30:00.000Z",
-            "outcome": "Tyler Reddick",
-            "market": "h2h",
-            "marketLabel": "To Win Race",
-            "bestPrice": 850,
-            "bestBookmaker": "draftkings",
-            "bestBookmakerTitle": "DraftKings",
-            "consensusImpliedProb": 0.098,
-            "trueOdds": 920,
-            "evPercent": 0.076,
-            "reasoning": "",
-            "allOdds": []
-          },
-          "price": 850
-        },
-        {
-          "bet": {
-            "id": "wc-2026-canada-spain-h2h-canada",
-            "sport": "World Cup",
-            "sportKey": "soccer_world_cup",
-            "sportTitle": "World Cup 2026",
-            "league": "FIFA World Cup Group Stage",
-            "eventId": "wc-2026-canada-spain",
-            "homeTeam": "Canada",
-            "awayTeam": "Spain",
-            "commenceTime": "2026-06-27T18:00:00.000Z",
-            "outcome": "Canada",
-            "market": "h2h",
-            "marketLabel": "Moneyline",
-            "bestPrice": 650,
-            "bestBookmaker": "bet365",
-            "bestBookmakerTitle": "Bet365",
-            "consensusImpliedProb": 0.125,
-            "trueOdds": 700,
-            "evPercent": 0.115,
-            "reasoning": "",
-            "allOdds": []
-          },
-          "price": 650
-        }
-      ],
-      "combinedAmericanOdds": 7025,
-      "combinedDecimalOdds": 71.25,
-      "impliedProbability": 0.014,
-      "estimatedEvPercent": 0.135,
-      "sports": [
-        "nascar_cup_series",
         "soccer_world_cup"
       ],
-      "reasoning": "2-leg longshot card paying +7025. Combines Tyler Reddick (+850) to win the NASCAR Cup race at Nashville and Canada (+650) to win their World Cup match, representing +13.5% compounding EV.",
-      "tier": "elite"
+      "reasoning": "2-leg World Cup Round of 16 underdog parlay paying +1868. Combines Colombia (+380) and USA (+310) with a compounding estimated EV of +8.3%.",
+      "tier": "strong"
     }
   ],
   "aiAnalysis": {
-    "summary": "Our models have evaluated today's multi-sport slate covering the FIFA World Cup, NASCAR Cup Series at Nashville, NBA California Classic, and MLB. High public volume and favorite-biased money flows have created significant mispricings. In particular, moneyline underdogs in soccer (Canada +650) and driver matchings in NASCAR (Tyler Reddick +850 to win) carry substantial mathematical edges relative to consensus sharp-book probabilities.",
-    "topPickId": "wc-2026-canada-spain-h2h-canada",
-    "topPickRationale": "Canada (+650) on Bet365 remains our Top Pick of the Day. With Spain expected to rotate their squad heavily, Canada's fair true price should reside at +700 (implied probability of 12.5%). Taking +650 provides an 11.5% positive expected value (+EV) edge. Additionally, Tyler Reddick (+850 on DraftKings) holds a strong 7.6% EV edge in NASCAR, representing an elite high-odds single selection.",
-    "parlayAnalysis": "Our featured 2-leg longshot parlay (NASCAR: Tyler Reddick + World Cup: Canada) yields compounding odds of +7025 with an estimated EV edge of +13.5%. The hit probability is low (1.4%), so scale stakes to a fraction of a unit. For a higher probability play, the California Classic + MLB parlay pays +655 with an 8.6% EV edge.",
+    "summary": "Our models have evaluated today's high-stakes knockout soccer slate, featuring key matchups in the FIFA World Cup Round of 16 (England vs Colombia, France vs Belgium, USA vs Italy) and UEFA Euro 2026. Pricing discrepancies have emerged on underdogs in the moneyline markets due to heavy public betting volume on favorites. In particular, Colombia (+380 on Bet365) and Switzerland (+340 on Caesars) present highly attractive expected value (+EV) profiles compared to sharp consensus books.",
+    "topPickId": "wc-2026-england-colombia-h2h-colombia",
+    "topPickRationale": "Colombia (+380) on Bet365 is today's Top Pick. Projecting Colombia's true regular-time win probability at 19.6% (fair odds of +410), securing +380 offers a 6.1% EV edge. England's defensive structure will be heavily tested by Colombia's high-intensity counter-pressing scheme.",
+    "parlayAnalysis": "Our featured 2-leg World Cup underdog parlay (Colombia + USA) pays +1868 with an 8.3% compound EV edge. For European action, the France/Belgium Draw + Switzerland parlay pays +1396 with a 7.2% EV edge. Keep stakes fractional (0.25u) given the high variance of soccer draw/underdog outcomes.",
     "riskRating": "High",
-    "lastUpdated": "2026-06-28T19:40:00.000Z"
+    "lastUpdated": "2026-06-30T11:10:00.000Z"
   }
 }
