@@ -1,7 +1,7 @@
 console.log('[Parlay] Script execution started.');
 import './index.css';
 import type { ValueBet, Parlay, BetsData, TrackedBet } from './types';
-import { americanToDecimal, decimalToAmerican } from './ev-engine';
+import { americanToDecimal, decimalToAmerican, americanToImpliedProb } from './ev-engine';
 
 // Helper function to calculate combined American odds for N-leg parlay
 function calculateCombinedAmerican(prices: number[]): number {
@@ -20,9 +20,88 @@ let trackedBets: TrackedBet[] = [];
 let sortColumn: 'ev' | 'odds' | 'none' = 'none';
 let sortDirection: 'asc' | 'desc' = 'desc';
 
+// Preference and filter state variables (loaded from local storage)
+let oddsFormat: 'american' | 'decimal' | 'implied' = 'american';
+let bankrollSize: number = 1000;
+let minEvFilter: number = 0;
+let bookmakerFilter: string = 'All';
+
 // Active selection for Parlay Builder simulator
 let simulatedLegs: { betId: string; outcome: string; price: number; sport: string }[] = [];
 let betStake: number = 100;
+
+// Sleek Toast Notification System
+function showToast(message: string, type: 'success' | 'info' | 'error' = 'success') {
+  let container = document.getElementById('toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toast-container';
+    container.className = 'fixed bottom-4 right-4 z-[9999] flex flex-col gap-2 pointer-events-none';
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = `px-4 py-3 rounded-lg shadow-lg font-bold text-xs pointer-events-auto border transition-all duration-300 transform translate-y-4 opacity-0 flex items-center gap-2 select-none`;
+  
+  if (type === 'success') {
+    toast.className += ' bg-emerald-950/90 text-emerald-400 border-emerald-500/20';
+  } else if (type === 'error') {
+    toast.className += ' bg-rose-950/90 text-rose-400 border-rose-500/20';
+  } else {
+    toast.className += ' bg-neutral-900/90 text-neutral-350 border-neutral-800';
+  }
+
+  const icons = {
+    success: '✅',
+    info: 'ℹ️',
+    error: '⚠️'
+  };
+
+  toast.innerHTML = `<span>${icons[type]}</span><span>${message}</span>`;
+  container.appendChild(toast);
+
+  // Trigger animation after adding to DOM
+  setTimeout(() => {
+    toast.classList.remove('translate-y-4', 'opacity-0');
+  }, 10);
+
+  // Remove toast after 3 seconds
+  setTimeout(() => {
+    toast.classList.add('translate-y-4', 'opacity-0');
+    setTimeout(() => {
+      toast.remove();
+    }, 300);
+  }, 3000);
+}
+
+// Load Preferences from Local Storage
+function loadPreferences() {
+  try {
+    const savedFormat = localStorage.getItem('parlay_odds_format');
+    if (savedFormat === 'american' || savedFormat === 'decimal' || savedFormat === 'implied') {
+      oddsFormat = savedFormat;
+    }
+    const savedBankroll = localStorage.getItem('parlay_bankroll_size');
+    if (savedBankroll) {
+      const parsed = parseFloat(savedBankroll);
+      if (!isNaN(parsed) && parsed > 0) {
+        bankrollSize = parsed;
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load preferences', e);
+  }
+}
+
+// Save Preferences to Local Storage
+function savePreferences() {
+  try {
+    localStorage.setItem('parlay_odds_format', oddsFormat);
+    localStorage.setItem('parlay_bankroll_size', bankrollSize.toString());
+  } catch (e) {
+    console.error('Failed to save preferences', e);
+  }
+}
 
 // Load Watchlist from Local Storage
 function loadWatchlist() {
@@ -52,8 +131,10 @@ function toggleWatchlistItem(betId: string) {
   const index = watchlist.indexOf(betId);
   if (index === -1) {
     watchlist.push(betId);
+    showToast('Added to watchlist ⭐', 'success');
   } else {
     watchlist.splice(index, 1);
+    showToast('Removed from watchlist', 'info');
   }
   saveWatchlist();
   renderApp();
@@ -88,6 +169,17 @@ function saveTrackedBets() {
     console.error('Failed to save tracked bets to localStorage', e);
   }
 }
+
+// Utility to format odds based on user preference
+const formatOdds = (price: number): string => {
+  if (oddsFormat === 'decimal') {
+    return americanToDecimal(price).toFixed(2);
+  }
+  if (oddsFormat === 'implied') {
+    return (americanToImpliedProb(price) * 100).toFixed(1) + '%';
+  }
+  return price >= 0 ? `+${price}` : `${price}`;
+};
 
 // Open Track Bet Confirmation Modal
 function openTrackBetModal(outcome: string, matchup: string, price: number, sport: string, marketLabel: string) {
@@ -125,6 +217,7 @@ function openTrackBetModal(outcome: string, matchup: string, price: number, spor
     const input = modal.querySelector('#track-stake-input') as HTMLInputElement;
     const stake = parseFloat(input.value);
     if (!isNaN(stake) && stake > 0) {
+      betStake = stake; // Save as default stake
       const newBet: TrackedBet = {
         id: `tracked-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
         outcome,
@@ -139,9 +232,10 @@ function openTrackBetModal(outcome: string, matchup: string, price: number, spor
       trackedBets.push(newBet);
       saveTrackedBets();
       closeModal();
+      showToast(`Tracked: ${outcome} (${formatOdds(price)}) for $${stake.toFixed(0)}!`, 'success');
       renderApp();
     } else {
-      alert('Please enter a valid stake amount.');
+      showToast('Please enter a valid stake amount.', 'error');
     }
   });
 
@@ -204,9 +298,10 @@ function trackSimulatedParlay() {
       saveTrackedBets();
       closeModal();
       simulatedLegs = []; // Clear simulator on tracking success
+      showToast(`Custom Parlay tracked for $${stake.toFixed(0)}!`, 'success');
       renderApp();
     } else {
-      alert('Please enter a valid stake amount.');
+      showToast('Please enter a valid stake amount.', 'error');
     }
   });
 
@@ -234,8 +329,7 @@ function deleteTrackedBet(trackedId: string) {
   }
 }
 
-// Utility to format odds to +X or -X format
-const formatOdds = (price: number) => price >= 0 ? `+${price}` : `${price}`;
+
 
 // Get emoji based on sport key and accessibility text
 const getSportIcon = (sportKey: string): { emoji: string; label: string } => {
@@ -249,7 +343,6 @@ const getSportIcon = (sportKey: string): { emoji: string; label: string } => {
   return { emoji: '🏆', label: 'Championship' };
 };
 
-// Open Bookmaker Odds Comparison Modal
 function openComparisonModal(bet: ValueBet) {
   const oldModal = document.getElementById('odds-modal');
   if (oldModal) oldModal.remove();
@@ -273,6 +366,17 @@ function openComparisonModal(bet: ValueBet) {
     `;
   }).join('');
 
+  // Kelly Sizing calculations
+  const trueProb = bet.consensusImpliedProb;
+  const decimalOdds = americanToDecimal(bet.bestPrice);
+  const bFactor = decimalOdds - 1;
+  let kellyPercent = 0;
+  if (bFactor > 0) {
+    kellyPercent = (trueProb * (bFactor + 1) - 1) / bFactor;
+  }
+  if (kellyPercent < 0) kellyPercent = 0;
+  const suggestedKellyPercent = kellyPercent * 0.25;
+
   modal.innerHTML = `
     <div class="card max-w-sm w-full border border-neutral-800 bg-neutral-900 shadow-2xl p-6 relative animate-scale-up">
       <button id="close-modal-btn" class="absolute top-4 right-4 text-neutral-500 hover:text-neutral-200 text-lg cursor-pointer" aria-label="Close modal">×</button>
@@ -283,10 +387,40 @@ function openComparisonModal(bet: ValueBet) {
           <p class="text-[10px] text-neutral-500 font-semibold">${bet.awayTeam} @ ${bet.homeTeam}</p>
         </div>
       </div>
+      
       <div class="text-[10px] text-neutral-400 font-bold uppercase tracking-wider mb-2">Bookmaker Odds comparison</div>
-      <div class="space-y-2 max-h-60 overflow-y-auto pr-1">
+      <div class="space-y-2 max-h-40 overflow-y-auto pr-1 mb-4">
         ${oddsListHtml}
       </div>
+
+      <!-- Kelly Criterion Calculator -->
+      <div class="mt-4 pt-4 border-t border-neutral-800 space-y-3">
+        <div class="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">📐 Kelly Staking Calculator</div>
+        <div class="flex items-center justify-between gap-3 text-xs">
+          <label for="modal-bankroll-input" class="text-neutral-400 font-semibold">Bankroll Size ($)</label>
+          <input id="modal-bankroll-input" type="number" min="10" value="${bankrollSize}" class="w-24 px-2 py-1 bg-neutral-950 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs text-right" />
+        </div>
+        
+        <div class="p-3 bg-neutral-950/50 rounded-lg border border-neutral-850/80 space-y-2 text-xs">
+          <div class="flex justify-between">
+            <span class="text-neutral-450 font-medium">EV Edge:</span>
+            <span class="font-extrabold text-primary-400">+${(bet.evPercent * 100).toFixed(1)}%</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-neutral-450 font-medium">Full Kelly Stake:</span>
+            <span class="font-extrabold text-neutral-250" id="full-kelly-display">${(kellyPercent * 100).toFixed(2)}% ($${(kellyPercent * bankrollSize).toFixed(2)})</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-neutral-400 font-bold text-emerald-450">Suggested (1/4 Kelly):</span>
+            <span class="font-black text-emerald-400 text-sm" id="sug-kelly-display">${(suggestedKellyPercent * 100).toFixed(2)}% ($${(suggestedKellyPercent * bankrollSize).toFixed(2)})</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Direct Track Action -->
+      <button id="modal-track-btn" class="w-full mt-4 py-2 bg-primary-500 hover:bg-primary-400 text-neutral-950 font-black rounded-lg cursor-pointer transition-all active:scale-95 text-xs">
+        🎯 Track this Bet
+      </button>
     </div>
   `;
 
@@ -296,6 +430,30 @@ function openComparisonModal(bet: ValueBet) {
   modal.querySelector('#close-modal-btn')?.addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
+  });
+
+  // Attach Bankroll update listener
+  const bankrollInput = modal.querySelector('#modal-bankroll-input') as HTMLInputElement;
+  if (bankrollInput) {
+    bankrollInput.addEventListener('input', (e) => {
+      const val = parseFloat((e.target as HTMLInputElement).value);
+      if (!isNaN(val) && val > 0) {
+        bankrollSize = val;
+        savePreferences();
+        
+        const fullDisplay = modal.querySelector('#full-kelly-display')!;
+        const sugDisplay = modal.querySelector('#sug-kelly-display')!;
+        
+        fullDisplay.textContent = `${(kellyPercent * 100).toFixed(2)}% ($${(kellyPercent * bankrollSize).toFixed(2)})`;
+        sugDisplay.textContent = `${(suggestedKellyPercent * 100).toFixed(2)}% ($${(suggestedKellyPercent * bankrollSize).toFixed(2)})`;
+      }
+    });
+  }
+
+  // Direct Track action handler
+  modal.querySelector('#modal-track-btn')?.addEventListener('click', () => {
+    modal.remove();
+    openTrackBetModal(bet.outcome, `${bet.awayTeam} @ ${bet.homeTeam}`, bet.bestPrice, bet.sport, bet.marketLabel);
   });
 }
 
@@ -308,9 +466,10 @@ function copyParlayToClipboard(parlayIndex: number, parlay: Parlay) {
   const fullText = `🚀 BetRadar Premium Parlay Card #${parlayIndex + 1}\nCombined Odds: ${formatOdds(parlay.combinedAmericanOdds)}\nCompound EV: +${(parlay.estimatedEvPercent * 100).toFixed(1)}%\n\nSelections:\n${legsText}\n\nDisclaimer: Verify odds before placing bets. Math over emotions.`;
 
   navigator.clipboard.writeText(fullText).then(() => {
-    alert(`Parlay #${parlayIndex + 1} copied to clipboard!`);
+    showToast(`Parlay #${parlayIndex + 1} details copied to clipboard!`, 'success');
   }).catch(err => {
     console.error('Failed to copy to clipboard', err);
+    showToast('Failed to copy parlay details.', 'error');
   });
 }
 
@@ -487,6 +646,75 @@ function renderFilters(data: BetsData): HTMLElement {
   filterRow.appendChild(searchWrapper);
   container.appendChild(filterRow);
 
+  // Advanced sub-filter row (EV threshold and Bookmaker)
+  if (currentSportFilter !== 'Tracker') {
+    const advRow = document.createElement('div');
+    advRow.className = 'flex flex-wrap items-center gap-6 pt-2 border-t border-neutral-850/30 text-xs';
+
+    // Min EV filter buttons
+    const evFilterWrapper = document.createElement('div');
+    evFilterWrapper.className = 'flex items-center gap-2';
+    evFilterWrapper.innerHTML = `<span class="text-neutral-500 font-bold text-[10px] uppercase tracking-wider">Min Edge:</span>`;
+    
+    const evSteps = [
+      { label: 'All', val: 0 },
+      { label: '5%+', val: 0.05 },
+      { label: '8%+', val: 0.08 },
+      { label: '10%+', val: 0.10 }
+    ];
+
+    evSteps.forEach(step => {
+      const btn = document.createElement('button');
+      btn.className = `px-2 py-1 text-[10px] font-bold rounded border transition-all cursor-pointer ${
+        minEvFilter === step.val
+          ? 'bg-neutral-800 text-primary-400 border-primary-500/30 font-black'
+          : 'bg-neutral-950 text-neutral-450 border-neutral-900 hover:border-neutral-800 hover:text-neutral-300'
+      }`;
+      btn.textContent = step.label;
+      btn.addEventListener('click', () => {
+        minEvFilter = step.val;
+        // Re-render filters panel and bets
+        const newFilters = renderFilters(data);
+        container.parentNode?.replaceChild(newFilters, container);
+        debounceRenderBets();
+      });
+      evFilterWrapper.appendChild(btn);
+    });
+
+    // Bookmaker filter dropdown
+    const bookFilterWrapper = document.createElement('div');
+    bookFilterWrapper.className = 'flex items-center gap-2 ml-auto sm:ml-0';
+    
+    const bookmakers = new Map<string, string>();
+    data.topValueBets.forEach(bet => {
+      bet.allOdds.forEach(odd => {
+        bookmakers.set(odd.bookmaker, odd.bookmakerTitle);
+      });
+    });
+
+    let bookOptionsHtml = `<option value="All" ${bookmakerFilter === 'All' ? 'selected' : ''}>All Bookmakers</option>`;
+    bookmakers.forEach((title, key) => {
+      bookOptionsHtml += `<option value="${key}" ${bookmakerFilter === key ? 'selected' : ''}>${title}</option>`;
+    });
+
+    bookFilterWrapper.innerHTML = `
+      <span class="text-neutral-500 font-bold text-[10px] uppercase tracking-wider">Bookmaker:</span>
+      <select id="bookmaker-filter-select" class="bg-neutral-950 border border-neutral-850 text-neutral-300 rounded px-2 py-1 text-xs font-semibold focus:outline-none focus:border-primary-500 cursor-pointer">
+        ${bookOptionsHtml}
+      </select>
+    `;
+
+    const select = bookFilterWrapper.querySelector('#bookmaker-filter-select') as HTMLSelectElement;
+    select.addEventListener('change', (e) => {
+      bookmakerFilter = (e.target as HTMLSelectElement).value;
+      debounceRenderBets();
+    });
+
+    advRow.appendChild(evFilterWrapper);
+    advRow.appendChild(bookFilterWrapper);
+    container.appendChild(advRow);
+  }
+
   const searchInput = searchWrapper.querySelector('#search-input') as HTMLInputElement;
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -516,15 +744,30 @@ function debounceRenderBets() {
 
 // Render Value Bets List (Responsive Table/Grid card)
 function renderBets(bets: ValueBet[]): HTMLElement {
-  const container = document.createElement('section');
+  const container = document.getElementById('bets-section-container') || document.createElement('section');
   container.id = 'bets-section-container';
   container.className = 'mb-10';
   container.setAttribute('aria-labelledby', 'bets-heading');
+  container.innerHTML = '';
 
   let filteredBets = bets.filter(b => {
-    if (currentSportFilter === 'All') return true;
-    if (currentSportFilter === 'Watchlist') return watchlist.includes(b.id);
-    return b.sport === currentSportFilter;
+    // 1. Sport/Tab Filter
+    if (currentSportFilter === 'Watchlist') {
+      if (!watchlist.includes(b.id)) return false;
+    } else if (currentSportFilter !== 'All') {
+      if (b.sport !== currentSportFilter) return false;
+    }
+
+    // 2. EV Threshold Filter
+    if (b.evPercent < minEvFilter) return false;
+
+    // 3. Bookmaker Filter
+    if (bookmakerFilter !== 'All') {
+      const hasBook = b.allOdds.some(odd => odd.bookmaker === bookmakerFilter);
+      if (!hasBook) return false;
+    }
+
+    return true;
   });
 
   if (searchQuery) {
@@ -589,9 +832,17 @@ function renderBets(bets: ValueBet[]): HTMLElement {
       <th scope="col" class="px-4 py-3 w-10 text-center">Track</th>
       <th scope="col" class="px-4 py-3">Event / Selection</th>
       <th scope="col" class="px-4 py-3">Market</th>
-      <th scope="col" class="px-4 py-3 text-center cursor-pointer hover:text-neutral-100 transition-colors" id="sort-odds">Best Odds ${getSortIconIndicator('odds')}</th>
+      <th scope="col" class="px-4 py-3 text-center cursor-pointer hover:text-neutral-100 transition-colors" id="sort-odds">
+        <span class="tooltip">Best Odds ${getSortIconIndicator('odds')}
+          <span class="tooltiptext">The highest available odds in the market for this outcome.</span>
+        </span>
+      </th>
       <th scope="col" class="px-4 py-3 text-center">Bookmaker</th>
-      <th scope="col" class="px-4 py-3 text-center cursor-pointer hover:text-neutral-100 transition-colors" id="sort-ev">EV Edge ${getSortIconIndicator('ev')}</th>
+      <th scope="col" class="px-4 py-3 text-center cursor-pointer hover:text-neutral-100 transition-colors" id="sort-ev">
+        <span class="tooltip">EV Edge ${getSortIconIndicator('ev')}
+          <span class="tooltiptext">Expected Value: The theoretical margin of profit relative to the consensus fair odds.</span>
+        </span>
+      </th>
       <th scope="col" class="px-4 py-3 w-[250px]">Mathematical Rationale</th>
     </tr>
   `;
@@ -619,8 +870,17 @@ function renderBets(bets: ValueBet[]): HTMLElement {
     const isAddedToSim = simulatedLegs.some(l => l.betId === b.id);
 
     let evBadgeStyle = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
-    if (b.evPercent >= 0.08) {
-      evBadgeStyle = 'text-emerald-300 bg-emerald-500/25 border-emerald-500/40 font-black animate-pulse';
+    let rowHighlightClass = '';
+    let cardHighlightClass = '';
+
+    if (b.evPercent >= 0.10) {
+      evBadgeStyle = 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30 font-black animate-pulse';
+      rowHighlightClass = ' border-l-2 border-l-yellow-500/70 bg-yellow-950/5';
+      cardHighlightClass = ' border-yellow-500/40 shadow-yellow-500/5 bg-yellow-950/5';
+    } else if (b.evPercent >= 0.08) {
+      evBadgeStyle = 'text-primary-300 bg-primary-500/15 border-primary-500/30 font-extrabold';
+      rowHighlightClass = ' border-l-2 border-l-primary-500/50 bg-primary-950/5';
+      cardHighlightClass = ' border-primary-500/40 shadow-primary-500/5 bg-primary-950/5';
     } else if (b.evPercent < 0.03) {
       evBadgeStyle = 'text-neutral-400 bg-neutral-800 border-neutral-700';
     }
@@ -628,7 +888,7 @@ function renderBets(bets: ValueBet[]): HTMLElement {
     const trueProbPct = Math.round(b.consensusImpliedProb * 100);
 
     const tr = document.createElement('tr');
-    tr.className = 'hover:bg-neutral-850/30 transition-colors group new-bet-row';
+    tr.className = `hover:bg-neutral-850/30 transition-colors group new-bet-row${rowHighlightClass}`;
     tr.innerHTML = `
       <td class="px-4 py-3.5 text-center">
         <input type="checkbox" class="sim-checkbox cursor-pointer" data-id="${b.id}" data-outcome="${b.outcome}" data-price="${b.bestPrice}" data-sport="${b.sport}" ${isAddedToSim ? 'checked' : ''} aria-label="Add to parlay calculator" />
@@ -684,7 +944,7 @@ function renderBets(bets: ValueBet[]): HTMLElement {
     tbody.appendChild(tr);
 
     const card = document.createElement('div');
-    card.className = 'card border border-neutral-800 bg-neutral-900/40 p-4 space-y-3 relative overflow-hidden new-bet-row';
+    card.className = `card border border-neutral-800 bg-neutral-900/40 p-4 space-y-3 relative overflow-hidden new-bet-row${cardHighlightClass}`;
     card.innerHTML = `
       <div class="flex items-start justify-between border-b border-neutral-800/60 pb-2">
         <div class="flex items-center gap-2">
@@ -797,7 +1057,6 @@ function renderBets(bets: ValueBet[]): HTMLElement {
   return container;
 }
 
-// Render Tracked Bets Dashboard View
 function renderTrackerView(): HTMLElement {
   const container = document.createElement('section');
   container.className = 'mb-10 animate-fade-in';
@@ -807,6 +1066,7 @@ function renderTrackerView(): HTMLElement {
   const wins = trackedBets.filter(b => b.status === 'won').length;
   const losses = trackedBets.filter(b => b.status === 'lost').length;
   const pending = trackedBets.filter(b => b.status === 'pending').length;
+  
   const winRate = (total - pending) > 0 ? (wins / (wins + losses)) * 100 : 0;
 
   const totalRisked = trackedBets.reduce((sum, b) => sum + b.stake, 0);
@@ -817,7 +1077,36 @@ function renderTrackerView(): HTMLElement {
     const profit = b.stake * (multiplier - 1);
     return sum + profit;
   }, 0);
-  const roi = totalRisked > 0 ? (totalProfit / totalRisked) * 100 : 0;
+  const yieldPercent = totalRisked > 0 ? (totalProfit / totalRisked) * 100 : 0;
+
+  // Calculate Average Odds played (convert to decimal first, average, convert back)
+  const resolved = trackedBets.filter(b => b.status !== 'pending');
+  const avgDecimalOdds = resolved.length > 0
+    ? resolved.reduce((sum, b) => sum + americanToDecimal(b.price), 0) / resolved.length
+    : 1;
+  const avgOddsFormatted = resolved.length > 0
+    ? formatOdds(decimalToAmerican(avgDecimalOdds))
+    : 'N/A';
+
+  // Calculate active win/loss streak in chronological order
+  const chronologicalResolved = [...trackedBets]
+    .filter(b => b.status !== 'pending')
+    .sort((a, b) => new Date(a.trackedAt).getTime() - new Date(b.trackedAt).getTime());
+  
+  let streakText = 'No streak';
+  if (chronologicalResolved.length > 0) {
+    const lastBet = chronologicalResolved[chronologicalResolved.length - 1];
+    const type = lastBet.status;
+    let count = 0;
+    for (let i = chronologicalResolved.length - 1; i >= 0; i--) {
+      if (chronologicalResolved[i].status === type) {
+        count++;
+      } else {
+        break;
+      }
+    }
+    streakText = type === 'won' ? `🔥 ${count} Win Streak` : `❄️ ${count} Loss Streak`;
+  }
 
   // Stats widgets header row
   const statsHtml = `
@@ -830,19 +1119,19 @@ function renderTrackerView(): HTMLElement {
       <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center">
         <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Win Rate</span>
         <span class="text-lg font-black text-primary-400 mt-1 block">${winRate.toFixed(1)}%</span>
-        <span class="text-[9px] text-neutral-500 mt-0.5 block">Excl. Pending</span>
+        <span class="text-[9px] text-neutral-500 mt-0.5 block font-bold ${chronologicalResolved.length > 0 && chronologicalResolved[chronologicalResolved.length - 1].status === 'won' ? 'text-emerald-405' : 'text-rose-450'}">${streakText}</span>
       </div>
       <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center relative overflow-hidden">
         <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Net Profit / Loss</span>
         <span class="text-lg font-black mt-1 block ${totalProfit >= 0 ? 'text-emerald-400' : 'text-rose-400'}">
           ${totalProfit >= 0 ? '+' : ''}$${totalProfit.toFixed(2)}
         </span>
-        <span class="text-[9px] text-neutral-500 mt-0.5 block">Stake basis</span>
+        <span class="text-[9px] text-neutral-500 mt-0.5 block">Yield: <span class="font-extrabold ${totalProfit >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${totalProfit >= 0 ? '+' : ''}${yieldPercent.toFixed(1)}%</span></span>
       </div>
       <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center">
-        <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Total ROI / Risked</span>
-        <span class="text-lg font-black mt-1 block ${totalProfit >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${totalProfit >= 0 ? '+' : ''}${roi.toFixed(1)}%</span>
-        <span class="text-[9px] text-neutral-500 mt-0.5 block">Risked: $${totalRisked.toFixed(2)}</span>
+        <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Average Odds</span>
+        <span class="text-lg font-black mt-1 block text-neutral-200">${avgOddsFormatted}</span>
+        <span class="text-[9px] text-neutral-500 mt-0.5 block">Risked: $${totalRisked.toFixed(0)}</span>
       </div>
     </div>
   `;
@@ -895,14 +1184,14 @@ function renderTrackerView(): HTMLElement {
         <tr class="hover:bg-neutral-850/20 transition-colors text-xs border-b border-neutral-850">
           <td class="px-4 py-3.5">
             <div class="font-extrabold text-neutral-100">${b.outcome}</div>
-            <div class="text-[10px] text-neutral-450 font-semibold mt-0.5">${b.matchup}</div>
+            <div class="text-[10px] text-neutral-455 font-semibold mt-0.5">${b.matchup}</div>
             <span class="text-[9px] bg-neutral-800 text-neutral-400 px-1 rounded inline-block mt-1 font-bold">${b.sport} • ${b.marketLabel}</span>
           </td>
           <td class="px-4 py-3.5 text-center font-black text-neutral-200">${formatOdds(b.price)}</td>
           <td class="px-4 py-3.5 text-center font-bold text-neutral-300">$${b.stake.toFixed(2)}</td>
           <td class="px-4 py-3.5 text-center">${payoutText}</td>
           <td class="px-4 py-3.5 text-center">${statusBadge}</td>
-          <td class="px-4 py-3.5 text-center text-[9px] text-neutral-500 font-semibold">${formattedDate}</td>
+          <td class="px-4 py-3.5 text-center text-[9px] text-neutral-505 font-semibold">${formattedDate}</td>
           <td class="px-4 py-3.5 text-center">
             <div class="flex items-center justify-center gap-1.5">
               ${actionButtons}
@@ -955,12 +1244,12 @@ function renderTrackerView(): HTMLElement {
             <button class="delete-tracked-btn text-rose-500 hover:text-rose-400 text-lg focus:outline-none cursor-pointer" data-id="${b.id}">🗑</button>
           </div>
           
-          <div class="text-[10px] text-neutral-400 font-semibold leading-relaxed">${b.matchup}</div>
+          <div class="text-[10px] text-neutral-450 font-semibold leading-relaxed">${b.matchup}</div>
           
           <div class="grid grid-cols-3 gap-2 bg-neutral-950/40 p-2.5 rounded-lg border border-neutral-850 text-center">
             <div>
               <span class="text-[8px] text-neutral-500 font-bold uppercase tracking-wider block">Odds</span>
-              <span class="text-xs font-extrabold text-neutral-250 mt-0.5 block">${formatOdds(b.price)}</span>
+              <span class="text-xs font-extrabold text-neutral-255 mt-0.5 block">${formatOdds(b.price)}</span>
             </div>
             <div>
               <span class="text-[8px] text-neutral-500 font-bold uppercase tracking-wider block">Stake</span>
@@ -1009,31 +1298,111 @@ function renderTrackerView(): HTMLElement {
     `;
   }
 
+  // Graph Timeline canvas HTML
+  const chartHtml = chronologicalResolved.length > 0 ? `
+    <div class="card border border-neutral-800 bg-neutral-900/30 p-5 mb-6 relative overflow-hidden flex flex-col items-center">
+      <div class="text-[10px] text-neutral-455 font-bold uppercase tracking-wider mb-3 self-start">📈 Cumulative Profit Timeline</div>
+      <canvas id="profit-timeline-canvas" class="w-full h-48 bg-neutral-950/40 rounded-lg border border-neutral-850" style="max-height: 192px;"></canvas>
+    </div>
+  ` : '';
+
   container.innerHTML = `
-    <div class="flex items-center justify-between mb-4 border-b border-neutral-850 pb-3">
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-4 border-b border-neutral-850 pb-3">
       <h2 id="tracker-heading" class="text-lg font-black text-neutral-100 flex items-center gap-2">
         <span>📈</span> Bet Performance Record
       </h2>
-      <button id="clear-history-btn" class="px-2.5 py-1 text-[10px] font-bold border border-rose-500/25 bg-rose-500/5 hover:bg-rose-500/10 text-rose-400 rounded-lg transition-all cursor-pointer">
-        Clear History
-      </button>
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="export-history-btn" class="px-2.5 py-1 text-[10px] font-bold border border-neutral-800 bg-neutral-900 hover:bg-neutral-800 text-neutral-350 rounded-lg transition-all cursor-pointer">
+          📥 Export JSON
+        </button>
+        <button id="import-history-btn" class="px-2.5 py-1 text-[10px] font-bold border border-neutral-800 bg-neutral-900 hover:bg-neutral-800 text-neutral-350 rounded-lg transition-all cursor-pointer">
+          📤 Import JSON
+        </button>
+        <input type="file" id="import-history-file" class="hidden" accept=".json" />
+        <div class="w-px h-5 bg-neutral-800 mx-1"></div>
+        <button id="clear-history-btn" class="px-2.5 py-1 text-[10px] font-bold border border-rose-500/25 bg-rose-500/5 hover:bg-rose-500/10 text-rose-400 rounded-lg transition-all cursor-pointer">
+          Clear History
+        </button>
+      </div>
     </div>
     
     ${statsHtml}
+    
+    ${chartHtml}
     
     <div class="text-[10px] text-neutral-450 font-bold uppercase tracking-wider mb-3">Tracked Bets History Log</div>
     ${logListHtml}
   `;
 
-  // Attach dynamic resolvers listeners
+  // Attach dynamic resolvers listeners & Draw chart
   setTimeout(() => {
+    // Export handler
+    container.querySelector('#export-history-btn')?.addEventListener('click', () => {
+      if (trackedBets.length === 0) {
+        showToast('No tracked bets to export.', 'error');
+        return;
+      }
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(trackedBets));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `parlay_tracker_history_${Date.now()}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('Tracker history exported!', 'success');
+    });
+
+    // Import click triggers file input click
+    const importFileInput = container.querySelector('#import-history-file') as HTMLInputElement;
+    container.querySelector('#import-history-btn')?.addEventListener('click', () => {
+      importFileInput.click();
+    });
+
+    // Import file select handler
+    importFileInput?.addEventListener('change', (e) => {
+      const fileInput = e.target as HTMLInputElement;
+      if (fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const imported = JSON.parse(event.target?.result as string);
+            if (Array.isArray(imported)) {
+              const valid = imported.every(item => item && typeof item.id === 'string' && typeof item.stake === 'number');
+              if (valid) {
+                trackedBets = imported;
+                saveTrackedBets();
+                showToast('Tracker history imported!', 'success');
+                renderApp();
+              } else {
+                showToast('Invalid file format structure.', 'error');
+              }
+            } else {
+              showToast('Must be a valid JSON array.', 'error');
+            }
+          } catch (err) {
+            showToast('Failed to parse import JSON.', 'error');
+          }
+        };
+        reader.readAsText(file);
+      }
+    });
+
+    // Clear history handler
     container.querySelector('#clear-history-btn')?.addEventListener('click', () => {
       if (confirm('Are you sure you want to delete ALL tracked bets from history? This action is permanent.')) {
         trackedBets = [];
         saveTrackedBets();
+        showToast('Bet history cleared.', 'info');
         renderApp();
       }
     });
+
+    // Render cumulative canvas profit graph
+    const canvas = container.querySelector('#profit-timeline-canvas') as HTMLCanvasElement;
+    if (canvas) {
+      drawProfitChart(canvas);
+    }
 
     container.querySelectorAll('.win-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -1065,6 +1434,129 @@ function renderTrackerView(): HTMLElement {
   }, 0);
 
   return container;
+}
+
+// Render dynamic HTML5 Canvas Profit Chart
+function drawProfitChart(canvas: HTMLCanvasElement) {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  // Set logical dimensions for high DPI
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * window.devicePixelRatio;
+  canvas.height = rect.height * window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+  const width = rect.width;
+  const height = rect.height;
+
+  // Calculate cumulative profit points
+  const chronologicalResolved = [...trackedBets]
+    .filter(b => b.status !== 'pending')
+    .sort((a, b) => new Date(a.trackedAt).getTime() - new Date(b.trackedAt).getTime());
+
+  let profitTimeline = [0];
+  let currentProfit = 0;
+  chronologicalResolved.forEach(b => {
+    if (b.status === 'won') {
+      const multiplier = americanToDecimal(b.price);
+      currentProfit += b.stake * (multiplier - 1);
+    } else if (b.status === 'lost') {
+      currentProfit -= b.stake;
+    }
+    profitTimeline.push(currentProfit);
+  });
+
+  const n = profitTimeline.length;
+  const minVal = Math.min(...profitTimeline, 0);
+  const maxVal = Math.max(...profitTimeline, 0);
+  const range = maxVal - minVal === 0 ? 100 : maxVal - minVal;
+
+  // Layout parameters
+  const paddingLeft = 45;
+  const paddingRight = 20;
+  const paddingTop = 25;
+  const paddingBottom = 25;
+  const chartWidth = width - paddingLeft - paddingRight;
+  const chartHeight = height - paddingTop - paddingBottom;
+
+  // Clear background
+  ctx.clearRect(0, 0, width, height);
+
+  // Draw grid lines and labels
+  ctx.strokeStyle = '#1e1e1e';
+  ctx.lineWidth = 1;
+  ctx.fillStyle = '#737373';
+  ctx.font = 'bold 8px monospace';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+
+  const gridSteps = 4;
+  for (let i = 0; i <= gridSteps; i++) {
+    const val = minVal + (range * i) / gridSteps;
+    const y = height - paddingBottom - (chartHeight * i) / gridSteps;
+
+    // Draw horizontal grid line
+    ctx.beginPath();
+    ctx.moveTo(paddingLeft, y);
+    ctx.lineTo(width - paddingRight, y);
+    ctx.stroke();
+
+    // Draw axis label
+    ctx.fillText(`${val >= 0 ? '+' : ''}$${val.toFixed(0)}`, paddingLeft - 8, y);
+  }
+
+  // Draw timeline path
+  if (n > 1) {
+    const points = profitTimeline.map((val, idx) => {
+      const x = paddingLeft + (chartWidth * idx) / (n - 1);
+      const y = height - paddingBottom - (chartHeight * (val - minVal)) / range;
+      return { x, y };
+    });
+
+    // Create gradient fill underneath timeline line
+    const areaGrad = ctx.createLinearGradient(0, paddingTop, 0, height - paddingBottom);
+    areaGrad.addColorStop(0, 'rgba(0, 198, 162, 0.15)');
+    areaGrad.addColorStop(1, 'rgba(0, 198, 162, 0.0)');
+    
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, height - paddingBottom - (chartHeight * (0 - minVal)) / range); // Start at zero axis y value
+    points.forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.lineTo(points[points.length - 1].x, height - paddingBottom);
+    ctx.closePath();
+    ctx.fillStyle = areaGrad;
+    ctx.fill();
+
+    // Draw trend line
+    ctx.strokeStyle = '#00c6a2'; // Emerald green
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    points.forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.stroke();
+
+    // Draw grid dot markers on points
+    points.forEach((p, idx) => {
+      const isLast = idx === points.length - 1;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, isLast ? 4 : 2, 0, 2 * Math.PI);
+      ctx.fillStyle = isLast ? '#facc15' : '#00c6a2'; // Gold for latest endpoint
+      ctx.fill();
+      if (isLast) {
+        ctx.strokeStyle = 'rgba(250, 204, 21, 0.4)';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+      }
+    });
+  } else {
+    // Empty state text
+    ctx.fillStyle = '#404040';
+    ctx.font = 'bold 10px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('NO RESOLVED BET DATA YET', width / 2, height / 2);
+  }
 }
 
 // Handle value bets sorting
@@ -1308,7 +1800,6 @@ async function loadData() {
   return await resp.json() as BetsData;
 }
 
-// Render the entire app UI
 function renderApp() {
   const app = document.getElementById('app')!;
   if (!currentData) return;
@@ -1338,6 +1829,13 @@ function renderApp() {
       <p class="text-[10px] text-neutral-450 font-bold uppercase tracking-widest mt-1">Expected Value (EV) Betting Engine</p>
     </div>
     <div class="flex flex-wrap items-center gap-4 text-xs font-semibold">
+      <!-- Odds Format Toggle Buttons -->
+      <div class="flex items-center bg-neutral-950 rounded-lg p-0.5 border border-neutral-850">
+        <button id="odds-fmt-american" class="px-2 py-1 text-[10px] font-black rounded-md cursor-pointer transition-all ${oddsFormat === 'american' ? 'bg-primary-500 text-neutral-950 shadow' : 'text-neutral-450 hover:text-neutral-200'}">US</button>
+        <button id="odds-fmt-decimal" class="px-2 py-1 text-[10px] font-black rounded-md cursor-pointer transition-all ${oddsFormat === 'decimal' ? 'bg-primary-500 text-neutral-950 shadow' : 'text-neutral-450 hover:text-neutral-200'}">DEC</button>
+        <button id="odds-fmt-implied" class="px-2 py-1 text-[10px] font-black rounded-md cursor-pointer transition-all ${oddsFormat === 'implied' ? 'bg-primary-500 text-neutral-950 shadow' : 'text-neutral-450 hover:text-neutral-200'}">IMP</button>
+      </div>
+
       <button id="refresh-btn" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-350 hover:text-neutral-100 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all active:scale-95" aria-label="Refresh Data">
         <span class="refresh-icon inline-block">↻</span> Sync Odds
       </button>
@@ -1376,6 +1874,17 @@ function renderApp() {
   };
   header.querySelector('#go-to-tracker')?.addEventListener('click', goToTracker);
   header.querySelector('#go-to-tracker-val')?.addEventListener('click', goToTracker);
+
+  // Attach odds format toggle listeners
+  const setFormat = (fmt: 'american' | 'decimal' | 'implied') => {
+    oddsFormat = fmt;
+    savePreferences();
+    showToast(`Odds format switched to ${fmt.toUpperCase()}`, 'info');
+    renderApp();
+  };
+  header.querySelector('#odds-fmt-american')?.addEventListener('click', () => setFormat('american'));
+  header.querySelector('#odds-fmt-decimal')?.addEventListener('click', () => setFormat('decimal'));
+  header.querySelector('#odds-fmt-implied')?.addEventListener('click', () => setFormat('implied'));
 
   // Render tracker tab view exclusively or normal dashboard sections
   if (currentSportFilter === 'Tracker') {
@@ -1428,7 +1937,7 @@ async function handleRefresh() {
     renderApp();
   } catch (err) {
     console.error('Failed to sync odds:', err);
-    alert('Failed to sync betting data. Please try again later.');
+    showToast('Failed to sync betting data. Please try again later.', 'error');
   } finally {
     if (icon) icon.classList.remove('animate-spin');
     if (refreshBtn) (refreshBtn as HTMLButtonElement).disabled = false;
@@ -1452,6 +1961,7 @@ async function init() {
     </div>
   `;
 
+  loadPreferences();
   loadWatchlist();
   loadTrackedBets();
 

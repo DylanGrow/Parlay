@@ -137,3 +137,62 @@
     animation: none !important;
   }
 }
+
+/* Tooltip styles */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: #171717;
+  color: #e5e5e5;
+  text-align: center;
+  border: 1px solid #262626;
+  border-radius: 6px;
+  padding: 6px 10px;
+  position: absolute;
+  z-index: 100;
+  bottom: 125%; /* Position above the text */
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  transform: translateY(4px);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.4;
+  pointer-events: none;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* EV Tier highlights and glows */
+.ev-card-elite {
+  border-color: rgba(250, 204, 21, 0.4) !important; /* Gold */
+  box-shadow: 0 0 15px rgba(250, 204, 21, 0.1) !important;
+}
+
+.ev-card-strong {
+  border-color: rgba(0, 198, 162, 0.4) !important; /* Emerald */
+  box-shadow: 0 0 15px rgba(0, 198, 162, 0.1) !important;
+}
+
+.glow-text-gold {
+  color: #facc15;
+  text-shadow: 0 0 8px rgba(250, 204, 21, 0.4);
+}
+
+.glow-text-emerald {
+  color: #00c6a2;
+  text-shadow: 0 0 8px rgba(0, 198, 162, 0.4);
+}
