@@ -31,10 +31,14 @@ let simulatedLegs: { betId: string; outcome: string; price: number; sport: strin
 let betStake: number = 100;
 
 // Hedge & Arbitrage Calculator state variables
-let activeCalculatorTab: 'parlay' | 'hedge' = 'parlay';
+let activeCalculatorTab: 'parlay' | 'hedge' | 'customEv' = 'parlay';
 let hedgePrimaryStake: number = 100;
 let hedgePrimaryOdds: number = 150;
 let hedgeOpposingOdds: number = -110;
+
+// Custom EV & Monte Carlo Growth state variables
+let customEvWinProb: number = 45;
+let customEvOdds: number = 130;
 
 // Sleek Toast Notification System
 function showToast(message: string, type: 'success' | 'info' | 'error' = 'success') {
@@ -1673,7 +1677,6 @@ function renderParlays(parlays: Parlay[]): HTMLElement {
   return container;
 }
 
-// Render Parlay Builder Simulator Calculator
 function renderParlayCalculator(): HTMLElement {
   const container = document.createElement('section');
   container.id = 'parlay-calculator-section';
@@ -1697,6 +1700,13 @@ function renderParlayCalculator(): HTMLElement {
       }">
         ⚖️ Hedge Calculator
       </button>
+      <button id="calc-tab-custom" class="text-xs font-black uppercase tracking-widest pb-1 border-b-2 cursor-pointer transition-all ${
+        activeCalculatorTab === 'customEv'
+          ? 'border-primary-500 text-neutral-100'
+          : 'border-transparent text-neutral-500 hover:text-neutral-350'
+      }">
+        📐 Custom EV Vet
+      </button>
     </div>
   `;
 
@@ -1713,10 +1723,14 @@ function renderParlayCalculator(): HTMLElement {
         </div>
       `;
       
-      // Attach tab change listener
+      // Attach tab change listeners
       setTimeout(() => {
         container.querySelector('#calc-tab-hedge')?.addEventListener('click', () => {
           activeCalculatorTab = 'hedge';
+          renderSimulatorApp();
+        });
+        container.querySelector('#calc-tab-custom')?.addEventListener('click', () => {
+          activeCalculatorTab = 'customEv';
           renderSimulatorApp();
         });
       }, 0);
@@ -1793,6 +1807,10 @@ function renderParlayCalculator(): HTMLElement {
         activeCalculatorTab = 'hedge';
         renderSimulatorApp();
       });
+      container.querySelector('#calc-tab-custom')?.addEventListener('click', () => {
+        activeCalculatorTab = 'customEv';
+        renderSimulatorApp();
+      });
 
       container.querySelector('#stake-input')?.addEventListener('input', (e) => {
         const value = parseFloat((e.target as HTMLInputElement).value);
@@ -1815,7 +1833,7 @@ function renderParlayCalculator(): HTMLElement {
       });
     }, 0);
 
-  } else {
+  } else if (activeCalculatorTab === 'hedge') {
     // Render Hedge / Arbitrage Calculator Tab
     const dec1 = americanToDecimal(hedgePrimaryOdds);
     const dec2 = americanToDecimal(hedgeOpposingOdds);
@@ -1944,6 +1962,10 @@ function renderParlayCalculator(): HTMLElement {
         activeCalculatorTab = 'parlay';
         renderSimulatorApp();
       });
+      container.querySelector('#calc-tab-custom')?.addEventListener('click', () => {
+        activeCalculatorTab = 'customEv';
+        renderSimulatorApp();
+      });
 
       const primStakeInput = container.querySelector('#hedge-prim-stake') as HTMLInputElement;
       const primOddsInput = container.querySelector('#hedge-prim-odds') as HTMLInputElement;
@@ -1974,7 +1996,6 @@ function renderParlayCalculator(): HTMLElement {
       });
 
       container.querySelector('#track-hedge-btn')?.addEventListener('click', () => {
-        // Track the hedge stake
         openTrackBetModal(
           `Hedge against ${hedgePrimaryOdds >= 0 ? `+${hedgePrimaryOdds}` : hedgePrimaryOdds}`,
           `Primary bet stake: $${hedgePrimaryStake.toFixed(0)}`,
@@ -1984,9 +2005,273 @@ function renderParlayCalculator(): HTMLElement {
         );
       });
     }, 0);
+
+  } else {
+    // Render Custom EV Vet & Monte Carlo Tab
+    const decOdds = americanToDecimal(customEvOdds);
+    const ev = (customEvWinProb / 100) * decOdds - 1;
+    const evEdgePercent = ev * 100;
+
+    const bFactor = decOdds - 1;
+    const pWin = customEvWinProb / 100;
+    let kellyStakePct = 0;
+    if (bFactor > 0) {
+      kellyStakePct = (pWin * (bFactor + 1) - 1) / bFactor;
+    }
+    if (kellyStakePct < 0) kellyStakePct = 0;
+    const sugKellyStakePct = kellyStakePct * 0.25;
+
+    container.innerHTML = `
+      ${tabHeaderHtml}
+      <h2 id="calculator-title" class="sr-only">Custom EV Vet & Monte Carlo Simulator</h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Inputs Column -->
+        <div class="lg:col-span-5 bg-neutral-950/30 border border-neutral-850 p-4 rounded-xl space-y-4">
+          <div class="text-[10px] text-neutral-500 font-black uppercase tracking-wider mb-1">Vet Custom Selections</div>
+          
+          <div class="space-y-3.5 text-xs">
+            <div class="flex flex-col gap-1.5">
+              <div class="flex justify-between items-center">
+                <label for="custom-win-prob" class="font-bold text-neutral-450">Consensus Win Probability</label>
+                <span class="font-black text-neutral-200" id="custom-win-prob-val">${customEvWinProb}%</span>
+              </div>
+              <input id="custom-win-prob" type="range" min="1" max="99" value="${customEvWinProb}" 
+                     class="w-full h-1 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-primary-500" />
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label for="custom-odds" class="font-bold text-neutral-450">My Odds (American)</label>
+              <input id="custom-odds" type="number" value="${customEvOdds}" 
+                     class="w-full px-3 py-1.5 bg-neutral-900 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs" />
+              <div class="flex justify-between text-[9px] text-neutral-500 font-semibold mt-1">
+                <span>Decimal Odds: ${decOdds.toFixed(2)}</span>
+                <span>Break-Even Prob: ${(100 / decOdds).toFixed(1)}%</span>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-lg border text-xs space-y-2 ${
+              evEdgePercent > 0
+                ? 'bg-emerald-950/20 border-emerald-500/20'
+                : 'bg-rose-950/20 border-rose-500/20'
+            }">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-neutral-400">Expected Value:</span>
+                <span class="font-black text-sm ${evEdgePercent > 0 ? 'text-emerald-450' : 'text-rose-400'}">
+                  ${evEdgePercent > 0 ? '+' : ''}${evEdgePercent.toFixed(1)}% Edge
+                </span>
+              </div>
+              
+              <div class="flex justify-between text-[10px] text-neutral-500">
+                <span>Suggested Stake (1/4 Kelly):</span>
+                <span class="font-bold text-neutral-350">${(sugKellyStakePct * 100).toFixed(2)}% ($${(sugKellyStakePct * bankrollSize).toFixed(0)})</span>
+              </div>
+              <div class="flex justify-between text-[10px] text-neutral-500">
+                <span>Full Kelly Stake:</span>
+                <span>${(kellyStakePct * 100).toFixed(2)}% ($${(kellyStakePct * bankrollSize).toFixed(0)})</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monte Carlo Graph Column -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="bg-neutral-950/50 border border-neutral-850/80 p-4 rounded-xl space-y-3 relative flex flex-col items-center">
+            <div class="text-[10px] text-neutral-455 font-bold uppercase tracking-wider self-start mb-2">⚡ 100-Bet Bankroll Growth Simulator</div>
+            
+            <canvas id="monte-carlo-canvas" class="w-full h-40 bg-neutral-950/40 rounded-lg border border-neutral-850" style="max-height: 160px;"></canvas>
+            
+            <div class="flex items-center justify-between w-full pt-1">
+              <span class="text-[9px] text-neutral-500 font-semibold max-w-[60%] leading-normal">Runs a random trial over 100 consecutive bets to compare staking styles.</span>
+              <button id="run-monte-carlo-btn" class="px-3 py-1.5 bg-primary-500 hover:bg-primary-400 text-neutral-950 font-black rounded-lg cursor-pointer transition-all active:scale-95 text-[10px] uppercase tracking-wider">
+                Re-Simulate
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Attach listeners for Custom EV tab
+    setTimeout(() => {
+      container.querySelector('#calc-tab-parlay')?.addEventListener('click', () => {
+        activeCalculatorTab = 'parlay';
+        renderSimulatorApp();
+      });
+      container.querySelector('#calc-tab-hedge')?.addEventListener('click', () => {
+        activeCalculatorTab = 'hedge';
+        renderSimulatorApp();
+      });
+
+      const winSlider = container.querySelector('#custom-win-prob') as HTMLInputElement;
+      const oddsInput = container.querySelector('#custom-odds') as HTMLInputElement;
+      const winValSpan = container.querySelector('#custom-win-prob-val')!;
+      const canvas = container.querySelector('#monte-carlo-canvas') as HTMLCanvasElement;
+
+      // Draw initial simulation
+      if (canvas) {
+        drawMonteCarloSimulation(canvas);
+      }
+
+      winSlider?.addEventListener('input', (e) => {
+        const val = parseInt((e.target as HTMLInputElement).value, 10);
+        customEvWinProb = val;
+        winValSpan.textContent = `${val}%`;
+        
+        // Re-render and re-draw
+        renderSimulatorApp();
+      });
+
+      oddsInput?.addEventListener('input', (e) => {
+        const val = parseInt((e.target as HTMLInputElement).value, 10);
+        if (!isNaN(val)) {
+          customEvOdds = val;
+          renderSimulatorApp();
+        }
+      });
+
+      container.querySelector('#run-monte-carlo-btn')?.addEventListener('click', () => {
+        if (canvas) {
+          drawMonteCarloSimulation(canvas);
+          showToast('Growth simulator re-run with fresh random trial!', 'success');
+        }
+      });
+
+    }, 0);
   }
 
   return container;
+}
+
+// Monte Carlo simulator drawing helper
+function drawMonteCarloSimulation(canvas: HTMLCanvasElement) {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * window.devicePixelRatio;
+  canvas.height = rect.height * window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+  const w = rect.width;
+  const h = rect.height;
+
+  // Run 100 bets simulation
+  const steps = 100;
+  const startBankroll = bankrollSize;
+  const pWin = customEvWinProb / 100;
+  const decOdds = americanToDecimal(customEvOdds);
+  const bFactor = decOdds - 1;
+
+  // Calculate Kelly Staking Fractions
+  const fullKellyF = bFactor > 0 ? Math.max(0, (pWin * (bFactor + 1) - 1) / bFactor) : 0;
+  const qKellyF = fullKellyF * 0.25;
+  const flatF = 0.05; // 5% flat bet
+
+  let fullPath = [startBankroll];
+  let qPath = [startBankroll];
+  let flatPath = [startBankroll];
+
+  let fullCurrent = startBankroll;
+  let qCurrent = startBankroll;
+  let flatCurrent = startBankroll;
+
+  for (let i = 0; i < steps; i++) {
+    const isWin = Math.random() < pWin;
+
+    // Full Kelly
+    const fullStake = fullCurrent * fullKellyF;
+    if (fullCurrent > 1) {
+      fullCurrent = isWin ? fullCurrent + fullStake * bFactor : fullCurrent - fullStake;
+    }
+    fullPath.push(fullCurrent);
+
+    // Quarter Kelly
+    const qStake = qCurrent * qKellyF;
+    if (qCurrent > 1) {
+      qCurrent = isWin ? qCurrent + qStake * bFactor : qCurrent - qStake;
+    }
+    qPath.push(qCurrent);
+
+    // Flat Staking
+    const flatStake = startBankroll * flatF;
+    if (flatCurrent > flatStake) {
+      flatCurrent = isWin ? flatCurrent + flatStake * bFactor : flatCurrent - flatStake;
+    }
+    flatPath.push(flatCurrent);
+  }
+
+  // Clear background
+  ctx.clearRect(0, 0, w, h);
+
+  // Math limits for scale
+  const allValues = [...fullPath, ...qPath, ...flatPath];
+  const maxVal = Math.max(...allValues, startBankroll * 2);
+  const minVal = Math.min(...allValues, 0);
+  const valRange = maxVal - minVal;
+
+  const padLeft = 40;
+  const padRight = 15;
+  const padTop = 20;
+  const padBottom = 20;
+  const chartW = w - padLeft - padRight;
+  const chartH = h - padTop - padBottom;
+
+  // Draw grid lines
+  ctx.strokeStyle = '#1e1e1e';
+  ctx.lineWidth = 1;
+  ctx.fillStyle = '#737373';
+  ctx.font = 'bold 8px monospace';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+
+  const gridSteps = 3;
+  for (let i = 0; i <= gridSteps; i++) {
+    const val = minVal + (valRange * i) / gridSteps;
+    const y = h - padBottom - (chartH * i) / gridSteps;
+    
+    ctx.beginPath();
+    ctx.moveTo(padLeft, y);
+    ctx.lineTo(w - padRight, y);
+    ctx.stroke();
+
+    ctx.fillText(`$${val.toFixed(0)}`, padLeft - 6, y);
+  }
+
+  // Draw Paths
+  const drawPath = (path: number[], color: string, width: number) => {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.beginPath();
+    path.forEach((val, idx) => {
+      const x = padLeft + (chartW * idx) / steps;
+      const y = h - padBottom - (chartH * (val - minVal)) / valRange;
+      if (idx === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+  };
+
+  // Draw Flat Stake (Blue)
+  drawPath(flatPath, '#3b82f6', 1.5);
+  // Draw Full Kelly (Orange/Red)
+  drawPath(fullPath, '#f97316', 1.5);
+  // Draw Quarter Kelly (Emerald green)
+  drawPath(qPath, '#00c6a2', 2.5);
+
+  // Legend
+  ctx.font = 'bold 8px monospace';
+  ctx.textAlign = 'left';
+  
+  // 1/4 Kelly
+  ctx.fillStyle = '#00c6a2';
+  ctx.fillText('● 1/4 Kelly', padLeft + 10, padTop - 8);
+  // Full Kelly
+  ctx.fillStyle = '#f97316';
+  ctx.fillText('● Full Kelly', padLeft + 80, padTop - 8);
+  // Flat
+  ctx.fillStyle = '#3b82f6';
+  ctx.fillText('● Flat ($50)', padLeft + 150, padTop - 8);
 }
 
 // Sub-rendering function to refresh only the calculator values dynamically
