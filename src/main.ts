@@ -30,6 +30,12 @@ let bookmakerFilter: string = 'All';
 let simulatedLegs: { betId: string; outcome: string; price: number; sport: string }[] = [];
 let betStake: number = 100;
 
+// Hedge & Arbitrage Calculator state variables
+let activeCalculatorTab: 'parlay' | 'hedge' = 'parlay';
+let hedgePrimaryStake: number = 100;
+let hedgePrimaryOdds: number = 150;
+let hedgeOpposingOdds: number = -110;
+
 // Sleek Toast Notification System
 function showToast(message: string, type: 'success' | 'info' | 'error' = 'success') {
   let container = document.getElementById('toast-container');
@@ -1674,107 +1680,311 @@ function renderParlayCalculator(): HTMLElement {
   container.className = 'card border border-neutral-800 bg-neutral-900/40 shadow-2xl p-6 mb-8';
   container.setAttribute('aria-labelledby', 'calculator-title');
 
-  const legsCount = simulatedLegs.length;
-
-  if (legsCount === 0) {
-    container.innerHTML = `
-      <h2 id="calculator-title" class="text-xs font-extrabold uppercase tracking-widest text-neutral-200 border-b border-neutral-800/80 pb-4 mb-4">
-        🧮 Interactive Parlay Calculator
-      </h2>
-      <div class="text-center py-6 text-neutral-500 text-xs">
-        <span class="text-2xl mb-2 block">🔲</span>
-        Check the checkboxes on any Value Bets above to build and calculate your custom parlay card.
-      </div>
-    `;
-    return container;
-  }
-
-  const combinedOdds = calculateCombinedAmerican(simulatedLegs.map(l => l.price));
-  const multiplier = americanToDecimal(combinedOdds);
-  const potentialReturn = betStake * multiplier;
-  const potentialProfit = potentialReturn - betStake;
-
-  const legsListHtml = simulatedLegs.map((l, index) => {
-    return `
-      <div class="flex items-center justify-between py-2 border-b border-neutral-800 last:border-b-0 text-xs">
-        <div class="flex items-center gap-2">
-          <span class="text-[10px] bg-neutral-850 px-1.5 py-0.5 text-neutral-400 rounded font-bold">#${index + 1}</span>
-          <span class="font-extrabold text-neutral-200">${l.outcome}</span>
-          <span class="text-[9px] text-neutral-500 font-semibold">${l.sport}</span>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="font-black text-primary-400">${formatOdds(l.price)}</span>
-          <button class="remove-leg-btn text-rose-500 hover:text-rose-400 font-extrabold cursor-pointer" data-id="${l.betId}" aria-label="Remove leg">×</button>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  container.innerHTML = `
-    <h2 id="calculator-title" class="text-xs font-extrabold uppercase tracking-widest text-neutral-200 border-b border-neutral-800/80 pb-4 mb-4">
-      🧮 Custom Parlay Simulator
-    </h2>
-    
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-7 bg-neutral-950/30 border border-neutral-850 p-4 rounded-xl space-y-1">
-        <div class="text-[10px] text-neutral-500 font-black uppercase tracking-wider mb-2">Simulated Legs (${legsCount})</div>
-        <div class="divide-y divide-neutral-850 max-h-48 overflow-y-auto pr-1">
-          ${legsListHtml}
-        </div>
-      </div>
-      
-      <div class="lg:col-span-5 space-y-4">
-        <div class="bg-neutral-950/50 border border-neutral-850/80 p-4 rounded-xl space-y-3">
-          <div class="flex items-center justify-between text-xs border-b border-neutral-800 pb-2">
-            <span class="font-bold text-neutral-400">Total Combined Odds</span>
-            <span class="font-black text-primary-400 text-sm">${formatOdds(combinedOdds)}</span>
-          </div>
-
-          <div class="flex items-center justify-between text-xs gap-3">
-            <label for="stake-input" class="font-bold text-neutral-450">Stake ($)</label>
-            <input id="stake-input" type="number" min="1" value="${betStake}" 
-                   class="w-20 px-2 py-1 bg-neutral-900 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-right text-xs" />
-          </div>
-
-          <div class="flex items-center justify-between text-xs pt-1">
-            <span class="font-bold text-neutral-400">Potential Return</span>
-            <span class="font-black text-emerald-400">$${potentialReturn.toFixed(2)}</span>
-          </div>
-          <div class="flex items-center justify-between text-xs border-b border-neutral-805 pb-3">
-            <span class="font-bold text-neutral-400">Net Profit</span>
-            <span class="font-bold text-neutral-200">$${potentialProfit.toFixed(2)}</span>
-          </div>
-          
-          <button id="track-parlay-btn" class="w-full py-2 bg-primary-500 hover:bg-primary-400 text-neutral-950 font-black rounded-lg cursor-pointer transition-all active:scale-95 text-xs text-center">
-            🎯 Track Custom Parlay
-          </button>
-        </div>
-      </div>
+  // Calculator Sub-Tabs Header
+  const tabHeaderHtml = `
+    <div class="flex items-center gap-4 border-b border-neutral-800 pb-3 mb-4 select-none">
+      <button id="calc-tab-parlay" class="text-xs font-black uppercase tracking-widest pb-1 border-b-2 cursor-pointer transition-all ${
+        activeCalculatorTab === 'parlay'
+          ? 'border-primary-500 text-neutral-100'
+          : 'border-transparent text-neutral-500 hover:text-neutral-350'
+      }">
+        🚀 Parlay Builder
+      </button>
+      <button id="calc-tab-hedge" class="text-xs font-black uppercase tracking-widest pb-1 border-b-2 cursor-pointer transition-all ${
+        activeCalculatorTab === 'hedge'
+          ? 'border-primary-500 text-neutral-100'
+          : 'border-transparent text-neutral-500 hover:text-neutral-350'
+      }">
+        ⚖️ Hedge Calculator
+      </button>
     </div>
   `;
 
-  // Attach interactive listeners
-  setTimeout(() => {
-    container.querySelector('#stake-input')?.addEventListener('input', (e) => {
-      const value = parseFloat((e.target as HTMLInputElement).value);
-      if (!isNaN(value) && value > 0) {
-        betStake = value;
+  if (activeCalculatorTab === 'parlay') {
+    const legsCount = simulatedLegs.length;
+
+    if (legsCount === 0) {
+      container.innerHTML = `
+        ${tabHeaderHtml}
+        <h2 id="calculator-title" class="sr-only">Interactive Parlay Calculator</h2>
+        <div class="text-center py-6 text-neutral-500 text-xs">
+          <span class="text-2xl mb-2 block">🔲</span>
+          Check the checkboxes on any Value Bets above to build and calculate your custom parlay card.
+        </div>
+      `;
+      
+      // Attach tab change listener
+      setTimeout(() => {
+        container.querySelector('#calc-tab-hedge')?.addEventListener('click', () => {
+          activeCalculatorTab = 'hedge';
+          renderSimulatorApp();
+        });
+      }, 0);
+
+      return container;
+    }
+
+    const combinedOdds = calculateCombinedAmerican(simulatedLegs.map(l => l.price));
+    const multiplier = americanToDecimal(combinedOdds);
+    const potentialReturn = betStake * multiplier;
+    const potentialProfit = potentialReturn - betStake;
+
+    const legsListHtml = simulatedLegs.map((l, index) => {
+      return `
+        <div class="flex items-center justify-between py-2 border-b border-neutral-800 last:border-b-0 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] bg-neutral-850 px-1.5 py-0.5 text-neutral-400 rounded font-bold">#${index + 1}</span>
+            <span class="font-extrabold text-neutral-200">${l.outcome}</span>
+            <span class="text-[9px] text-neutral-500 font-semibold">${l.sport}</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="font-black text-primary-400">${formatOdds(l.price)}</span>
+            <button class="remove-leg-btn text-rose-500 hover:text-rose-400 font-extrabold cursor-pointer" data-id="${l.betId}" aria-label="Remove leg">×</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.innerHTML = `
+      ${tabHeaderHtml}
+      <h2 id="calculator-title" class="sr-only">Custom Parlay Simulator</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div class="lg:col-span-7 bg-neutral-950/30 border border-neutral-850 p-4 rounded-xl space-y-1">
+          <div class="text-[10px] text-neutral-500 font-black uppercase tracking-wider mb-2">Simulated Legs (${legsCount})</div>
+          <div class="divide-y divide-neutral-850 max-h-48 overflow-y-auto pr-1">
+            ${legsListHtml}
+          </div>
+        </div>
+        
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-neutral-950/50 border border-neutral-850/80 p-4 rounded-xl space-y-3">
+            <div class="flex items-center justify-between text-xs border-b border-neutral-800 pb-2">
+              <span class="font-bold text-neutral-400">Total Combined Odds</span>
+              <span class="font-black text-primary-400 text-sm">${formatOdds(combinedOdds)}</span>
+            </div>
+
+            <div class="flex items-center justify-between text-xs gap-3">
+              <label for="stake-input" class="font-bold text-neutral-455">Stake ($)</label>
+              <input id="stake-input" type="number" min="1" value="${betStake}" 
+                     class="w-20 px-2 py-1 bg-neutral-900 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-right text-xs" />
+            </div>
+
+            <div class="flex items-center justify-between text-xs pt-1">
+              <span class="font-bold text-neutral-400">Potential Return</span>
+              <span class="font-black text-emerald-400">$${potentialReturn.toFixed(2)}</span>
+            </div>
+            <div class="flex items-center justify-between text-xs border-b border-neutral-805 pb-3">
+              <span class="font-bold text-neutral-400">Net Profit</span>
+              <span class="font-bold text-neutral-200">$${potentialProfit.toFixed(2)}</span>
+            </div>
+            
+            <button id="track-parlay-btn" class="w-full py-2 bg-primary-500 hover:bg-primary-400 text-neutral-950 font-black rounded-lg cursor-pointer transition-all active:scale-95 text-xs text-center">
+              🎯 Track Custom Parlay
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Attach interactive listeners
+    setTimeout(() => {
+      container.querySelector('#calc-tab-hedge')?.addEventListener('click', () => {
+        activeCalculatorTab = 'hedge';
         renderSimulatorApp();
-      }
-    });
-
-    container.querySelector('#track-parlay-btn')?.addEventListener('click', () => {
-      trackSimulatedParlay();
-    });
-
-    container.querySelectorAll('.remove-leg-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = (e.currentTarget as HTMLElement).getAttribute('data-id')!;
-        simulatedLegs = simulatedLegs.filter(l => l.betId !== id);
-        renderApp();
       });
-    });
-  }, 0);
+
+      container.querySelector('#stake-input')?.addEventListener('input', (e) => {
+        const value = parseFloat((e.target as HTMLInputElement).value);
+        if (!isNaN(value) && value > 0) {
+          betStake = value;
+          renderSimulatorApp();
+        }
+      });
+
+      container.querySelector('#track-parlay-btn')?.addEventListener('click', () => {
+        trackSimulatedParlay();
+      });
+
+      container.querySelectorAll('.remove-leg-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = (e.currentTarget as HTMLElement).getAttribute('data-id')!;
+          simulatedLegs = simulatedLegs.filter(l => l.betId !== id);
+          renderApp();
+        });
+      });
+    }, 0);
+
+  } else {
+    // Render Hedge / Arbitrage Calculator Tab
+    const dec1 = americanToDecimal(hedgePrimaryOdds);
+    const dec2 = americanToDecimal(hedgeOpposingOdds);
+    
+    const payout1 = hedgePrimaryStake * dec1;
+    
+    // Check for arbitrage margin
+    const implied1 = 1 / dec1;
+    const implied2 = 1 / dec2;
+    const totalImplied = implied1 + implied2;
+    const isArb = totalImplied < 1.0;
+
+    // Equalizer profit hedge
+    const optimalHedgeStake = payout1 / dec2;
+    const totalCost = hedgePrimaryStake + optimalHedgeStake;
+    const guaranteedProfit = payout1 - totalCost;
+    const guaranteedROI = (guaranteedProfit / totalCost) * 100;
+
+    // Risk-free refund hedge
+    const refundHedgeStake = hedgePrimaryStake / (dec2 - 1);
+
+    container.innerHTML = `
+      ${tabHeaderHtml}
+      <h2 id="calculator-title" class="sr-only">Hedge / Arbitrage Calculator</h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Input section -->
+        <div class="lg:col-span-6 bg-neutral-950/30 border border-neutral-850 p-4 rounded-xl space-y-4">
+          <div class="text-[10px] text-neutral-500 font-black uppercase tracking-wider mb-1">Hedge Parameters Configuration</div>
+          
+          <div class="space-y-3.5 text-xs">
+            <div class="flex flex-col gap-1">
+              <label for="hedge-prim-stake" class="font-bold text-neutral-450">Primary Bet Stake ($)</label>
+              <input id="hedge-prim-stake" type="number" min="1" value="${hedgePrimaryStake}" 
+                     class="w-full px-3 py-1.5 bg-neutral-900 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs" />
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3.5">
+              <div class="flex flex-col gap-1">
+                <label for="hedge-prim-odds" class="font-bold text-neutral-455">Primary Odds (American)</label>
+                <input id="hedge-prim-odds" type="number" value="${hedgePrimaryOdds}" 
+                       class="w-full px-3 py-1.5 bg-neutral-900 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs" />
+                <span class="text-[9px] text-neutral-500 font-semibold mt-0.5">Decimal: ${dec1.toFixed(2)}</span>
+              </div>
+              <div class="flex flex-col gap-1">
+                <label for="hedge-opp-odds" class="font-bold text-neutral-455">Opposing Odds (American)</label>
+                <input id="hedge-opp-odds" type="number" value="${hedgeOpposingOdds}" 
+                       class="w-full px-3 py-1.5 bg-neutral-900 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs" />
+                <span class="text-[9px] text-neutral-500 font-semibold mt-0.5">Decimal: ${dec2.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Output section -->
+        <div class="lg:col-span-6 space-y-4">
+          <div class="bg-neutral-950/50 border border-neutral-850/80 p-4 rounded-xl space-y-3">
+            <div class="text-[10px] text-neutral-450 font-black uppercase tracking-wider mb-1">Optimal Calculations</div>
+            
+            ${
+              isArb
+                ? `<div class="p-3 bg-emerald-950/40 rounded-lg border border-emerald-500/25 text-xs space-y-1">
+                     <div class="flex justify-between items-center">
+                       <span class="font-extrabold text-emerald-400">⚖️ Arbitrage Opportunity Found!</span>
+                       <span class="text-[8px] bg-emerald-500 text-neutral-950 font-black px-1.5 rounded">MARGIN: +${((1 - totalImplied) * 100).toFixed(1)}%</span>
+                     </div>
+                     <p class="text-[9px] text-neutral-400 leading-relaxed mt-1">Odds are mispriced between bookmakers. Betting both outcomes secures a risk-free profit.</p>
+                   </div>`
+                : `<div class="p-3 bg-neutral-900/60 rounded-lg border border-neutral-850 text-xs space-y-1">
+                     <span class="font-bold text-neutral-450 block">Hedge Calculation Basis</span>
+                     <p class="text-[9px] text-neutral-500 leading-relaxed">No direct arbitrage exists. Use the hedge calculator to lock in profits or neutralize risk.</p>
+                   </div>`
+            }
+
+            <div class="space-y-2 text-xs pt-1">
+              <div class="flex justify-between border-b border-neutral-850/50 pb-2">
+                <span class="text-neutral-450 font-semibold">Optimal Hedge Stake:</span>
+                <span class="font-extrabold text-primary-400">$${optimalHedgeStake.toFixed(2)}</span>
+              </div>
+              <div class="flex justify-between border-b border-neutral-850/50 pb-2">
+                <span class="text-neutral-450 font-semibold">Total Outlay:</span>
+                <span class="font-bold text-neutral-350">$${totalCost.toFixed(2)}</span>
+              </div>
+              <div class="flex justify-between border-b border-neutral-850/50 pb-2">
+                <span class="text-neutral-450 font-semibold">Equalized Payout:</span>
+                <span class="font-bold text-neutral-200">$${payout1.toFixed(2)}</span>
+              </div>
+              <div class="flex justify-between items-center pt-1">
+                <span class="font-extrabold text-neutral-200">Guaranteed Return:</span>
+                <span class="font-black text-sm ${guaranteedProfit >= 0 ? 'text-emerald-450' : 'text-rose-400'}">
+                  ${guaranteedProfit >= 0 ? '+' : ''}$${guaranteedProfit.toFixed(2)} (${guaranteedROI.toFixed(1)}% ROI)
+                </span>
+              </div>
+            </div>
+
+            <!-- Risk free refund stake alternative -->
+            <div class="mt-3 pt-3 border-t border-neutral-800 space-y-2 text-xs">
+              <span class="text-[9px] text-neutral-500 font-black uppercase tracking-wider block">Risk-Refund Alternative</span>
+              <div class="p-2.5 bg-neutral-900/40 rounded-lg border border-neutral-850 space-y-1.5">
+                <div class="flex justify-between">
+                  <span class="text-neutral-450 font-semibold">Refund Hedge Stake:</span>
+                  <span class="font-bold text-neutral-300">$${refundHedgeStake.toFixed(2)}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-neutral-450 font-semibold">Profit if Primary Wins:</span>
+                  <span class="font-extrabold text-emerald-450">+$${(payout1 - hedgePrimaryStake - refundHedgeStake).toFixed(2)}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-neutral-500">
+                  <span>Profit if Opposing Wins:</span>
+                  <span>$0.00 (Stake Returned)</span>
+                </div>
+              </div>
+            </div>
+            
+            <button id="track-hedge-btn" class="w-full mt-3 py-2 bg-neutral-800 hover:bg-neutral-750 text-neutral-200 font-bold border border-neutral-700 hover:border-primary-500/50 rounded-lg cursor-pointer transition-all active:scale-95 text-xs text-center">
+              🎯 Track Hedge Bet
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Attach listeners for Hedge tab
+    setTimeout(() => {
+      container.querySelector('#calc-tab-parlay')?.addEventListener('click', () => {
+        activeCalculatorTab = 'parlay';
+        renderSimulatorApp();
+      });
+
+      const primStakeInput = container.querySelector('#hedge-prim-stake') as HTMLInputElement;
+      const primOddsInput = container.querySelector('#hedge-prim-odds') as HTMLInputElement;
+      const oppOddsInput = container.querySelector('#hedge-opp-odds') as HTMLInputElement;
+
+      primStakeInput?.addEventListener('input', (e) => {
+        const val = parseFloat((e.target as HTMLInputElement).value);
+        if (!isNaN(val) && val > 0) {
+          hedgePrimaryStake = val;
+          renderSimulatorApp();
+        }
+      });
+
+      primOddsInput?.addEventListener('input', (e) => {
+        const val = parseInt((e.target as HTMLInputElement).value, 10);
+        if (!isNaN(val)) {
+          hedgePrimaryOdds = val;
+          renderSimulatorApp();
+        }
+      });
+
+      oppOddsInput?.addEventListener('input', (e) => {
+        const val = parseInt((e.target as HTMLInputElement).value, 10);
+        if (!isNaN(val)) {
+          hedgeOpposingOdds = val;
+          renderSimulatorApp();
+        }
+      });
+
+      container.querySelector('#track-hedge-btn')?.addEventListener('click', () => {
+        // Track the hedge stake
+        openTrackBetModal(
+          `Hedge against ${hedgePrimaryOdds >= 0 ? `+${hedgePrimaryOdds}` : hedgePrimaryOdds}`,
+          `Primary bet stake: $${hedgePrimaryStake.toFixed(0)}`,
+          hedgeOpposingOdds,
+          'Multi-Sport',
+          'Hedge bet'
+        );
+      });
+    }, 0);
+  }
 
   return container;
 }
