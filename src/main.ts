@@ -2286,9 +2286,13 @@ function renderSimulatorApp() {
   }
 }
 
-// Fetch betting data
+// Fetch betting data — cache-busted so GitHub Pages never serves stale data
 async function loadData() {
-  const resp = await fetch('bets.json');
+  const bust = `?v=${Date.now()}`;
+  const resp = await fetch(`bets.json${bust}`, {
+    cache: 'no-store',
+    headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache' }
+  });
   if (!resp.ok) {
     throw new Error(`HTTP error ${resp.status}`);
   }
