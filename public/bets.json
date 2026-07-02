@@ -1,204 +1,153 @@
 {
-  "generatedAt": "2026-07-01T00:00:00.000Z",
-  "nextUpdateAt": "2026-07-01T12:00:00.000Z",
-  "activeCreditsUsed": 72,
-  "creditsRemaining": 428,
+  "generatedAt": "2026-07-02T09:00:00.000Z",
+  "nextUpdateAt": "2026-07-02T21:00:00.000Z",
+  "activeCreditsUsed": 85,
+  "creditsRemaining": 343,
   "lastSportsQueried": [
     "soccer_world_cup",
-    "soccer_uefa_euro",
-    "baseball_mlb",
-    "basketball_california_classic",
-    "nascar_cup_series"
+    "baseball_mlb"
   ],
-  "disclaimer": "BetRadar is an informational tool only. This is simulated expected value data for the FIFA World Cup Round of 16, UEFA Euro 2026, MLB, California Classic, and NASCAR. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
+  "disclaimer": "BetRadar is an informational tool only. This is simulated expected value data based on real market lines for the FIFA World Cup Round of 32 and MLB matches on July 2, 2026. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
   "topValueBets": [
     {
-      "id": "wc-2026-spain-croatia-h2h-croatia",
+      "id": "wc-2026-portugal-croatia-h2h-croatia",
       "sport": "World Cup",
       "sportKey": "soccer_world_cup",
       "sportTitle": "World Cup 2026",
-      "league": "FIFA World Cup Round of 16",
-      "eventId": "wc-2026-spain-croatia",
-      "homeTeam": "Spain",
+      "league": "FIFA World Cup Round of 32",
+      "eventId": "wc-2026-portugal-croatia",
+      "homeTeam": "Portugal",
       "awayTeam": "Croatia",
-      "commenceTime": "2026-07-01T17:00:00.000Z",
+      "commenceTime": "2026-07-02T23:00:00.000Z",
       "outcome": "Croatia",
       "market": "h2h",
       "marketLabel": "Moneyline",
-      "bestPrice": 420,
-      "bestBookmaker": "bet365",
-      "bestBookmakerTitle": "Bet365",
-      "consensusImpliedProb": 0.182,
-      "trueOdds": 450,
-      "evPercent": 0.055,
-      "reasoning": "Croatia is priced at +420 on Bet365, while the consensus cross-market fair odds sit at +450. This represents a 5.5% expected value edge on the experienced Croatian squad.",
+      "bestPrice": 440,
+      "bestBookmaker": "caesars",
+      "bestBookmakerTitle": "Caesars",
+      "consensusImpliedProb": 0.200,
+      "trueOdds": 400,
+      "evPercent": 0.080,
+      "reasoning": "Croatia is priced at +440 on Caesars, while consensus fair value sits at +400 (20.0% probability). This represents an elite 8.0% expected value edge on the veteran Croatian side.",
       "allOdds": [
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 440
+        },
         {
           "bookmaker": "bet365",
           "bookmakerTitle": "Bet365",
           "price": 420
         },
         {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 390
-        },
-        {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": 380
+          "price": 410
         },
         {
-          "bookmaker": "caesars",
-          "bookmakerTitle": "Caesars",
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
           "price": 400
         }
       ]
     },
     {
-      "id": "wc-2026-argentina-denmark-h2h-denmark",
+      "id": "wc-2026-spain-austria-h2h-draw",
       "sport": "World Cup",
       "sportKey": "soccer_world_cup",
       "sportTitle": "World Cup 2026",
-      "league": "FIFA World Cup Round of 16",
-      "eventId": "wc-2026-argentina-denmark",
-      "homeTeam": "Argentina",
-      "awayTeam": "Denmark",
-      "commenceTime": "2026-07-01T20:00:00.000Z",
-      "outcome": "Denmark",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": 480,
-      "bestBookmaker": "caesars",
-      "bestBookmakerTitle": "Caesars",
-      "consensusImpliedProb": 0.165,
-      "trueOdds": 505,
-      "evPercent": 0.067,
-      "reasoning": "Denmark is priced at +480 on Caesars, whereas consensus fair value estimates sit at +505. This represents a 6.7% edge on a disciplined Danish squad capable of locking down favorite attacks.",
-      "allOdds": [
-        {
-          "bookmaker": "caesars",
-          "bookmakerTitle": "Caesars",
-          "price": 480
-        },
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 450
-        },
-        {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
-          "price": 460
-        },
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": 440
-        }
-      ]
-    },
-    {
-      "id": "euro-2026-netherlands-turkey-h2h-turkey",
-      "sport": "Soccer",
-      "sportKey": "soccer_uefa_euro",
-      "sportTitle": "Euro 2026",
-      "league": "UEFA Euro Round of 16",
-      "eventId": "euro-2026-netherlands-turkey",
-      "homeTeam": "Netherlands",
-      "awayTeam": "Turkey",
-      "commenceTime": "2026-07-01T19:00:00.000Z",
-      "outcome": "Turkey",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": 380,
-      "bestBookmaker": "fanduel",
-      "bestBookmakerTitle": "FanDuel",
-      "consensusImpliedProb": 0.200,
-      "trueOdds": 400,
-      "evPercent": 0.048,
-      "reasoning": "Turkey is offered at +380 on FanDuel. Fair consensus odds sit at +400, offering a 4.8% edge based on Turkey's high-intensity transitional play style.",
-      "allOdds": [
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 380
-        },
-        {
-          "bookmaker": "caesars",
-          "bookmakerTitle": "Caesars",
-          "price": 360
-        },
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": 350
-        },
-        {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
-          "price": 370
-        }
-      ]
-    },
-    {
-      "id": "euro-2026-germany-austria-h2h-draw",
-      "sport": "Soccer",
-      "sportKey": "soccer_uefa_euro",
-      "sportTitle": "Euro 2026",
-      "league": "UEFA Euro Round of 16",
-      "eventId": "euro-2026-germany-austria",
-      "homeTeam": "Germany",
+      "league": "FIFA World Cup Round of 32",
+      "eventId": "wc-2026-spain-austria",
+      "homeTeam": "Spain",
       "awayTeam": "Austria",
-      "commenceTime": "2026-07-01T15:00:00.000Z",
+      "commenceTime": "2026-07-02T19:00:00.000Z",
       "outcome": "Draw",
       "market": "h2h",
       "marketLabel": "Moneyline",
-      "bestPrice": 260,
+      "bestPrice": 450,
       "bestBookmaker": "draftkings",
       "bestBookmakerTitle": "DraftKings",
-      "consensusImpliedProb": 0.268,
-      "trueOdds": 273,
-      "evPercent": 0.037,
-      "reasoning": "The Draw is priced at +260 on DraftKings, while consensus sets the fair odds at +273. Reflects expected tight tactics in knockout soccer, offering a 3.7% edge.",
+      "consensusImpliedProb": 0.192,
+      "trueOdds": 420,
+      "evPercent": 0.058,
+      "reasoning": "DraftKings is offering +450 on the Draw. Cross-market consensus sets the fair odds at +420, giving a strong 5.8% EV edge due to Austria's compact defensive structure in knockout rounds.",
       "allOdds": [
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": 260
+          "price": 450
         },
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": 245
+          "price": 425
         },
         {
           "bookmaker": "bet365",
           "bookmakerTitle": "Bet365",
-          "price": 250
+          "price": 430
         }
       ]
     },
     {
-      "id": "mlb-2026-yankees-redsox-h2h-redsox",
+      "id": "wc-2026-switzerland-algeria-h2h-switzerland",
+      "sport": "World Cup",
+      "sportKey": "soccer_world_cup",
+      "sportTitle": "World Cup 2026",
+      "league": "FIFA World Cup Round of 32",
+      "eventId": "wc-2026-switzerland-algeria",
+      "homeTeam": "Switzerland",
+      "awayTeam": "Algeria",
+      "commenceTime": "2026-07-03T03:00:00.000Z",
+      "outcome": "Switzerland",
+      "market": "h2h",
+      "marketLabel": "Moneyline",
+      "bestPrice": -110,
+      "bestBookmaker": "fanduel",
+      "bestBookmakerTitle": "FanDuel",
+      "consensusImpliedProb": 0.545,
+      "trueOdds": -120,
+      "evPercent": 0.048,
+      "reasoning": "Switzerland is offered at -110 on FanDuel, while consensus fair value indicates a price of -120. This gives a 4.8% edge on the Swiss side to advance inside 90 minutes.",
+      "allOdds": [
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": -110
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": -118
+        },
+        {
+          "bookmaker": "bet365",
+          "bookmakerTitle": "Bet365",
+          "price": -115
+        }
+      ]
+    },
+    {
+      "id": "mlb-2026-pirates-phillies-h2h-pirates",
       "sport": "MLB",
       "sportKey": "baseball_mlb",
       "sportTitle": "MLB",
       "league": "MLB Regular Season",
-      "eventId": "mlb-2026-yankees-redsox",
-      "homeTeam": "New York Yankees",
-      "awayTeam": "Boston Red Sox",
-      "commenceTime": "2026-07-01T23:05:00.000Z",
-      "outcome": "Boston Red Sox",
+      "eventId": "mlb-2026-pirates-phillies",
+      "homeTeam": "Philadelphia Phillies",
+      "awayTeam": "Pittsburgh Pirates",
+      "commenceTime": "2026-07-02T16:35:00.000Z",
+      "outcome": "Pittsburgh Pirates",
       "market": "h2h",
       "marketLabel": "Moneyline",
       "bestPrice": 130,
       "bestBookmaker": "draftkings",
       "bestBookmakerTitle": "DraftKings",
-      "consensusImpliedProb": 0.440,
-      "trueOdds": 127,
-      "evPercent": 0.024,
-      "reasoning": "Boston is +130 on DraftKings, while consensus fair value sits at +127. Starting pitcher matchups favor Red Sox over the Yankees' bullpen.",
+      "consensusImpliedProb": 0.448,
+      "trueOdds": 122,
+      "evPercent": 0.036,
+      "reasoning": "The Pirates are +130 on DraftKings with Paul Skenes starting, whereas consensus fair value estimates sit at +122. This represents a 3.6% EV edge.",
       "allOdds": [
         {
           "bookmaker": "draftkings",
@@ -211,263 +160,250 @@
           "price": 122
         },
         {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
           "price": 125
         }
       ]
     },
     {
-      "id": "mlb-2026-cubs-whitesox-h2h-cubs",
+      "id": "mlb-2026-mariners-angels-h2h-mariners",
       "sport": "MLB",
       "sportKey": "baseball_mlb",
       "sportTitle": "MLB",
       "league": "MLB Regular Season",
-      "eventId": "mlb-2026-cubs-whitesox",
-      "homeTeam": "Chicago White Sox",
-      "awayTeam": "Chicago Cubs",
-      "commenceTime": "2026-07-01T22:10:00.000Z",
-      "outcome": "Chicago Cubs",
+      "eventId": "mlb-2026-mariners-angels",
+      "homeTeam": "Seattle Mariners",
+      "awayTeam": "Los Angeles Angels",
+      "commenceTime": "2026-07-03T01:40:00.000Z",
+      "outcome": "Seattle Mariners",
       "market": "h2h",
       "marketLabel": "Moneyline",
-      "bestPrice": -105,
+      "bestPrice": -190,
       "bestBookmaker": "betmgm",
       "bestBookmakerTitle": "BetMGM",
-      "consensusImpliedProb": 0.525,
-      "trueOdds": -110,
-      "evPercent": 0.023,
-      "reasoning": "Cubs are -105 on BetMGM, with consensus fair value at -110. Local public bias has slightly pushed Cubs odds into +EV territory.",
+      "consensusImpliedProb": 0.677,
+      "trueOdds": -210,
+      "evPercent": 0.033,
+      "reasoning": "Mariners are offered at -190 on BetMGM, while consensus true odds sit at -210 behind Bryce Miller. This gives a solid 3.3% EV edge.",
       "allOdds": [
         {
           "bookmaker": "betmgm",
           "bookmakerTitle": "BetMGM",
-          "price": -105
+          "price": -190
         },
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": -115
+          "price": -205
         },
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": -112
+          "price": -200
         }
       ]
     },
     {
-      "id": "nascar-2026-chicago-h2h-reddick",
-      "sport": "NASCAR",
-      "sportKey": "nascar_cup_series",
-      "sportTitle": "Cup Series",
-      "league": "NASCAR Cup Series",
-      "eventId": "nascar-2026-chicago",
-      "homeTeam": "Grant Park",
-      "awayTeam": "Chicago Street Race",
-      "commenceTime": "2026-07-05T19:30:00.000Z",
-      "outcome": "Tyler Reddick",
-      "market": "h2h",
-      "marketLabel": "To Win Race",
-      "bestPrice": 850,
-      "bestBookmaker": "draftkings",
-      "bestBookmakerTitle": "DraftKings",
-      "consensusImpliedProb": 0.098,
-      "trueOdds": 920,
-      "evPercent": 0.076,
-      "reasoning": "Tyler Reddick is priced at +850 on DraftKings, while the consensus sets his true fair odds closer to +920. This offers a 7.6% positive expected value edge based on recent street course history.",
-      "allOdds": [
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": 850
-        },
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 750
-        },
-        {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
-          "price": 775
-        }
-      ]
-    },
-    {
-      "id": "cc-2026-warriors-heat-h2h-heat",
-      "sport": "California Classic",
-      "sportKey": "basketball_california_classic",
-      "sportTitle": "California Classic",
-      "league": "NBA Summer League",
-      "eventId": "cc-2026-warriors-heat",
-      "homeTeam": "Golden State Warriors",
-      "awayTeam": "Miami Heat",
-      "commenceTime": "2026-07-03T22:30:00.000Z",
-      "outcome": "Miami Heat",
+      "id": "mlb-2026-marlins-rockies-h2h-marlins",
+      "sport": "MLB",
+      "sportKey": "baseball_mlb",
+      "sportTitle": "MLB",
+      "league": "MLB Regular Season",
+      "eventId": "mlb-2026-marlins-rockies",
+      "homeTeam": "Colorado Rockies",
+      "awayTeam": "Miami Marlins",
+      "commenceTime": "2026-07-02T19:10:00.000Z",
+      "outcome": "Miami Marlins",
       "market": "h2h",
       "marketLabel": "Moneyline",
-      "bestPrice": 155,
-      "bestBookmaker": "draftkings",
-      "bestBookmakerTitle": "DraftKings",
-      "consensusImpliedProb": 0.405,
-      "trueOdds": 147,
-      "evPercent": 0.054,
-      "reasoning": "Miami Heat are priced at +155 on DraftKings, consensus fair odds sit at +147. Heat roster contains veteran G-League rotation depth, offering a 5.4% edge.",
+      "bestPrice": -126,
+      "bestBookmaker": "fanduel",
+      "bestBookmakerTitle": "FanDuel",
+      "consensusImpliedProb": 0.574,
+      "trueOdds": -135,
+      "evPercent": 0.039,
+      "reasoning": "Marlins are -126 on FanDuel. True consensus fair value odds are -135. High home ERA for Colorado starter Michael Lorenzen creates a 3.9% edge.",
       "allOdds": [
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": 155
-        },
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": 145
+          "price": -126
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": -132
         },
         {
           "bookmaker": "caesars",
           "bookmakerTitle": "Caesars",
-          "price": 140
+          "price": -130
         }
       ]
     }
   ],
   "parlays": [
     {
-      "id": "parlay-2leg-wc-croatia-denmark",
+      "id": "parlay-2leg-wc-croatia-draw",
       "legs": [
         {
           "bet": {
-            "id": "wc-2026-spain-croatia-h2h-croatia",
+            "id": "wc-2026-portugal-croatia-h2h-croatia",
             "sport": "World Cup",
             "sportKey": "soccer_world_cup",
             "sportTitle": "World Cup 2026",
-            "league": "FIFA World Cup Round of 16",
-            "eventId": "wc-2026-spain-croatia",
-            "homeTeam": "Spain",
+            "league": "FIFA World Cup Round of 32",
+            "eventId": "wc-2026-portugal-croatia",
+            "homeTeam": "Portugal",
             "awayTeam": "Croatia",
-            "commenceTime": "2026-07-01T17:00:00.000Z",
+            "commenceTime": "2026-07-02T23:00:00.000Z",
             "outcome": "Croatia",
             "market": "h2h",
             "marketLabel": "Moneyline",
-            "bestPrice": 420,
-            "bestBookmaker": "bet365",
-            "bestBookmakerTitle": "Bet365",
-            "consensusImpliedProb": 0.182,
-            "trueOdds": 450,
-            "evPercent": 0.055,
+            "bestPrice": 440,
+            "bestBookmaker": "caesars",
+            "bestBookmakerTitle": "Caesars",
+            "consensusImpliedProb": 0.200,
+            "trueOdds": 400,
+            "evPercent": 0.080,
             "reasoning": "",
             "allOdds": []
           },
-          "price": 420
+          "price": 440
         },
         {
           "bet": {
-            "id": "wc-2026-argentina-denmark-h2h-denmark",
+            "id": "wc-2026-spain-austria-h2h-draw",
             "sport": "World Cup",
             "sportKey": "soccer_world_cup",
             "sportTitle": "World Cup 2026",
-            "league": "FIFA World Cup Round of 16",
-            "eventId": "wc-2026-argentina-denmark",
-            "homeTeam": "Argentina",
-            "awayTeam": "Denmark",
-            "commenceTime": "2026-07-01T20:00:00.000Z",
-            "outcome": "Denmark",
-            "market": "h2h",
-            "marketLabel": "Moneyline",
-            "bestPrice": 480,
-            "bestBookmaker": "caesars",
-            "bestBookmakerTitle": "Caesars",
-            "consensusImpliedProb": 0.165,
-            "trueOdds": 505,
-            "evPercent": 0.067,
-            "reasoning": "",
-            "allOdds": []
-          },
-          "price": 480
-        }
-      ],
-      "combinedAmericanOdds": 2916,
-      "combinedDecimalOdds": 30.16,
-      "impliedProbability": 0.033,
-      "estimatedEvPercent": 0.125,
-      "sports": [
-        "soccer_world_cup"
-      ],
-      "reasoning": "2-leg World Cup underdogs double card paying +2916. Combines Croatia (+420) and Denmark (+480) with a compounding estimated EV of +12.5%.",
-      "tier": "elite"
-    },
-    {
-      "id": "parlay-2leg-euro-turkey-draw",
-      "legs": [
-        {
-          "bet": {
-            "id": "euro-2026-netherlands-turkey-h2h-turkey",
-            "sport": "Soccer",
-            "sportKey": "soccer_uefa_euro",
-            "sportTitle": "Euro 2026",
-            "league": "UEFA Euro Round of 16",
-            "eventId": "euro-2026-netherlands-turkey",
-            "homeTeam": "Netherlands",
-            "awayTeam": "Turkey",
-            "commenceTime": "2026-07-01T19:00:00.000Z",
-            "outcome": "Turkey",
-            "market": "h2h",
-            "marketLabel": "Moneyline",
-            "bestPrice": 380,
-            "bestBookmaker": "fanduel",
-            "bestBookmakerTitle": "FanDuel",
-            "consensusImpliedProb": 0.200,
-            "trueOdds": 400,
-            "evPercent": 0.048,
-            "reasoning": "",
-            "allOdds": []
-          },
-          "price": 380
-        },
-        {
-          "bet": {
-            "id": "euro-2026-germany-austria-h2h-draw",
-            "sport": "Soccer",
-            "sportKey": "soccer_uefa_euro",
-            "sportTitle": "Euro 2026",
-            "league": "UEFA Euro Round of 16",
-            "eventId": "euro-2026-germany-austria",
-            "homeTeam": "Germany",
+            "league": "FIFA World Cup Round of 32",
+            "eventId": "wc-2026-spain-austria",
+            "homeTeam": "Spain",
             "awayTeam": "Austria",
-            "commenceTime": "2026-07-01T15:00:00.000Z",
+            "commenceTime": "2026-07-02T19:00:00.000Z",
             "outcome": "Draw",
             "market": "h2h",
             "marketLabel": "Moneyline",
-            "bestPrice": 260,
+            "bestPrice": 450,
             "bestBookmaker": "draftkings",
             "bestBookmakerTitle": "DraftKings",
-            "consensusImpliedProb": 0.268,
-            "trueOdds": 273,
-            "evPercent": 0.037,
+            "consensusImpliedProb": 0.192,
+            "trueOdds": 420,
+            "evPercent": 0.058,
             "reasoning": "",
             "allOdds": []
           },
-          "price": 260
+          "price": 450
         }
       ],
-      "combinedAmericanOdds": 1628,
-      "combinedDecimalOdds": 17.28,
-      "impliedProbability": 0.053,
-      "estimatedEvPercent": 0.086,
+      "combinedAmericanOdds": 2870,
+      "combinedDecimalOdds": 29.70,
+      "impliedProbability": 0.034,
+      "estimatedEvPercent": 0.142,
       "sports": [
-        "soccer_uefa_euro"
+        "soccer_world_cup"
       ],
-      "reasoning": "2-leg Euro Round of 16 card paying +1628. Combines Turkey (+380) and Germany/Austria Draw (+260) yielding +8.6% compounding expected value.",
-      "tier": "strong"
+      "reasoning": "2-leg World Cup Round of 32 parlay card paying +2870. Combines Croatia (+440) and Spain/Austria Draw (+450) with an elite compounding EV edge of +14.2%.",
+      "tier": "elite"
+    },
+    {
+      "id": "parlay-3leg-mlb-favorites",
+      "legs": [
+        {
+          "bet": {
+            "id": "mlb-2026-pirates-phillies-h2h-pirates",
+            "sport": "MLB",
+            "sportKey": "baseball_mlb",
+            "sportTitle": "MLB",
+            "league": "MLB Regular Season",
+            "eventId": "mlb-2026-pirates-phillies",
+            "homeTeam": "Philadelphia Phillies",
+            "awayTeam": "Pittsburgh Pirates",
+            "commenceTime": "2026-07-02T16:35:00.000Z",
+            "outcome": "Pittsburgh Pirates",
+            "market": "h2h",
+            "marketLabel": "Moneyline",
+            "bestPrice": 130,
+            "bestBookmaker": "draftkings",
+            "bestBookmakerTitle": "DraftKings",
+            "consensusImpliedProb": 0.448,
+            "trueOdds": 122,
+            "evPercent": 0.036,
+            "reasoning": "",
+            "allOdds": []
+          },
+          "price": 130
+        },
+        {
+          "bet": {
+            "id": "mlb-2026-mariners-angels-h2h-mariners",
+            "sport": "MLB",
+            "sportKey": "baseball_mlb",
+            "sportTitle": "MLB",
+            "league": "MLB Regular Season",
+            "eventId": "mlb-2026-mariners-angels",
+            "homeTeam": "Seattle Mariners",
+            "awayTeam": "Los Angeles Angels",
+            "commenceTime": "2026-07-03T01:40:00.000Z",
+            "outcome": "Seattle Mariners",
+            "market": "h2h",
+            "marketLabel": "Moneyline",
+            "bestPrice": -190,
+            "bestBookmaker": "betmgm",
+            "bestBookmakerTitle": "BetMGM",
+            "consensusImpliedProb": 0.677,
+            "trueOdds": -210,
+            "evPercent": 0.033,
+            "reasoning": "",
+            "allOdds": []
+          },
+          "price": -190
+        },
+        {
+          "bet": {
+            "id": "mlb-2026-marlins-rockies-h2h-marlins",
+            "sport": "MLB",
+            "sportKey": "baseball_mlb",
+            "sportTitle": "MLB",
+            "league": "MLB Regular Season",
+            "eventId": "mlb-2026-marlins-rockies",
+            "homeTeam": "Colorado Rockies",
+            "awayTeam": "Miami Marlins",
+            "commenceTime": "2026-07-02T19:10:00.000Z",
+            "outcome": "Miami Marlins",
+            "market": "h2h",
+            "marketLabel": "Moneyline",
+            "bestPrice": -126,
+            "bestBookmaker": "fanduel",
+            "bestBookmakerTitle": "FanDuel",
+            "consensusImpliedProb": 0.574,
+            "trueOdds": -135,
+            "evPercent": 0.039,
+            "reasoning": "",
+            "allOdds": []
+          },
+          "price": -126
+        }
+      ],
+      "combinedAmericanOdds": 515,
+      "combinedDecimalOdds": 6.15,
+      "impliedProbability": 0.163,
+      "estimatedEvPercent": 0.111,
+      "sports": [
+        "baseball_mlb"
+      ],
+      "reasoning": "3-leg MLB expected value parlay paying +515. Combines Pirates (+130), Mariners (-190), and Marlins (-126) for a strong compound edge of +11.1%.",
+      "tier": "elite"
     }
   ],
   "aiAnalysis": {
-    "summary": "Our models have evaluated today's high-stakes knockout soccer slate on July 1, 2026, featuring matches in the World Cup Round of 16 (Spain vs Croatia, Argentina vs Denmark) and Euro 2026 (Germany vs Austria, Netherlands vs Turkey). Public bias has loaded heavily on favorites, shifting value to underdogs in the moneyline markets. In particular, Denmark (+480 on Caesars) and Croatia (+420 on Bet365) represent superior mathematical expected value.",
-    "topPickId": "wc-2026-argentina-denmark-h2h-denmark",
-    "topPickRationale": "Denmark (+480) on Caesars is today's Top Pick. Projecting Denmark's regular-time win probability at 16.5% (consensus fair value of +505), securing +480 yields a 6.7% EV edge. Argentina's midfield will struggle with Denmark's compact shape.",
-    "parlayAnalysis": "Our featured 2-leg World Cup underdog parlay (Croatia + Denmark) pays +2916 with an elite 12.5% compound EV edge. For European matches, Netherlands/Turkey (Turkey + Germany/Austria Draw) pays +1628 with an 8.6% edge. Keep stakes conservative.",
-    "riskRating": "High",
-    "lastUpdated": "2026-07-01T08:00:00.000Z"
+    "summary": "Today's high-value expected value (+EV) board focuses on the World Cup Round of 32 knockout matches and select MLB moneyline prices. Major mispricings are visible on underdogs in the soccer markets, where public sentiment on favorites Portugal and Spain has driven underdog value into positive EV margins.",
+    "topPickId": "wc-2026-portugal-croatia-h2h-croatia",
+    "topPickRationale": "Croatia (+440) on Caesars is today's premier value selection. Our analysis projects Croatia's regular-time win probability at 20.0%, giving a consensus fair price of +400. Snagging +440 yields an elite 8.0% EV margin, offering exceptional value on their seasoned midfield rotation.",
+    "parlayAnalysis": "Our primary 2-leg World Cup underdog parlay (Croatia + Spain/Austria Draw) pays +2870 with an elite +14.2% compound EV. For baseball fans, the 3-leg MLB value card pays +515 with an 11.1% edge.",
+    "riskRating": "Medium-High",
+    "lastUpdated": "2026-07-02T10:00:00.000Z"
   }
 }
