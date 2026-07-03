@@ -22,17 +22,18 @@ let sortDirection: 'asc' | 'desc' = 'desc';
 
 // Preference and filter state variables (loaded from local storage)
 let oddsFormat: 'american' | 'decimal' | 'implied' = 'american';
-let bankrollSize: number = 1000;
+let bankrollSize: number = 500;
+let defaultStake: number = 25;
 let minEvFilter: number = 0;
 let bookmakerFilter: string = 'All';
 
 // Active selection for Parlay Builder simulator
 let simulatedLegs: { betId: string; outcome: string; price: number; sport: string }[] = [];
-let betStake: number = 100;
+let betStake: number = 25;
 
 // Hedge & Arbitrage Calculator state variables
 let activeCalculatorTab: 'parlay' | 'hedge' | 'customEv' = 'parlay';
-let hedgePrimaryStake: number = 100;
+let hedgePrimaryStake: number = 25;
 let hedgePrimaryOdds: number = 150;
 let hedgeOpposingOdds: number = -110;
 
@@ -101,6 +102,19 @@ function loadPreferences() {
         bankrollSize = parsed;
       }
     }
+    const savedDefaultStake = localStorage.getItem('parlay_default_stake');
+    if (savedDefaultStake) {
+      const parsed = parseFloat(savedDefaultStake);
+      if (!isNaN(parsed) && parsed > 0) {
+        defaultStake = parsed;
+        betStake = parsed;
+        hedgePrimaryStake = parsed;
+      }
+    } else {
+      defaultStake = Math.min(25, Math.round(bankrollSize * 0.05));
+      betStake = defaultStake;
+      hedgePrimaryStake = defaultStake;
+    }
   } catch (e) {
     console.error('Failed to load preferences', e);
   }
@@ -111,6 +125,7 @@ function savePreferences() {
   try {
     localStorage.setItem('parlay_odds_format', oddsFormat);
     localStorage.setItem('parlay_bankroll_size', bankrollSize.toString());
+    localStorage.setItem('parlay_default_stake', defaultStake.toString());
   } catch (e) {
     console.error('Failed to save preferences', e);
   }
@@ -2546,6 +2561,9 @@ function renderApp() {
       app.appendChild(aiPanel);
     }
 
+    // Bankroll & Unit Sizing Config Card
+    app.appendChild(renderBankrollConfig());
+
     // AI Agent Search Scanner Card
     app.appendChild(renderAiAgentSearchBox());
 
@@ -2770,6 +2788,13 @@ async function runAiAgentScan(query: string) {
 Perform a live Google Search to find current real-world sports betting odds for matches taking place today or tomorrow.
 Find real prices across licensed bookmakers (like DraftKings, FanDuel, Bet365, Caesars) and calculate positive Expected Value (+EV) opportunities relative to no-vig fair odds.
 
+CRITICAL INSTRUCTIONS:
+1. You MUST find and return between 5 to 8 distinct, high-value +EV bet opportunities.
+2. For each bet, the 'reasoning' field MUST contain a detailed, high-quality matchup vetting analysis (3-4 sentences) explaining:
+   - The matchup context (e.g., starting pitchers, key team injuries, recent form).
+   - The fair no-vig line comparison.
+   - Why the selected bookmaker's line is mispriced and represents a strong positive EV edge.
+
 Return a JSON object conforming EXACTLY to the following TypeScript interface:
 interface BetsData {
   generatedAt: string; // ISO date string of now
@@ -2797,7 +2822,7 @@ interface BetsData {
     consensusImpliedProb: number; // float 0 to 1
     trueOdds: number; // American odds
     evPercent: number; // float e.g. 0.05 for 5% edge
-    reasoning: string;
+    reasoning: string; // VETTING REASON: detailed pitcher matchup, team news, and EV value
     allOdds: { bookmaker: string; bookmakerTitle: string; price: number }[];
   }[];
   parlays: {
@@ -2901,4 +2926,58 @@ function showLoadingOverlay(message: string) {
 
 function hideLoadingOverlay() {
   document.getElementById('loading-overlay')?.remove();
+}
+
+// Render Bankroll & Default Stake Config Panel
+function renderBankrollConfig(): HTMLElement {
+  const container = document.createElement('section');
+  container.className = 'card border border-neutral-800 bg-neutral-900/30 p-4 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 items-center animate-fade-in';
+  
+  container.innerHTML = `
+    <div>
+      <h3 class="font-extrabold text-neutral-100 text-xs mb-1 flex items-center gap-1">💰 Bankroll & Unit Sizing Config</h3>
+      <p class="text-[10px] text-neutral-455 leading-relaxed font-semibold">
+        Configure your total bankroll and preferred base unit stake. All calculators and Kelly sizing recommendations will auto-adjust to your levels.
+      </p>
+    </div>
+    <div class="flex flex-wrap items-center gap-4 justify-end">
+      <div class="flex flex-col gap-1">
+        <label for="config-bankroll-size" class="text-[9px] font-black uppercase text-neutral-500">Total Bankroll</label>
+        <input id="config-bankroll-size" type="number" min="10" value="${bankrollSize}" 
+               class="w-24 px-2.5 py-1 bg-neutral-950 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs text-right" />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="config-default-stake" class="text-[9px] font-black uppercase text-neutral-500">Default Unit Bet</label>
+        <input id="config-default-stake" type="number" min="1" value="${defaultStake}" 
+               class="w-24 px-2.5 py-1 bg-neutral-950 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs text-right" />
+      </div>
+    </div>
+  `;
+
+  // Attach change listeners to save inputs
+  setTimeout(() => {
+    const brInput = container.querySelector('#config-bankroll-size') as HTMLInputElement;
+    const stakeInput = container.querySelector('#config-default-stake') as HTMLInputElement;
+
+    brInput?.addEventListener('input', () => {
+      const val = parseFloat(brInput.value);
+      if (!isNaN(val) && val > 0) {
+        bankrollSize = val;
+        savePreferences();
+      }
+    });
+
+    stakeInput?.addEventListener('input', () => {
+      const val = parseFloat(stakeInput.value);
+      if (!isNaN(val) && val > 0) {
+        defaultStake = val;
+        // set calculator stakes automatically to align
+        betStake = val;
+        hedgePrimaryStake = val;
+        savePreferences();
+      }
+    });
+  }, 0);
+
+  return container;
 }
