@@ -2484,6 +2484,9 @@ function renderApp() {
       <button id="refresh-btn" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-350 hover:text-neutral-100 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all active:scale-95" aria-label="Refresh Data">
         <span class="refresh-icon inline-block">↻</span> Sync Odds
       </button>
+      <button id="ai-config-btn" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-350 hover:text-neutral-100 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all active:scale-95">
+        🤖 AI Config
+      </button>
       <div class="w-px h-7 bg-neutral-800 hidden sm:block"></div>
       <div class="text-right">
         <div class="text-[9px] text-neutral-500 font-extrabold uppercase tracking-wider cursor-pointer hover:underline" id="go-to-tracker">Record (W-L) 🏆</div>
@@ -2513,6 +2516,7 @@ function renderApp() {
   if (refreshBtn) {
     refreshBtn.addEventListener('click', handleRefresh);
   }
+  header.querySelector('#ai-config-btn')?.addEventListener('click', openAiConfigModal);
   const goToTracker = () => {
     currentSportFilter = 'Tracker';
     renderApp();
@@ -2541,6 +2545,9 @@ function renderApp() {
     if (aiPanel) {
       app.appendChild(aiPanel);
     }
+
+    // AI Agent Search Scanner Card
+    app.appendChild(renderAiAgentSearchBox());
 
     // Render Calculator Simulator
     app.appendChild(renderParlayCalculator());
@@ -2634,3 +2641,264 @@ async function init() {
 }
 
 init();
+
+// AI Config Modal to enter Gemini API Key
+function openAiConfigModal() {
+  const existingModal = document.getElementById('ai-config-modal');
+  if (existingModal) existingModal.remove();
+
+  const savedKey = localStorage.getItem('gemini_api_key') || '';
+
+  const modal = document.createElement('div');
+  modal.id = 'ai-config-modal';
+  modal.className = 'fixed inset-0 z-[10000] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4';
+  
+  modal.innerHTML = `
+    <div class="card border border-neutral-800 bg-neutral-900 shadow-2xl max-w-md w-full p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-neutral-800 pb-3 border-neutral-800/80">
+        <h3 class="font-extrabold text-neutral-100 text-sm">🤖 AI Agent Settings</h3>
+        <button id="close-ai-config" class="text-neutral-505 hover:text-neutral-300 text-lg cursor-pointer">×</button>
+      </div>
+
+      <div class="space-y-3 text-xs leading-normal">
+        <p class="text-neutral-400">
+          The AI Agent scanner uses the <strong>Gemini API with Google Search Grounding</strong> to fetch real-world sports odds from the live web.
+        </p>
+        <p class="text-neutral-400">
+          Get a free API Key from <a href="https://aistudio.google.com/" target="_blank" class="text-primary-400 hover:underline font-bold">Google AI Studio</a>.
+        </p>
+
+        <div class="flex flex-col gap-1.5 pt-2">
+          <label for="gemini-key-input" class="font-bold text-neutral-450">Gemini API Key</label>
+          <input id="gemini-key-input" type="password" value="${savedKey}" placeholder="AIzaSy..." 
+                 class="w-full px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-252 font-bold rounded focus:outline-none focus:border-primary-500 text-xs" />
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-2 border-t border-neutral-800">
+        <button id="save-ai-config" class="flex-1 py-2 bg-primary-500 hover:bg-primary-400 text-neutral-950 font-black rounded-lg cursor-pointer transition-all text-xs text-center">
+          Save Settings
+        </button>
+        <button id="clear-ai-config" class="px-3 py-2 bg-neutral-800 hover:bg-neutral-750 text-rose-400 font-bold rounded-lg cursor-pointer transition-all text-xs text-center">
+          Clear
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  modal.querySelector('#close-ai-config')?.addEventListener('click', () => modal.remove());
+  modal.querySelector('#save-ai-config')?.addEventListener('click', () => {
+    const key = (modal.querySelector('#gemini-key-input') as HTMLInputElement).value.trim();
+    if (key) {
+      localStorage.setItem('gemini_api_key', key);
+      showToast('Gemini API Key saved successfully!', 'success');
+      modal.remove();
+    } else {
+      showToast('API Key cannot be empty.', 'error');
+    }
+  });
+  modal.querySelector('#clear-ai-config')?.addEventListener('click', () => {
+    localStorage.removeItem('gemini_api_key');
+    showToast('Gemini API Key cleared.', 'info');
+    modal.remove();
+  });
+}
+
+// AI Agent Search Scanner Card
+function renderAiAgentSearchBox(): HTMLElement {
+  const container = document.createElement('section');
+  container.className = 'card border border-primary-500/20 bg-primary-500/5 shadow-2xl p-4 mb-6 flex flex-col md:flex-row gap-3 items-center';
+  
+  container.innerHTML = `
+    <div class="flex-1 select-none">
+      <div class="text-[10px] text-primary-400 font-black uppercase tracking-wider mb-1 flex items-center gap-1.5">
+        <span>🤖</span> Live AI Agent Scanner (Google Grounded)
+      </div>
+      <p class="text-[11px] text-neutral-400 leading-normal">
+        Type a query to search the live web for today's real sports betting odds and expected value edges.
+      </p>
+    </div>
+    <div class="flex w-full md:w-auto items-center gap-2">
+      <input id="ai-search-input" type="text" placeholder="e.g. Find today's MLB moneyline value bets" 
+             class="flex-1 md:w-80 px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-200 font-bold rounded-lg focus:outline-none focus:border-primary-500 text-xs" />
+      <button id="ai-search-btn" class="px-4 py-2 bg-primary-500 hover:bg-primary-400 text-neutral-950 font-black rounded-lg cursor-pointer transition-all active:scale-95 text-xs">
+        Scan
+      </button>
+    </div>
+  `;
+
+  // Attach click listener
+  setTimeout(() => {
+    const input = container.querySelector('#ai-search-input') as HTMLInputElement;
+    const btn = container.querySelector('#ai-search-btn');
+
+    const triggerScan = () => {
+      const q = input.value.trim();
+      if (q) {
+        runAiAgentScan(q);
+      } else {
+        showToast('Please enter a search prompt first.', 'error');
+      }
+    };
+
+    btn?.addEventListener('click', triggerScan);
+    input?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        triggerScan();
+      }
+    });
+  }, 0);
+
+  return container;
+}
+
+// Post request to Gemini API with Search Grounding
+async function runAiAgentScan(query: string) {
+  const key = localStorage.getItem('gemini_api_key');
+  if (!key) {
+    showToast('Configure your Gemini API Key first by clicking "🤖 AI Config".', 'error');
+    openAiConfigModal();
+    return;
+  }
+
+  showLoadingOverlay('AI Agent is scanning the live web...');
+
+  try {
+    const promptText = `
+Perform a live Google Search to find current real-world sports betting odds for matches taking place today or tomorrow.
+Find real prices across licensed bookmakers (like DraftKings, FanDuel, Bet365, Caesars) and calculate positive Expected Value (+EV) opportunities relative to no-vig fair odds.
+
+Return a JSON object conforming EXACTLY to the following TypeScript interface:
+interface BetsData {
+  generatedAt: string; // ISO date string of now
+  nextUpdateAt: string; // ISO date string
+  activeCreditsUsed: number;
+  creditsRemaining: number;
+  lastSportsQueried: string[];
+  disclaimer: string;
+  topValueBets: {
+    id: string; // unique ID
+    sport: string; // e.g. "MLB", "World Cup", "Soccer"
+    sportKey: string;
+    sportTitle: string;
+    league: string;
+    eventId: string;
+    homeTeam: string;
+    awayTeam: string;
+    commenceTime: string; // ISO string
+    outcome: string; // winner selection home/away/draw
+    market: string; // "h2h"
+    marketLabel: string; // "Moneyline"
+    bestPrice: number; // American odds e.g. +150, -110
+    bestBookmaker: string;
+    bestBookmakerTitle: string;
+    consensusImpliedProb: number; // float 0 to 1
+    trueOdds: number; // American odds
+    evPercent: number; // float e.g. 0.05 for 5% edge
+    reasoning: string;
+    allOdds: { bookmaker: string; bookmakerTitle: string; price: number }[];
+  }[];
+  parlays: {
+    id: string;
+    legs: {
+      bet: any; // matches topValueBets structure
+      price: number;
+    }[];
+    combinedAmericanOdds: number;
+    combinedDecimalOdds: number;
+    impliedProbability: number;
+    estimatedEvPercent: number;
+    sports: string[];
+    reasoning: string;
+    tier: "elite" | "strong";
+  }[];
+  aiAnalysis: {
+    summary: string;
+    topPickId: string;
+    topPickRationale: string;
+    parlayAnalysis: string;
+    riskRating: string;
+    lastUpdated: string;
+  };
+}
+
+Only return raw JSON. Do not wrap in markdown or code blocks.
+Query details: "${query}"
+`;
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
+    const body = {
+      contents: [
+        {
+          parts: [
+            {
+              text: promptText
+            }
+          ]
+        }
+      ],
+      tools: [
+        {
+          googleSearch: {}
+        }
+      ],
+      generationConfig: {
+        responseMimeType: "application/json"
+      }
+    };
+
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!resp.ok) {
+      throw new Error(`Gemini API error: ${resp.statusText}`);
+    }
+
+    const data = await resp.json();
+    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!rawText) {
+      throw new Error("Could not extract response text from Gemini API response.");
+    }
+
+    const parsed = JSON.parse(rawText) as BetsData;
+    if (!parsed.topValueBets || !Array.isArray(parsed.topValueBets)) {
+      throw new Error("AI Agent returned invalid data format structure.");
+    }
+
+    currentData = parsed;
+    showToast('AI Agent successfully scanned Google and loaded live bets!', 'success');
+    renderApp();
+  } catch (err: any) {
+    console.error(err);
+    showToast(`AI Scan failed: ${err?.message || err}`, 'error');
+  } finally {
+    hideLoadingOverlay();
+  }
+}
+
+// Loading Spinner overlay
+function showLoadingOverlay(message: string) {
+  const existing = document.getElementById('loading-overlay');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'loading-overlay';
+  overlay.className = 'fixed inset-0 z-[11000] flex flex-col items-center justify-center bg-black/80 backdrop-blur-md p-4 space-y-4';
+  overlay.innerHTML = `
+    <div class="w-12 h-12 border-4 border-primary-500/20 border-t-primary-500 rounded-full animate-spin"></div>
+    <div class="text-sm font-black text-neutral-100 uppercase tracking-widest">${message}</div>
+    <div class="text-xs text-neutral-500 max-w-xs text-center leading-relaxed">This may take up to 20 seconds as the AI agent searches Google for live odds and structures the bet table.</div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+function hideLoadingOverlay() {
+  document.getElementById('loading-overlay')?.remove();
+}
