@@ -40,6 +40,9 @@ let hedgeOpposingOdds: number = -110;
 let customEvWinProb: number = 45;
 let customEvOdds: number = 130;
 
+// Tracker Tab Chart active selection
+let activeTrackerChartTab: 'trend' | 'allocation' = 'trend';
+
 // Sleek Toast Notification System
 function showToast(message: string, type: 'success' | 'info' | 'error' = 'success') {
   let container = document.getElementById('toast-container');
@@ -1310,8 +1313,26 @@ function renderTrackerView(): HTMLElement {
 
   // Graph Timeline canvas HTML
   const chartHtml = chronologicalResolved.length > 0 ? `
-    <div class="card border border-neutral-800 bg-neutral-900/30 p-5 mb-6 relative overflow-hidden flex flex-col items-center">
-      <div class="text-[10px] text-neutral-455 font-bold uppercase tracking-wider mb-3 self-start">📈 Cumulative Profit Timeline</div>
+    <div class="card border border-neutral-800 bg-neutral-900/30 p-5 mb-6 relative overflow-hidden flex flex-col">
+      <div class="flex items-center justify-between mb-4 select-none">
+        <div class="text-[10px] text-neutral-455 font-bold uppercase tracking-wider">📊 Analytics Visualization</div>
+        <div class="flex items-center gap-1.5 bg-neutral-950/40 p-1 rounded-lg border border-neutral-850">
+          <button id="chart-tab-trend" class="px-2 py-1 text-[9px] font-black uppercase rounded transition-all cursor-pointer ${
+            activeTrackerChartTab === 'trend'
+              ? 'bg-neutral-850 text-neutral-100 shadow-sm border border-neutral-700'
+              : 'text-neutral-500 hover:text-neutral-350'
+          }">
+            📈 Trendline
+          </button>
+          <button id="chart-tab-allocation" class="px-2 py-1 text-[9px] font-black uppercase rounded transition-all cursor-pointer ${
+            activeTrackerChartTab === 'allocation'
+              ? 'bg-neutral-850 text-neutral-100 shadow-sm border border-neutral-700'
+              : 'text-neutral-500 hover:text-neutral-350'
+          }">
+            🍩 Allocation
+          </button>
+        </div>
+      </div>
       <canvas id="profit-timeline-canvas" class="w-full h-48 bg-neutral-950/40 rounded-lg border border-neutral-850" style="max-height: 192px;"></canvas>
     </div>
   ` : '';
@@ -1408,11 +1429,25 @@ function renderTrackerView(): HTMLElement {
       }
     });
 
-    // Render cumulative canvas profit graph
+    // Render cumulative canvas profit graph or allocation chart
     const canvas = container.querySelector('#profit-timeline-canvas') as HTMLCanvasElement;
     if (canvas) {
-      drawProfitChart(canvas);
+      if (activeTrackerChartTab === 'trend') {
+        drawProfitChart(canvas);
+      } else {
+        drawSportAllocationChart(canvas);
+      }
     }
+
+    container.querySelector('#chart-tab-trend')?.addEventListener('click', () => {
+      activeTrackerChartTab = 'trend';
+      renderApp();
+    });
+
+    container.querySelector('#chart-tab-allocation')?.addEventListener('click', () => {
+      activeTrackerChartTab = 'allocation';
+      renderApp();
+    });
 
     container.querySelectorAll('.win-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -1567,6 +1602,117 @@ function drawProfitChart(canvas: HTMLCanvasElement) {
     ctx.textAlign = 'center';
     ctx.fillText('NO RESOLVED BET DATA YET', width / 2, height / 2);
   }
+}
+
+// Render dynamic HTML5 Canvas Sport Risk Allocation Donut Chart
+function drawSportAllocationChart(canvas: HTMLCanvasElement) {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * window.devicePixelRatio;
+  canvas.height = rect.height * window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+  const w = rect.width;
+  const h = rect.height;
+
+  // Clear background
+  ctx.clearRect(0, 0, w, h);
+
+  // Group bets by sport (calculate total stakes placed per sport)
+  const allocation: Record<string, number> = {};
+  let totalStaked = 0;
+  trackedBets.forEach(b => {
+    const sport = b.sport || 'Multi-Sport';
+    allocation[sport] = (allocation[sport] || 0) + b.stake;
+    totalStaked += b.stake;
+  });
+
+  const sports = Object.keys(allocation);
+  if (sports.length === 0 || totalStaked === 0) {
+    ctx.fillStyle = '#737373';
+    ctx.font = 'bold 9px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('NO TRACKED BET DATA YET', w / 2, h / 2);
+    return;
+  }
+
+  // Curated premium HSL colors for sports segments
+  const colors = [
+    'hsl(169, 100%, 39%)',  // primary emerald-cyan
+    'hsl(48, 96%, 53%)',   // golden EV
+    'hsl(217, 91%, 60%)',  // sports blue
+    'hsl(262, 83%, 58%)',  // purple highlight
+    'hsl(339, 90%, 51%)',  // rose pink
+    'hsl(25, 95%, 53%)'    // warm orange
+  ];
+
+  let startAngle = -Math.PI / 2; // Start drawing at the top
+  const centerX = w * 0.35;
+  const centerY = h / 2;
+  const outerRadius = Math.min(centerX, centerY) * 0.75;
+  const innerRadius = outerRadius * 0.6; // Donut hole size
+
+  sports.forEach((sport, idx) => {
+    const stake = allocation[sport];
+    const percentage = stake / totalStaked;
+    const sliceAngle = percentage * Math.PI * 2;
+    const endAngle = startAngle + sliceAngle;
+    const color = colors[idx % colors.length];
+
+    // Draw donut slice
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, outerRadius, startAngle, endAngle);
+    ctx.arc(centerX, centerY, innerRadius, endAngle, startAngle, true);
+    ctx.closePath();
+
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    // Subtle gap border between segments
+    ctx.strokeStyle = '#171717';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    startAngle = endAngle;
+  });
+
+  // Draw central stats texts inside the donut hole
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 9px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('RISKED', centerX, centerY - 6);
+
+  ctx.fillStyle = '#a3a3a3';
+  ctx.font = 'black 10px monospace';
+  ctx.fillText(`$${totalStaked.toFixed(0)}`, centerX, centerY + 6);
+
+  // Draw Legend columns on the right side
+  const legendX = w * 0.70;
+  let legendY = h / 2 - (sports.length * 15) / 2 + 5;
+  
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold 8px monospace';
+
+  sports.forEach((sport, idx) => {
+    const stake = allocation[sport];
+    const pct = (stake / totalStaked) * 100;
+    const color = colors[idx % colors.length];
+
+    // Colored square bullet
+    ctx.fillStyle = color;
+    ctx.fillRect(legendX - 12, legendY - 3, 6, 6);
+
+    // Label text
+    ctx.fillStyle = '#d4d4d4';
+    ctx.fillText(`${sport}: ${pct.toFixed(0)}%`, legendX, legendY);
+
+    legendY += 15;
+  });
 }
 
 // Handle value bets sorting
