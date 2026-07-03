@@ -1023,6 +1023,11 @@ function renderBets(bets: ValueBet[]): HTMLElement {
         </div>
       </div>
 
+      <div class="text-[11px] text-neutral-450 leading-relaxed border-t border-neutral-850/50 pt-2 pb-1">
+        <span class="text-neutral-550 block text-[9px] font-bold uppercase tracking-wider mb-0.5">Scout Analysis</span>
+        ${b.reasoning}
+      </div>
+
       <div class="flex gap-2 border-t border-neutral-850 pt-2.5">
         <button class="track-bet-btn flex-1 py-1.5 bg-neutral-800 hover:bg-neutral-750 text-neutral-200 border border-neutral-700 hover:border-primary-500/50 rounded text-[11px] font-bold cursor-pointer transition-all text-center"
                 data-outcome="${b.outcome}" data-matchup="${b.awayTeam} @ ${b.homeTeam}" data-price="${b.bestPrice}" data-sport="${b.sport}" data-market="${b.marketLabel}">
