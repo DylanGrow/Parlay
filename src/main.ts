@@ -44,6 +44,9 @@ let customEvOdds: number = 130;
 // Tracker Tab Chart active selection
 let activeTrackerChartTab: 'trend' | 'allocation' = 'trend';
 
+// AI Agent active model provider selection
+let activeAiProvider: 'gemini' | 'openai' = 'gemini';
+
 // Sleek Toast Notification System
 function showToast(message: string, type: 'success' | 'info' | 'error' = 'success') {
   let container = document.getElementById('toast-container');
@@ -115,6 +118,10 @@ function loadPreferences() {
       betStake = defaultStake;
       hedgePrimaryStake = defaultStake;
     }
+    const savedProvider = localStorage.getItem('parlay_ai_provider');
+    if (savedProvider === 'gemini' || savedProvider === 'openai') {
+      activeAiProvider = savedProvider;
+    }
   } catch (e) {
     console.error('Failed to load preferences', e);
   }
@@ -126,6 +133,7 @@ function savePreferences() {
     localStorage.setItem('parlay_odds_format', oddsFormat);
     localStorage.setItem('parlay_bankroll_size', bankrollSize.toString());
     localStorage.setItem('parlay_default_stake', defaultStake.toString());
+    localStorage.setItem('parlay_ai_provider', activeAiProvider);
   } catch (e) {
     console.error('Failed to save preferences', e);
   }
@@ -2665,35 +2673,51 @@ async function init() {
 
 init();
 
-// AI Config Modal to enter Gemini API Key
+// AI Config Modal to enter Gemini or OpenAI API Keys
 function openAiConfigModal() {
   const existingModal = document.getElementById('ai-config-modal');
   if (existingModal) existingModal.remove();
 
-  const savedKey = localStorage.getItem('gemini_api_key') || '';
+  const savedGemini = localStorage.getItem('gemini_api_key') || '';
+  const savedOpenAI = localStorage.getItem('openai_api_key') || '';
 
   const modal = document.createElement('div');
   modal.id = 'ai-config-modal';
   modal.className = 'fixed inset-0 z-[10000] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4';
   
   modal.innerHTML = `
-    <div class="card border border-neutral-800 bg-neutral-900 shadow-2xl max-w-md w-full p-6 space-y-4">
+    <div class="card border border-neutral-800 bg-neutral-900 shadow-2xl max-w-md w-full p-6 space-y-4 animate-fade-in">
       <div class="flex items-center justify-between border-b border-neutral-800 pb-3 border-neutral-800/80">
         <h3 class="font-extrabold text-neutral-100 text-sm">🤖 AI Agent Settings</h3>
         <button id="close-ai-config" class="text-neutral-505 hover:text-neutral-300 text-lg cursor-pointer">×</button>
       </div>
 
-      <div class="space-y-3 text-xs leading-normal">
-        <p class="text-neutral-400">
-          The AI Agent scanner uses the <strong>Gemini API with Google Search Grounding</strong> to fetch real-world sports odds from the live web.
-        </p>
-        <p class="text-neutral-400">
-          Get a free API Key from <a href="https://aistudio.google.com/" target="_blank" class="text-primary-400 hover:underline font-bold">Google AI Studio</a>.
-        </p>
+      <div class="space-y-4 text-xs leading-normal">
+        <div class="flex flex-col gap-1.5">
+          <label for="ai-provider-select" class="font-bold text-neutral-450">Active AI Model Provider</label>
+          <select id="ai-provider-select" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs">
+            <option value="gemini" ${activeAiProvider === 'gemini' ? 'selected' : ''}>Google Gemini 2.5 (Search Grounded)</option>
+            <option value="openai" ${activeAiProvider === 'openai' ? 'selected' : ''}>OpenAI GPT-4o (Real-time Scout)</option>
+          </select>
+        </div>
 
-        <div class="flex flex-col gap-1.5 pt-2">
-          <label for="gemini-key-input" class="font-bold text-neutral-450">Gemini API Key</label>
-          <input id="gemini-key-input" type="password" value="${savedKey}" placeholder="AIzaSy..." 
+        <div class="w-full h-px bg-neutral-800/60 my-2"></div>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="gemini-key-input" class="font-bold text-neutral-450 flex items-center justify-between">
+            <span>Gemini API Key</span>
+            <a href="https://aistudio.google.com/" target="_blank" class="text-[10px] text-primary-400 hover:underline">Get Free Key</a>
+          </label>
+          <input id="gemini-key-input" type="password" value="${savedGemini}" placeholder="AIzaSy..." 
+                 class="w-full px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-252 font-bold rounded focus:outline-none focus:border-primary-500 text-xs" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="openai-key-input" class="font-bold text-neutral-450 flex items-center justify-between">
+            <span>OpenAI API Key</span>
+            <a href="https://platform.openai.com/api-keys" target="_blank" class="text-[10px] text-primary-400 hover:underline">Get OpenAI Key</a>
+          </label>
+          <input id="openai-key-input" type="password" value="${savedOpenAI}" placeholder="sk-..." 
                  class="w-full px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-252 font-bold rounded focus:outline-none focus:border-primary-500 text-xs" />
         </div>
       </div>
@@ -2703,7 +2727,7 @@ function openAiConfigModal() {
           Save Settings
         </button>
         <button id="clear-ai-config" class="px-3 py-2 bg-neutral-800 hover:bg-neutral-750 text-rose-400 font-bold rounded-lg cursor-pointer transition-all text-xs text-center">
-          Clear
+          Clear Keys
         </button>
       </div>
     </div>
@@ -2713,18 +2737,25 @@ function openAiConfigModal() {
 
   modal.querySelector('#close-ai-config')?.addEventListener('click', () => modal.remove());
   modal.querySelector('#save-ai-config')?.addEventListener('click', () => {
-    const key = (modal.querySelector('#gemini-key-input') as HTMLInputElement).value.trim();
-    if (key) {
-      localStorage.setItem('gemini_api_key', key);
-      showToast('Gemini API Key saved successfully!', 'success');
-      modal.remove();
-    } else {
-      showToast('API Key cannot be empty.', 'error');
-    }
+    const prov = (modal.querySelector('#ai-provider-select') as HTMLSelectElement).value as 'gemini' | 'openai';
+    const gemKey = (modal.querySelector('#gemini-key-input') as HTMLInputElement).value.trim();
+    const oaiKey = (modal.querySelector('#openai-key-input') as HTMLInputElement).value.trim();
+
+    activeAiProvider = prov;
+    if (gemKey) localStorage.setItem('gemini_api_key', gemKey);
+    else localStorage.removeItem('gemini_api_key');
+
+    if (oaiKey) localStorage.setItem('openai_api_key', oaiKey);
+    else localStorage.removeItem('openai_api_key');
+
+    savePreferences();
+    showToast(`AI settings saved. Active Engine: ${prov.toUpperCase()}`, 'success');
+    modal.remove();
   });
   modal.querySelector('#clear-ai-config')?.addEventListener('click', () => {
     localStorage.removeItem('gemini_api_key');
-    showToast('Gemini API Key cleared.', 'info');
+    localStorage.removeItem('openai_api_key');
+    showToast('All stored API keys cleared.', 'info');
     modal.remove();
   });
 }
@@ -2779,14 +2810,18 @@ function renderAiAgentSearchBox(): HTMLElement {
 
 // Post request to Gemini API with Search Grounding
 async function runAiAgentScan(query: string) {
-  const key = localStorage.getItem('gemini_api_key');
+  const provider = activeAiProvider;
+  const key = provider === 'gemini' 
+    ? localStorage.getItem('gemini_api_key') 
+    : localStorage.getItem('openai_api_key');
+
   if (!key) {
-    showToast('Configure your Gemini API Key first by clicking "🤖 AI Config".', 'error');
+    showToast(`Configure your ${provider === 'gemini' ? 'Gemini' : 'OpenAI'} API Key first by clicking "🤖 AI Config".`, 'error');
     openAiConfigModal();
     return;
   }
 
-  showLoadingOverlay('AI Agent is scanning the live web...');
+  showLoadingOverlay(`AI Agent (${provider.toUpperCase()}) is scanning...`);
 
   try {
     const promptText = `
@@ -2858,43 +2893,79 @@ Only return raw JSON. Do not wrap in markdown or code blocks.
 Query details: "${query}"
 `;
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
-    const body = {
-      contents: [
-        {
-          parts: [
-            {
-              text: promptText
-            }
-          ]
+    let rawText = '';
+    if (provider === 'gemini') {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
+      const body = {
+        contents: [
+          {
+            parts: [
+              {
+                text: promptText
+              }
+            ]
+          }
+        ],
+        tools: [
+          {
+            googleSearch: {}
+          }
+        ],
+        generationConfig: {
+          responseMimeType: "application/json"
         }
-      ],
-      tools: [
-        {
-          googleSearch: {}
-        }
-      ],
-      generationConfig: {
-        responseMimeType: "application/json"
+      };
+
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!resp.ok) {
+        throw new Error(`Gemini API error: ${resp.statusText}`);
       }
-    };
 
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    });
+      const data = await resp.json();
+      rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    } else {
+      const url = 'https://api.openai.com/v1/chat/completions';
+      const body = {
+        model: 'gpt-4o',
+        response_format: { type: 'json_object' },
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a sports betting quantitative analyst. You scan real sports matches, search for current odds across major bookmakers (DraftKings, FanDuel, Caesars, Bet365), calculate EV relative to no-vig fair prices, and output a structured JSON feed.'
+          },
+          {
+            role: 'user',
+            content: promptText
+          }
+        ]
+      };
 
-    if (!resp.ok) {
-      throw new Error(`Gemini API error: ${resp.statusText}`);
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!resp.ok) {
+        throw new Error(`OpenAI API error: ${resp.statusText}`);
+      }
+
+      const data = await resp.json();
+      rawText = data?.choices?.[0]?.message?.content;
     }
 
-    const data = await resp.json();
-    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!rawText) {
-      throw new Error("Could not extract response text from Gemini API response.");
+      throw new Error(`Could not extract response text from the ${provider.toUpperCase()} API response.`);
     }
 
     const parsed = JSON.parse(rawText) as BetsData;
