@@ -45,7 +45,7 @@ let customEvOdds: number = 130;
 let activeTrackerChartTab: 'trend' | 'allocation' = 'trend';
 
 // AI Agent active model provider selection
-let activeAiProvider: 'gemini' | 'openai' = 'gemini';
+let activeAiProvider: 'gemini' | 'openai' | 'openrouter' = 'gemini';
 
 // Sleek Toast Notification System
 function showToast(message: string, type: 'success' | 'info' | 'error' = 'success') {
@@ -119,7 +119,7 @@ function loadPreferences() {
       hedgePrimaryStake = defaultStake;
     }
     const savedProvider = localStorage.getItem('parlay_ai_provider');
-    if (savedProvider === 'gemini' || savedProvider === 'openai') {
+    if (savedProvider === 'gemini' || savedProvider === 'openai' || savedProvider === 'openrouter') {
       activeAiProvider = savedProvider;
     }
   } catch (e) {
@@ -2673,13 +2673,14 @@ async function init() {
 
 init();
 
-// AI Config Modal to enter Gemini or OpenAI API Keys
+// AI Config Modal to enter Gemini, OpenAI, or OpenRouter API Keys
 function openAiConfigModal() {
   const existingModal = document.getElementById('ai-config-modal');
   if (existingModal) existingModal.remove();
 
   const savedGemini = localStorage.getItem('gemini_api_key') || '';
   const savedOpenAI = localStorage.getItem('openai_api_key') || '';
+  const savedOpenRouter = localStorage.getItem('openrouter_api_key') || '';
 
   const modal = document.createElement('div');
   modal.id = 'ai-config-modal';
@@ -2698,6 +2699,7 @@ function openAiConfigModal() {
           <select id="ai-provider-select" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs">
             <option value="gemini" ${activeAiProvider === 'gemini' ? 'selected' : ''}>Google Gemini 2.5 (Search Grounded)</option>
             <option value="openai" ${activeAiProvider === 'openai' ? 'selected' : ''}>OpenAI GPT-4o (Real-time Scout)</option>
+            <option value="openrouter" ${activeAiProvider === 'openrouter' ? 'selected' : ''}>OpenRouter (Free Llama 3 / Mistral)</option>
           </select>
         </div>
 
@@ -2715,9 +2717,18 @@ function openAiConfigModal() {
         <div class="flex flex-col gap-1.5">
           <label for="openai-key-input" class="font-bold text-neutral-450 flex items-center justify-between">
             <span>OpenAI API Key</span>
-            <a href="https://platform.openai.com/api-keys" target="_blank" class="text-[10px] text-primary-400 hover:underline">Get OpenAI Key</a>
+            <a href="https://platform.openai.com/api-keys" target="_blank" class="text-[10px] text-primary-400 hover:underline font-bold">Get OpenAI Key</a>
           </label>
           <input id="openai-key-input" type="password" value="${savedOpenAI}" placeholder="sk-..." 
+                 class="w-full px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-252 font-bold rounded focus:outline-none focus:border-primary-500 text-xs" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="openrouter-key-input" class="font-bold text-neutral-450 flex items-center justify-between">
+            <span>OpenRouter API Key (Free Tier)</span>
+            <a href="https://openrouter.ai/keys" target="_blank" class="text-[10px] text-primary-400 hover:underline font-bold">Get OpenRouter Key</a>
+          </label>
+          <input id="openrouter-key-input" type="password" value="${savedOpenRouter}" placeholder="sk-or-..." 
                  class="w-full px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-252 font-bold rounded focus:outline-none focus:border-primary-500 text-xs" />
         </div>
       </div>
@@ -2737,9 +2748,10 @@ function openAiConfigModal() {
 
   modal.querySelector('#close-ai-config')?.addEventListener('click', () => modal.remove());
   modal.querySelector('#save-ai-config')?.addEventListener('click', () => {
-    const prov = (modal.querySelector('#ai-provider-select') as HTMLSelectElement).value as 'gemini' | 'openai';
+    const prov = (modal.querySelector('#ai-provider-select') as HTMLSelectElement).value as 'gemini' | 'openai' | 'openrouter';
     const gemKey = (modal.querySelector('#gemini-key-input') as HTMLInputElement).value.trim();
     const oaiKey = (modal.querySelector('#openai-key-input') as HTMLInputElement).value.trim();
+    const orKey = (modal.querySelector('#openrouter-key-input') as HTMLInputElement).value.trim();
 
     activeAiProvider = prov;
     if (gemKey) localStorage.setItem('gemini_api_key', gemKey);
@@ -2748,6 +2760,9 @@ function openAiConfigModal() {
     if (oaiKey) localStorage.setItem('openai_api_key', oaiKey);
     else localStorage.removeItem('openai_api_key');
 
+    if (orKey) localStorage.setItem('openrouter_api_key', orKey);
+    else localStorage.removeItem('openrouter_api_key');
+
     savePreferences();
     showToast(`AI settings saved. Active Engine: ${prov.toUpperCase()}`, 'success');
     modal.remove();
@@ -2755,6 +2770,7 @@ function openAiConfigModal() {
   modal.querySelector('#clear-ai-config')?.addEventListener('click', () => {
     localStorage.removeItem('gemini_api_key');
     localStorage.removeItem('openai_api_key');
+    localStorage.removeItem('openrouter_api_key');
     showToast('All stored API keys cleared.', 'info');
     modal.remove();
   });
@@ -2808,15 +2824,36 @@ function renderAiAgentSearchBox(): HTMLElement {
   return container;
 }
 
+// Helper to strip markdown formatting and parse JSON safely
+function cleanAndParseJson(text: string): any {
+  let cleaned = text.trim();
+  if (cleaned.startsWith('```')) {
+    const lines = cleaned.split('\n');
+    if (lines[0].startsWith('```')) {
+      lines.shift();
+    }
+    if (lines[lines.length - 1].startsWith('```')) {
+      lines.pop();
+    }
+    cleaned = lines.join('\n').trim();
+  }
+  return JSON.parse(cleaned);
+}
+
 // Post request to Gemini API with Search Grounding
 async function runAiAgentScan(query: string) {
   const provider = activeAiProvider;
-  const key = provider === 'gemini' 
-    ? localStorage.getItem('gemini_api_key') 
-    : localStorage.getItem('openai_api_key');
+  let key = '';
+  if (provider === 'gemini') {
+    key = localStorage.getItem('gemini_api_key') || '';
+  } else if (provider === 'openai') {
+    key = localStorage.getItem('openai_api_key') || '';
+  } else if (provider === 'openrouter') {
+    key = localStorage.getItem('openrouter_api_key') || '';
+  }
 
   if (!key) {
-    showToast(`Configure your ${provider === 'gemini' ? 'Gemini' : 'OpenAI'} API Key first by clicking "🤖 AI Config".`, 'error');
+    showToast(`Configure your ${provider.toUpperCase()} API Key first by clicking "🤖 AI Config".`, 'error');
     openAiConfigModal();
     return;
   }
@@ -2930,7 +2967,7 @@ Query details: "${query}"
 
       const data = await resp.json();
       rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    } else {
+    } else if (provider === 'openai') {
       const url = 'https://api.openai.com/v1/chat/completions';
       const body = {
         model: 'gpt-4o',
@@ -2962,13 +2999,46 @@ Query details: "${query}"
 
       const data = await resp.json();
       rawText = data?.choices?.[0]?.message?.content;
+    } else if (provider === 'openrouter') {
+      const url = 'https://openrouter.ai/api/v1/chat/completions';
+      const body = {
+        model: 'meta-llama/llama-3.1-8b-instruct:free',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a sports betting quantitative analyst. You scan real sports matches, search for current odds across major bookmakers (DraftKings, FanDuel, Caesars, Bet365), calculate EV relative to no-vig fair prices, and output a structured JSON feed. Return ONLY the raw JSON object.'
+          },
+          {
+            role: 'user',
+            content: promptText
+          }
+        ]
+      };
+
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`,
+          'HTTP-Referer': 'https://DylanGrow.github.io/Parlay/',
+          'X-Title': 'Parlay EV Engine'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!resp.ok) {
+        throw new Error(`OpenRouter API error: ${resp.statusText}`);
+      }
+
+      const data = await resp.json();
+      rawText = data?.choices?.[0]?.message?.content;
     }
 
     if (!rawText) {
       throw new Error(`Could not extract response text from the ${provider.toUpperCase()} API response.`);
     }
 
-    const parsed = JSON.parse(rawText) as BetsData;
+    const parsed = cleanAndParseJson(rawText) as BetsData;
     if (!parsed.topValueBets || !Array.isArray(parsed.topValueBets)) {
       throw new Error("AI Agent returned invalid data format structure.");
     }
