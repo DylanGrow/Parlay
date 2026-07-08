@@ -218,7 +218,7 @@ const formatOdds = (price: number): string => {
 };
 
 // Open Track Bet Confirmation Modal
-function openTrackBetModal(outcome: string, matchup: string, price: number, sport: string, marketLabel: string) {
+function openTrackBetModal(outcome: string, matchup: string, price: number, sport: string, marketLabel: string, trueOdds?: number, evPercent?: number) {
   const oldModal = document.getElementById('track-modal');
   if (oldModal) oldModal.remove();
 
@@ -263,7 +263,9 @@ function openTrackBetModal(outcome: string, matchup: string, price: number, spor
         marketLabel,
         stake,
         status: 'pending',
-        trackedAt: new Date().toISOString()
+        trackedAt: new Date().toISOString(),
+        trueOdds,
+        evPercent
       };
       trackedBets.push(newBet);
       saveTrackedBets();
@@ -489,7 +491,7 @@ function openComparisonModal(bet: ValueBet) {
   // Direct Track action handler
   modal.querySelector('#modal-track-btn')?.addEventListener('click', () => {
     modal.remove();
-    openTrackBetModal(bet.outcome, `${bet.awayTeam} @ ${bet.homeTeam}`, bet.bestPrice, bet.sport, bet.marketLabel);
+    openTrackBetModal(bet.outcome, `${bet.awayTeam} @ ${bet.homeTeam}`, bet.bestPrice, bet.sport, bet.marketLabel, bet.trueOdds, bet.evPercent);
   });
 }
 
@@ -937,7 +939,7 @@ function renderBets(bets: ValueBet[]): HTMLElement {
       </td>
       <td class="px-4 py-3.5 text-center">
         <button class="track-bet-btn text-xs bg-neutral-800 hover:bg-neutral-750 text-neutral-200 border border-neutral-700 hover:border-primary-500/50 rounded px-1.5 py-0.5 cursor-pointer font-bold transition-all"
-                data-outcome="${b.outcome}" data-matchup="${b.awayTeam} @ ${b.homeTeam}" data-price="${b.bestPrice}" data-sport="${b.sport}" data-market="${b.marketLabel}">
+                data-outcome="${b.outcome}" data-matchup="${b.awayTeam} @ ${b.homeTeam}" data-price="${b.bestPrice}" data-sport="${b.sport}" data-market="${b.marketLabel}" data-true-odds="${b.trueOdds}" data-ev-percent="${b.evPercent}">
           🎯 Track
         </button>
       </td>
@@ -1038,7 +1040,7 @@ function renderBets(bets: ValueBet[]): HTMLElement {
 
       <div class="flex gap-2 border-t border-neutral-850 pt-2.5">
         <button class="track-bet-btn flex-1 py-1.5 bg-neutral-800 hover:bg-neutral-750 text-neutral-200 border border-neutral-700 hover:border-primary-500/50 rounded text-[11px] font-bold cursor-pointer transition-all text-center"
-                data-outcome="${b.outcome}" data-matchup="${b.awayTeam} @ ${b.homeTeam}" data-price="${b.bestPrice}" data-sport="${b.sport}" data-market="${b.marketLabel}">
+                data-outcome="${b.outcome}" data-matchup="${b.awayTeam} @ ${b.homeTeam}" data-price="${b.bestPrice}" data-sport="${b.sport}" data-market="${b.marketLabel}" data-true-odds="${b.trueOdds}" data-ev-percent="${b.evPercent}">
           🎯 Track Bet
         </button>
       </div>
@@ -1072,7 +1074,11 @@ function renderBets(bets: ValueBet[]): HTMLElement {
         const price = parseInt(target.getAttribute('data-price')!, 10);
         const sport = target.getAttribute('data-sport')!;
         const market = target.getAttribute('data-market')!;
-        openTrackBetModal(outcome, matchup, price, sport, market);
+        const trueOddsStr = target.getAttribute('data-true-odds');
+        const evPercentStr = target.getAttribute('data-ev-percent');
+        const trueOdds = trueOddsStr ? parseInt(trueOddsStr, 10) : undefined;
+        const evPercent = evPercentStr ? parseFloat(evPercentStr) : undefined;
+        openTrackBetModal(outcome, matchup, price, sport, market, trueOdds, evPercent);
       });
     });
 
@@ -1119,16 +1125,7 @@ function renderTrackerView(): HTMLElement {
     return sum + profit;
   }, 0);
   const yieldPercent = totalRisked > 0 ? (totalProfit / totalRisked) * 100 : 0;
-
-  // Calculate Average Odds played (convert to decimal first, average, convert back)
   const resolved = trackedBets.filter(b => b.status !== 'pending');
-  const avgDecimalOdds = resolved.length > 0
-    ? resolved.reduce((sum, b) => sum + americanToDecimal(b.price), 0) / resolved.length
-    : 1;
-  const avgOddsFormatted = resolved.length > 0
-    ? formatOdds(decimalToAmerican(avgDecimalOdds))
-    : 'N/A';
-
   // Calculate active win/loss streak in chronological order
   const chronologicalResolved = [...trackedBets]
     .filter(b => b.status !== 'pending')
@@ -1149,30 +1146,102 @@ function renderTrackerView(): HTMLElement {
     streakText = type === 'won' ? `🔥 ${count} Win Streak` : `❄️ ${count} Loss Streak`;
   }
 
-  // Stats widgets header row
+  // 1. Calculate Sharpe Ratio of returns
+  let sharpeRatio = 0;
+  if (resolved.length > 1) {
+    const returns = resolved.map(b => {
+      if (b.status === 'won') {
+        const multiplier = americanToDecimal(b.price);
+        return b.stake * (multiplier - 1);
+      } else {
+        return -b.stake;
+      }
+    });
+
+    const meanReturn = returns.reduce((sum, r) => sum + r, 0) / returns.length;
+    const variance = returns.reduce((sum, r) => sum + Math.pow(r - meanReturn, 2), 0) / (returns.length - 1);
+    const stdDev = Math.sqrt(variance);
+    sharpeRatio = stdDev > 0 ? (meanReturn / stdDev) : 0;
+  }
+
+  // 2. Calculate Max Drawdown % (based on chronological resolved profits)
+  let maxDrawdown = 0;
+  if (resolved.length > 0) {
+    let currentBankroll = bankrollSize;
+    let peak = currentBankroll;
+    let maxDd = 0;
+    
+    // Sort resolved bets chronologically
+    const chrono = [...resolved].sort((a, b) => new Date(a.trackedAt).getTime() - new Date(b.trackedAt).getTime());
+    chrono.forEach(b => {
+      if (b.status === 'won') {
+        const multiplier = americanToDecimal(b.price);
+        currentBankroll += b.stake * (multiplier - 1);
+      } else {
+        currentBankroll -= b.stake;
+      }
+      peak = Math.max(peak, currentBankroll);
+      const dd = peak > 0 ? ((peak - currentBankroll) / peak) * 100 : 0;
+      maxDd = Math.max(maxDd, dd);
+    });
+    maxDrawdown = maxDd;
+  }
+
+  // 3. Calculate CLV Beating Rate
+  let clvBeatenCount = 0;
+  let clvMeasurableCount = 0;
+  resolved.forEach(b => {
+    if (b.trueOdds !== undefined) {
+      clvMeasurableCount++;
+      const placementDec = americanToDecimal(b.price);
+      const fairDec = americanToDecimal(b.trueOdds);
+      if (placementDec > fairDec) {
+        clvBeatenCount++;
+      }
+    }
+  });
+  const clvBeatRate = clvMeasurableCount > 0 ? (clvBeatenCount / clvMeasurableCount) * 100 : 0;
+
+  // Stats widgets header row (extended to 6 cards showing advanced quantitative metrics)
   const statsHtml = `
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center">
+    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 mb-6">
+      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center flex flex-col justify-between animate-fade-in">
         <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Record (W - L)</span>
         <span class="text-lg font-black text-neutral-100 mt-1 block">${wins} - ${losses}</span>
         <span class="text-[9px] text-neutral-500 mt-0.5 block">${pending} Pending Bets</span>
       </div>
-      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center">
+      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center flex flex-col justify-between animate-fade-in">
         <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Win Rate</span>
         <span class="text-lg font-black text-primary-400 mt-1 block">${winRate.toFixed(1)}%</span>
-        <span class="text-[9px] text-neutral-500 mt-0.5 block font-bold ${chronologicalResolved.length > 0 && chronologicalResolved[chronologicalResolved.length - 1].status === 'won' ? 'text-emerald-405' : 'text-rose-450'}">${streakText}</span>
+        <span class="text-[9px] text-neutral-500 mt-0.5 block font-bold ${chronologicalResolved.length > 0 && chronologicalResolved[chronologicalResolved.length - 1].status === 'won' ? 'text-emerald-450' : 'text-rose-450'}">${streakText}</span>
       </div>
-      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center relative overflow-hidden">
+      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center flex flex-col justify-between relative overflow-hidden animate-fade-in">
         <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Net Profit / Loss</span>
         <span class="text-lg font-black mt-1 block ${totalProfit >= 0 ? 'text-emerald-400' : 'text-rose-400'}">
           ${totalProfit >= 0 ? '+' : ''}$${totalProfit.toFixed(2)}
         </span>
         <span class="text-[9px] text-neutral-500 mt-0.5 block">Yield: <span class="font-extrabold ${totalProfit >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${totalProfit >= 0 ? '+' : ''}${yieldPercent.toFixed(1)}%</span></span>
       </div>
-      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center">
-        <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Average Odds</span>
-        <span class="text-lg font-black mt-1 block text-neutral-200">${avgOddsFormatted}</span>
-        <span class="text-[9px] text-neutral-500 mt-0.5 block">Risked: $${totalRisked.toFixed(0)}</span>
+      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center flex flex-col justify-between animate-fade-in">
+        <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Sharpe Ratio</span>
+        <span class="text-lg font-black mt-1 block ${sharpeRatio >= 1.0 ? 'text-emerald-400' : sharpeRatio > 0 ? 'text-amber-400' : 'text-neutral-400'}">
+          ${sharpeRatio.toFixed(2)}
+        </span>
+        <span class="text-[9px] text-neutral-500 mt-0.5 block">${sharpeRatio >= 1.0 ? '🔥 Low Risk Variance' : 'Standard Variance'}</span>
+      </div>
+      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center flex flex-col justify-between animate-fade-in">
+        <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">Max Drawdown</span>
+        <span class="text-lg font-black mt-1 block ${maxDrawdown > 20 ? 'text-rose-400' : maxDrawdown > 10 ? 'text-amber-400' : 'text-emerald-400'}">
+          -${maxDrawdown.toFixed(1)}%
+        </span>
+        <span class="text-[9px] text-neutral-500 mt-0.5 block">Worst capital dip</span>
+      </div>
+      <div class="card border border-neutral-800 bg-neutral-900/30 p-4 text-center flex flex-col justify-between animate-fade-in">
+        <span class="text-[9px] text-neutral-500 uppercase font-black tracking-wider block">CLV Beat Rate</span>
+        <span class="text-lg font-black mt-1 block ${clvBeatRate >= 60 ? 'text-emerald-400' : clvBeatRate >= 45 ? 'text-amber-400' : 'text-rose-400'}">
+          ${clvBeatRate.toFixed(1)}%
+        </span>
+        <span class="text-[9px] text-neutral-500 mt-0.5 block">Beats consensus fair line</span>
       </div>
     </div>
   `;

@@ -90,4 +90,6 @@ export interface TrackedBet {
   stake: number;
   status: 'won' | 'lost' | 'pending';
   trackedAt: string;
+  trueOdds?: number;
+  evPercent?: number;
 }
