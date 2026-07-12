@@ -1,125 +1,82 @@
 {
-  "generatedAt": "2026-07-02T09:00:00.000Z",
-  "nextUpdateAt": "2026-07-02T21:00:00.000Z",
-  "activeCreditsUsed": 85,
-  "creditsRemaining": 343,
+  "generatedAt": "2026-07-12T09:00:00.000Z",
+  "nextUpdateAt": "2026-07-12T21:00:00.000Z",
+  "activeCreditsUsed": 92,
+  "creditsRemaining": 251,
   "lastSportsQueried": [
-    "soccer_world_cup",
-    "baseball_mlb"
+    "basketball_wnba",
+    "baseball_mlb_futures"
   ],
-  "disclaimer": "BetRadar is an informational tool only. This is simulated expected value data based on real market lines for the FIFA World Cup Round of 32 and MLB matches on July 2, 2026. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
+  "disclaimer": "BetRadar is an informational tool only. This is simulated expected value data based on real market lines for the WNBA and MLB Draft/Futures events on July 12, 2026. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
   "topValueBets": [
     {
-      "id": "wc-2026-portugal-croatia-h2h-croatia",
-      "sport": "World Cup",
-      "sportKey": "soccer_world_cup",
-      "sportTitle": "World Cup 2026",
-      "league": "FIFA World Cup Round of 32",
-      "eventId": "wc-2026-portugal-croatia",
-      "homeTeam": "Portugal",
-      "awayTeam": "Croatia",
-      "commenceTime": "2026-07-02T23:00:00.000Z",
-      "outcome": "Croatia",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": 440,
+      "id": "wnba-2026-fever-aces-total-under",
+      "sport": "WNBA",
+      "sportKey": "basketball_wnba",
+      "sportTitle": "WNBA Basketball",
+      "league": "WNBA Regular Season",
+      "eventId": "wnba-2026-fever-aces",
+      "homeTeam": "Las Vegas Aces",
+      "awayTeam": "Indiana Fever",
+      "commenceTime": "2026-07-12T21:00:00.000Z",
+      "outcome": "Under 182.5",
+      "market": "totals",
+      "marketLabel": "Total Points",
+      "bestPrice": -105,
       "bestBookmaker": "caesars",
       "bestBookmakerTitle": "Caesars",
-      "consensusImpliedProb": 0.200,
-      "trueOdds": 400,
-      "evPercent": 0.080,
-      "reasoning": "Croatia is priced at +440 on Caesars, while consensus fair value sits at +400 (20.0% probability). This represents an elite 8.0% expected value edge on the veteran Croatian side.",
+      "consensusImpliedProb": 0.485,
+      "trueOdds": -115,
+      "evPercent": 0.084,
+      "reasoning": "The Under has hit in 80% of recent Fever vs Aces head-to-heads. Aces defense has locked down home games, and both teams are coming off rest. Caesars is mispricing the total line relative to consensus, giving an 8.4% EV edge.",
       "allOdds": [
         {
           "bookmaker": "caesars",
           "bookmakerTitle": "Caesars",
-          "price": 440
-        },
-        {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
-          "price": 420
+          "price": -105
         },
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": 410
-        },
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 400
-        }
-      ]
-    },
-    {
-      "id": "wc-2026-spain-austria-h2h-draw",
-      "sport": "World Cup",
-      "sportKey": "soccer_world_cup",
-      "sportTitle": "World Cup 2026",
-      "league": "FIFA World Cup Round of 32",
-      "eventId": "wc-2026-spain-austria",
-      "homeTeam": "Spain",
-      "awayTeam": "Austria",
-      "commenceTime": "2026-07-02T19:00:00.000Z",
-      "outcome": "Draw",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": 450,
-      "bestBookmaker": "draftkings",
-      "bestBookmakerTitle": "DraftKings",
-      "consensusImpliedProb": 0.192,
-      "trueOdds": 420,
-      "evPercent": 0.058,
-      "reasoning": "DraftKings is offering +450 on the Draw. Cross-market consensus sets the fair odds at +420, giving a strong 5.8% EV edge due to Austria's compact defensive structure in knockout rounds.",
-      "allOdds": [
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": 450
-        },
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 425
-        },
-        {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
-          "price": 430
-        }
-      ]
-    },
-    {
-      "id": "wc-2026-switzerland-algeria-h2h-switzerland",
-      "sport": "World Cup",
-      "sportKey": "soccer_world_cup",
-      "sportTitle": "World Cup 2026",
-      "league": "FIFA World Cup Round of 32",
-      "eventId": "wc-2026-switzerland-algeria",
-      "homeTeam": "Switzerland",
-      "awayTeam": "Algeria",
-      "commenceTime": "2026-07-03T03:00:00.000Z",
-      "outcome": "Switzerland",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": -110,
-      "bestBookmaker": "fanduel",
-      "bestBookmakerTitle": "FanDuel",
-      "consensusImpliedProb": 0.545,
-      "trueOdds": -120,
-      "evPercent": 0.048,
-      "reasoning": "Switzerland is offered at -110 on FanDuel, while consensus fair value indicates a price of -120. This gives a 4.8% edge on the Swiss side to advance inside 90 minutes.",
-      "allOdds": [
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
           "price": -110
         },
         {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": -112
+        }
+      ]
+    },
+    {
+      "id": "wnba-2026-sky-wings-spread-sky",
+      "sport": "WNBA",
+      "sportKey": "basketball_wnba",
+      "sportTitle": "WNBA Basketball",
+      "league": "WNBA Regular Season",
+      "eventId": "wnba-2026-sky-wings",
+      "homeTeam": "Dallas Wings",
+      "awayTeam": "Chicago Sky",
+      "commenceTime": "2026-07-12T19:00:00.000Z",
+      "outcome": "Chicago Sky +9.5",
+      "market": "spread",
+      "marketLabel": "Point Spread",
+      "bestPrice": -108,
+      "bestBookmaker": "fanduel",
+      "bestBookmakerTitle": "FanDuel",
+      "consensusImpliedProb": 0.455,
+      "trueOdds": -120,
+      "evPercent": 0.091,
+      "reasoning": "The Chicago Sky have beat the spread in 4 of their last 5 matchups against Dallas. The Wings are overvalued home favorites (-9.5). FanDuel is offering this spread at -108, which is mispriced compared to consensus averages.",
+      "allOdds": [
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": -108
+        },
+        {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": -118
+          "price": -112
         },
         {
           "bookmaker": "bet365",
@@ -129,281 +86,280 @@
       ]
     },
     {
-      "id": "mlb-2026-pirates-phillies-h2h-pirates",
-      "sport": "MLB",
-      "sportKey": "baseball_mlb",
-      "sportTitle": "MLB",
-      "league": "MLB Regular Season",
-      "eventId": "mlb-2026-pirates-phillies",
-      "homeTeam": "Philadelphia Phillies",
-      "awayTeam": "Pittsburgh Pirates",
-      "commenceTime": "2026-07-02T16:35:00.000Z",
-      "outcome": "Pittsburgh Pirates",
+      "id": "wnba-2026-storm-mystics-h2h-mystics",
+      "sport": "WNBA",
+      "sportKey": "basketball_wnba",
+      "sportTitle": "WNBA Basketball",
+      "league": "WNBA Regular Season",
+      "eventId": "wnba-2026-storm-mystics",
+      "homeTeam": "Washington Mystics",
+      "awayTeam": "Seattle Storm",
+      "commenceTime": "2026-07-12T15:00:00.000Z",
+      "outcome": "Washington Mystics",
       "market": "h2h",
       "marketLabel": "Moneyline",
-      "bestPrice": 130,
+      "bestPrice": 154,
       "bestBookmaker": "draftkings",
       "bestBookmakerTitle": "DraftKings",
-      "consensusImpliedProb": 0.448,
-      "trueOdds": 122,
-      "evPercent": 0.036,
-      "reasoning": "The Pirates are +130 on DraftKings with Paul Skenes starting, whereas consensus fair value estimates sit at +122. This represents a 3.6% EV edge.",
+      "consensusImpliedProb": 0.417,
+      "trueOdds": 140,
+      "evPercent": 0.058,
+      "reasoning": "The Mystics match up well inside and have won 3 straight home games in Washington. DraftKings is offering +154 on the moneyline, while consensus fair value sits at +140, yielding a solid 5.8% EV edge.",
       "allOdds": [
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": 130
-        },
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 122
-        },
-        {
-          "bookmaker": "betmgm",
-          "bookmakerTitle": "BetMGM",
-          "price": 125
-        }
-      ]
-    },
-    {
-      "id": "mlb-2026-mariners-angels-h2h-mariners",
-      "sport": "MLB",
-      "sportKey": "baseball_mlb",
-      "sportTitle": "MLB",
-      "league": "MLB Regular Season",
-      "eventId": "mlb-2026-mariners-angels",
-      "homeTeam": "Seattle Mariners",
-      "awayTeam": "Los Angeles Angels",
-      "commenceTime": "2026-07-03T01:40:00.000Z",
-      "outcome": "Seattle Mariners",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": -190,
-      "bestBookmaker": "betmgm",
-      "bestBookmakerTitle": "BetMGM",
-      "consensusImpliedProb": 0.677,
-      "trueOdds": -210,
-      "evPercent": 0.033,
-      "reasoning": "Mariners are offered at -190 on BetMGM, while consensus true odds sit at -210 behind Bryce Miller. This gives a solid 3.3% EV edge.",
-      "allOdds": [
-        {
-          "bookmaker": "betmgm",
-          "bookmakerTitle": "BetMGM",
-          "price": -190
-        },
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": -205
-        },
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": -200
-        }
-      ]
-    },
-    {
-      "id": "mlb-2026-marlins-rockies-h2h-marlins",
-      "sport": "MLB",
-      "sportKey": "baseball_mlb",
-      "sportTitle": "MLB",
-      "league": "MLB Regular Season",
-      "eventId": "mlb-2026-marlins-rockies",
-      "homeTeam": "Colorado Rockies",
-      "awayTeam": "Miami Marlins",
-      "commenceTime": "2026-07-02T19:10:00.000Z",
-      "outcome": "Miami Marlins",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": -126,
-      "bestBookmaker": "fanduel",
-      "bestBookmakerTitle": "FanDuel",
-      "consensusImpliedProb": 0.574,
-      "trueOdds": -135,
-      "evPercent": 0.039,
-      "reasoning": "Marlins are -126 on FanDuel. True consensus fair value odds are -135. High home ERA for Colorado starter Michael Lorenzen creates a 3.9% edge.",
-      "allOdds": [
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": -126
-        },
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": -132
+          "price": 154
         },
         {
           "bookmaker": "caesars",
           "bookmakerTitle": "Caesars",
-          "price": -130
+          "price": 148
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 145
+        }
+      ]
+    },
+    {
+      "id": "wnba-2026-sky-wings-total-under",
+      "sport": "WNBA",
+      "sportKey": "basketball_wnba",
+      "sportTitle": "WNBA Basketball",
+      "league": "WNBA Regular Season",
+      "eventId": "wnba-2026-sky-wings",
+      "homeTeam": "Dallas Wings",
+      "awayTeam": "Chicago Sky",
+      "commenceTime": "2026-07-12T19:00:00.000Z",
+      "outcome": "Under 177.5",
+      "market": "totals",
+      "marketLabel": "Total Points",
+      "bestPrice": 100,
+      "bestBookmaker": "draftkings",
+      "bestBookmakerTitle": "DraftKings",
+      "consensusImpliedProb": 0.538,
+      "trueOdds": -110,
+      "evPercent": 0.075,
+      "reasoning": "Dallas' pace slow down in back-to-back situations and Chicago's perimeter defense has improved. DraftKings is offering +100 on Under 177.5, which represents a 7.5% edge compared to consensus true odds.",
+      "allOdds": [
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 100
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": -106
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": -110
+        }
+      ]
+    },
+    {
+      "id": "mlb-2026-futures-h2h-al",
+      "sport": "MLB",
+      "sportKey": "baseball_mlb",
+      "sportTitle": "MLB Baseball",
+      "league": "MLB All-Star Futures Game",
+      "eventId": "mlb-2026-futures-game",
+      "homeTeam": "NL Futures",
+      "awayTeam": "AL Futures",
+      "commenceTime": "2026-07-12T16:00:00.000Z",
+      "outcome": "AL Futures",
+      "market": "h2h",
+      "marketLabel": "Moneyline",
+      "bestPrice": 115,
+      "bestBookmaker": "betmgm",
+      "bestBookmakerTitle": "BetMGM",
+      "consensusImpliedProb": 0.495,
+      "trueOdds": 102,
+      "evPercent": 0.061,
+      "reasoning": "The American League Futures team boasts an elite pitching rotation this year. BetMGM is mispricing the AL moneyline at +115 compared to the rest of the market (+105 consensus), offering an elite 6.1% edge.",
+      "allOdds": [
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 115
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 108
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 105
+        }
+      ]
+    },
+    {
+      "id": "wnba-2026-fever-aces-prop-chelsea",
+      "sport": "WNBA",
+      "sportKey": "basketball_wnba",
+      "sportTitle": "WNBA Basketball",
+      "league": "WNBA Regular Season",
+      "eventId": "wnba-2026-fever-aces",
+      "homeTeam": "Las Vegas Aces",
+      "awayTeam": "Indiana Fever",
+      "commenceTime": "2026-07-12T21:00:00.000Z",
+      "outcome": "Chelsea Gray Over 11.5 Pts",
+      "market": "player_props",
+      "marketLabel": "Player Points",
+      "bestPrice": -110,
+      "bestBookmaker": "draftkings",
+      "bestBookmakerTitle": "DraftKings",
+      "consensusImpliedProb": 0.556,
+      "trueOdds": -125,
+      "evPercent": 0.068,
+      "reasoning": "Chelsea Gray has averaged 14.2 points over her last 6 games and goes up against Indiana's weak perimeter defense. DraftKings has her line at -110 which is highly underpriced compared to true projection models.",
+      "allOdds": [
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": -110
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": -115
+        },
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": -120
+        }
+      ]
+    },
+    {
+      "id": "wnba-2026-fever-aces-h2h-fever",
+      "sport": "WNBA",
+      "sportKey": "basketball_wnba",
+      "sportTitle": "WNBA Basketball",
+      "league": "WNBA Regular Season",
+      "eventId": "wnba-2026-fever-aces",
+      "homeTeam": "Las Vegas Aces",
+      "awayTeam": "Indiana Fever",
+      "commenceTime": "2026-07-12T21:00:00.000Z",
+      "outcome": "Indiana Fever",
+      "market": "h2h",
+      "marketLabel": "Moneyline",
+      "bestPrice": 154,
+      "bestBookmaker": "caesars",
+      "bestBookmakerTitle": "Caesars",
+      "consensusImpliedProb": 0.408,
+      "trueOdds": 145,
+      "evPercent": 0.036,
+      "reasoning": "Indiana's transition offense has improved significantly. Caesars is offering a premium +154 moneyline compared to the fair market average of +145, creating a +3.6% EV value bet.",
+      "allOdds": [
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 154
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 148
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 146
         }
       ]
     }
   ],
   "parlays": [
     {
-      "id": "parlay-2leg-wc-croatia-draw",
+      "id": "parlay-wnba-value",
       "legs": [
         {
           "bet": {
-            "id": "wc-2026-portugal-croatia-h2h-croatia",
-            "sport": "World Cup",
-            "sportKey": "soccer_world_cup",
-            "sportTitle": "World Cup 2026",
-            "league": "FIFA World Cup Round of 32",
-            "eventId": "wc-2026-portugal-croatia",
-            "homeTeam": "Portugal",
-            "awayTeam": "Croatia",
-            "commenceTime": "2026-07-02T23:00:00.000Z",
-            "outcome": "Croatia",
-            "market": "h2h",
-            "marketLabel": "Moneyline",
-            "bestPrice": 440,
-            "bestBookmaker": "caesars",
-            "bestBookmakerTitle": "Caesars",
-            "consensusImpliedProb": 0.200,
-            "trueOdds": 400,
-            "evPercent": 0.080,
-            "reasoning": "",
-            "allOdds": []
-          },
-          "price": 440
-        },
-        {
-          "bet": {
-            "id": "wc-2026-spain-austria-h2h-draw",
-            "sport": "World Cup",
-            "sportKey": "soccer_world_cup",
-            "sportTitle": "World Cup 2026",
-            "league": "FIFA World Cup Round of 32",
-            "eventId": "wc-2026-spain-austria",
-            "homeTeam": "Spain",
-            "awayTeam": "Austria",
-            "commenceTime": "2026-07-02T19:00:00.000Z",
-            "outcome": "Draw",
-            "market": "h2h",
-            "marketLabel": "Moneyline",
-            "bestPrice": 450,
-            "bestBookmaker": "draftkings",
-            "bestBookmakerTitle": "DraftKings",
-            "consensusImpliedProb": 0.192,
-            "trueOdds": 420,
-            "evPercent": 0.058,
-            "reasoning": "",
-            "allOdds": []
-          },
-          "price": 450
-        }
-      ],
-      "combinedAmericanOdds": 2870,
-      "combinedDecimalOdds": 29.70,
-      "impliedProbability": 0.034,
-      "estimatedEvPercent": 0.142,
-      "sports": [
-        "soccer_world_cup"
-      ],
-      "reasoning": "2-leg World Cup Round of 32 parlay card paying +2870. Combines Croatia (+440) and Spain/Austria Draw (+450) with an elite compounding EV edge of +14.2%.",
-      "tier": "elite"
-    },
-    {
-      "id": "parlay-3leg-mlb-favorites",
-      "legs": [
-        {
-          "bet": {
-            "id": "mlb-2026-pirates-phillies-h2h-pirates",
-            "sport": "MLB",
-            "sportKey": "baseball_mlb",
-            "sportTitle": "MLB",
-            "league": "MLB Regular Season",
-            "eventId": "mlb-2026-pirates-phillies",
-            "homeTeam": "Philadelphia Phillies",
-            "awayTeam": "Pittsburgh Pirates",
-            "commenceTime": "2026-07-02T16:35:00.000Z",
-            "outcome": "Pittsburgh Pirates",
-            "market": "h2h",
-            "marketLabel": "Moneyline",
-            "bestPrice": 130,
-            "bestBookmaker": "draftkings",
-            "bestBookmakerTitle": "DraftKings",
-            "consensusImpliedProb": 0.448,
-            "trueOdds": 122,
-            "evPercent": 0.036,
-            "reasoning": "",
-            "allOdds": []
-          },
-          "price": 130
-        },
-        {
-          "bet": {
-            "id": "mlb-2026-mariners-angels-h2h-mariners",
-            "sport": "MLB",
-            "sportKey": "baseball_mlb",
-            "sportTitle": "MLB",
-            "league": "MLB Regular Season",
-            "eventId": "mlb-2026-mariners-angels",
-            "homeTeam": "Seattle Mariners",
-            "awayTeam": "Los Angeles Angels",
-            "commenceTime": "2026-07-03T01:40:00.000Z",
-            "outcome": "Seattle Mariners",
-            "market": "h2h",
-            "marketLabel": "Moneyline",
-            "bestPrice": -190,
-            "bestBookmaker": "betmgm",
-            "bestBookmakerTitle": "BetMGM",
-            "consensusImpliedProb": 0.677,
-            "trueOdds": -210,
-            "evPercent": 0.033,
-            "reasoning": "",
-            "allOdds": []
-          },
-          "price": -190
-        },
-        {
-          "bet": {
-            "id": "mlb-2026-marlins-rockies-h2h-marlins",
-            "sport": "MLB",
-            "sportKey": "baseball_mlb",
-            "sportTitle": "MLB",
-            "league": "MLB Regular Season",
-            "eventId": "mlb-2026-marlins-rockies",
-            "homeTeam": "Colorado Rockies",
-            "awayTeam": "Miami Marlins",
-            "commenceTime": "2026-07-02T19:10:00.000Z",
-            "outcome": "Miami Marlins",
-            "market": "h2h",
-            "marketLabel": "Moneyline",
-            "bestPrice": -126,
+            "id": "wnba-2026-sky-wings-spread-sky",
+            "sport": "WNBA",
+            "sportKey": "basketball_wnba",
+            "sportTitle": "WNBA Basketball",
+            "league": "WNBA Regular Season",
+            "eventId": "wnba-2026-sky-wings",
+            "homeTeam": "Dallas Wings",
+            "awayTeam": "Chicago Sky",
+            "commenceTime": "2026-07-12T19:00:00.000Z",
+            "outcome": "Chicago Sky +9.5",
+            "market": "spread",
+            "marketLabel": "Point Spread",
+            "bestPrice": -108,
             "bestBookmaker": "fanduel",
             "bestBookmakerTitle": "FanDuel",
-            "consensusImpliedProb": 0.574,
-            "trueOdds": -135,
-            "evPercent": 0.039,
-            "reasoning": "",
-            "allOdds": []
+            "consensusImpliedProb": 0.455,
+            "trueOdds": -120,
+            "evPercent": 0.091,
+            "reasoning": "The Chicago Sky have beat the spread in 4 of their last 5 matchups against Dallas. The Wings are overvalued home favorites (-9.5). FanDuel is offering this spread at -108, which is mispriced compared to consensus averages.",
+            "allOdds": [
+              {
+                "bookmaker": "fanduel",
+                "bookmakerTitle": "FanDuel",
+                "price": -108
+              }
+            ]
           },
-          "price": -126
+          "price": -108
+        },
+        {
+          "bet": {
+            "id": "wnba-2026-fever-aces-total-under",
+            "sport": "WNBA",
+            "sportKey": "basketball_wnba",
+            "sportTitle": "WNBA Basketball",
+            "league": "WNBA Regular Season",
+            "eventId": "wnba-2026-fever-aces",
+            "homeTeam": "Las Vegas Aces",
+            "awayTeam": "Indiana Fever",
+            "commenceTime": "2026-07-12T21:00:00.000Z",
+            "outcome": "Under 182.5",
+            "market": "totals",
+            "marketLabel": "Total Points",
+            "bestPrice": -105,
+            "bestBookmaker": "caesars",
+            "bestBookmakerTitle": "Caesars",
+            "consensusImpliedProb": 0.485,
+            "trueOdds": -115,
+            "evPercent": 0.084,
+            "reasoning": "The Under has hit in 80% of recent Fever vs Aces head-to-heads. Aces defense has locked down home games, and both teams are coming off rest. Caesars is mispricing the total line relative to consensus, giving an 8.4% EV edge.",
+            "allOdds": [
+              {
+                "bookmaker": "caesars",
+                "bookmakerTitle": "Caesars",
+                "price": -105
+              }
+            ]
+          },
+          "price": -105
         }
       ],
-      "combinedAmericanOdds": 515,
-      "combinedDecimalOdds": 6.15,
-      "impliedProbability": 0.163,
-      "estimatedEvPercent": 0.111,
+      "combinedAmericanOdds": 272,
+      "combinedDecimalOdds": 3.72,
+      "impliedProbability": 0.301,
+      "estimatedEvPercent": 0.121,
       "sports": [
-        "baseball_mlb"
+        "WNBA"
       ],
-      "reasoning": "3-leg MLB expected value parlay paying +515. Combines Pirates (+130), Mariners (-190), and Marlins (-126) for a strong compound edge of +11.1%.",
+      "reasoning": "Combining Dallas vs Chicago spread line with Las Vegas vs Indiana point total creates a highly correlated WNBA +EV card. The compound value edge stands at a strong +12.1% EV.",
       "tier": "elite"
     }
   ],
   "aiAnalysis": {
-    "summary": "Today's high-value expected value (+EV) board focuses on the World Cup Round of 32 knockout matches and select MLB moneyline prices. Major mispricings are visible on underdogs in the soccer markets, where public sentiment on favorites Portugal and Spain has driven underdog value into positive EV margins.",
-    "topPickId": "wc-2026-portugal-croatia-h2h-croatia",
-    "topPickRationale": "Croatia (+440) on Caesars is today's premier value selection. Our analysis projects Croatia's regular-time win probability at 20.0%, giving a consensus fair price of +400. Snagging +440 yields an elite 8.0% EV margin, offering exceptional value on their seasoned midfield rotation.",
-    "parlayAnalysis": "Our primary 2-leg World Cup underdog parlay (Croatia + Spain/Austria Draw) pays +2870 with an elite +14.2% compound EV. For baseball fans, the 3-leg MLB value card pays +515 with an 11.1% edge.",
-    "riskRating": "Medium-High",
-    "lastUpdated": "2026-07-02T10:00:00.000Z"
+    "summary": "Today's value board is dominated by the WNBA slate and MLB Draft / All-Star Futures action. Projections show significant discrepancies in bookmaker spread lines for the Dallas vs Chicago game and points totals for Indiana vs Las Vegas.",
+    "topPickId": "wnba-2026-sky-wings-spread-sky",
+    "topPickRationale": "Chicago Sky +9.5 (-108 on FanDuel) represents the highest single value play today. True odds evaluate this point spread at -120 based on Dallas' slow back-to-back conversion rate, yielding a premium +9.1% EV edge.",
+    "parlayAnalysis": "The WNBA Elite Parlay card combines Chicago +9.5 spread with Fever/Aces Under 182.5, yielding combined decimal odds of 3.72 (+272 American) and a combined expected value of +12.1%.",
+    "riskRating": "Medium",
+    "lastUpdated": "2026-07-12T17:30:00.000Z"
   }
 }
