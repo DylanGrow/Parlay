@@ -2549,6 +2549,9 @@ function renderApp() {
   // Reset container and layout
   app.innerHTML = '';
 
+  // Render Horizontal Scrolling Stock-Exchange Odds Ticker
+  app.appendChild(renderOddsTicker(currentData));
+
   // Get active win/loss tracker record details for header bar
   const wins = trackedBets.filter(b => b.status === 'won').length;
   const losses = trackedBets.filter(b => b.status === 'lost').length;
@@ -2890,6 +2893,80 @@ function renderAiAgentSearchBox(): HTMLElement {
     });
   }, 0);
 
+  return container;
+}
+
+// Render Horizontal Scrolling Stock-Exchange Odds Ticker
+function renderOddsTicker(data: BetsData | null): HTMLElement {
+  const container = document.createElement('div');
+  container.className = 'w-full bg-neutral-950 border-b border-neutral-900 overflow-hidden relative h-9 flex items-center z-40 select-none';
+  
+  const leftFade = document.createElement('div');
+  leftFade.className = 'absolute left-0 top-0 bottom-0 bg-gradient-to-r from-neutral-950 to-transparent w-16 z-10 pointer-events-none';
+  const rightFade = document.createElement('div');
+  rightFade.className = 'absolute right-0 top-0 bottom-0 bg-gradient-to-l from-neutral-950 to-transparent w-16 z-10 pointer-events-none';
+  container.appendChild(leftFade);
+  container.appendChild(rightFade);
+
+  const tickerContent = document.createElement('div');
+  tickerContent.id = 'odds-ticker-content';
+  tickerContent.className = 'flex whitespace-nowrap gap-12 animate-ticker text-[10px] font-black uppercase text-neutral-400 tracking-wider items-center';
+
+  let items: { text: string; betObj?: ValueBet }[] = [];
+
+  if (data && data.topValueBets && data.topValueBets.length > 0) {
+    data.topValueBets.forEach(b => {
+      const emoji = b.sport.toLowerCase().includes('soccer') || b.sport.toLowerCase().includes('world cup') ? '⚽' : b.sport.toLowerCase().includes('baseball') || b.sport.toLowerCase().includes('mlb') ? '⚾' : '🏀';
+      items.push({
+        text: `${emoji} ${b.outcome} (${formatOdds(b.bestPrice)} @ ${b.bestBookmakerTitle}) • +${(b.evPercent * 100).toFixed(1)}% EV`,
+        betObj: b
+      });
+    });
+  }
+
+  const generalLines = [
+    { text: '🏈 NFL • KC Chiefs -3.5 (-110) @ BAL Ravens +3.5 (-110)' },
+    { text: '🏈 NFL • SF 49ers ML (-145) @ PHI Eagles ML (+125)' },
+    { text: '⚾ MLB • NY Yankees ML (-115) @ BOS Red Sox ML (+105)' },
+    { text: '⚾ MLB • LA Dodgers -1.5 (-110) @ SD Padres +1.5 (-110)' },
+    { text: '⚽ Champions League • Real Madrid ML (+120) vs Man City ML (+210)' },
+    { text: '⚽ Premier League • Arsenal ML (-130) vs Chelsea ML (+340)' },
+    { text: '🎓 NCAA • Georgia Bulldogs ML (-190) @ Alabama Crimson Tide ML (+160)' },
+    { text: '🎓 NCAA • Ohio State ML (-210) @ Michigan Wolverines ML (+175)' }
+  ];
+
+  generalLines.forEach(g => {
+    items.push({ text: g.text });
+  });
+
+  const doubleItems = [...items, ...items];
+
+  doubleItems.forEach((item) => {
+    const itemEl = document.createElement('div');
+    itemEl.className = 'flex items-center gap-2';
+    
+    const indicator = document.createElement('span');
+    if (item.betObj) {
+      indicator.className = 'w-1.5 h-1.5 rounded-full bg-emerald-450 shadow-[0_0_8px_#00c6a2] animate-pulse';
+      itemEl.classList.add('cursor-pointer', 'hover:text-primary-400', 'transition-colors');
+      itemEl.addEventListener('click', () => {
+        if (item.betObj) {
+          openComparisonModal(item.betObj);
+        }
+      });
+    } else {
+      indicator.className = 'w-1 h-1 rounded-full bg-neutral-600';
+    }
+
+    const textSpan = document.createElement('span');
+    textSpan.textContent = item.text;
+
+    itemEl.appendChild(indicator);
+    itemEl.appendChild(textSpan);
+    tickerContent.appendChild(itemEl);
+  });
+
+  container.appendChild(tickerContent);
   return container;
 }
 

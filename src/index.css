@@ -196,3 +196,23 @@
   color: #00c6a2;
   text-shadow: 0 0 8px rgba(0, 198, 162, 0.4);
 }
+
+/* Continuous Horizontal Scrolling Ticker Styles */
+@keyframes ticker {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-ticker {
+  display: flex;
+  width: max-content;
+  animation: ticker 40s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
