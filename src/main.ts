@@ -46,6 +46,21 @@ let activeTrackerChartTab: 'trend' | 'allocation' = 'trend';
 
 // AI Agent active model provider selection
 let activeAiProvider: 'gemini' | 'openai' | 'openrouter' = 'gemini';
+let activeModelGemini: string = 'gemini-2.5-flash';
+let activeModelOpenAI: string = 'gpt-4o-mini';
+let activeModelOpenRouter: string = 'meta-llama/llama-3.1-8b-instruct:free';
+
+// Peer-to-Peer Leaderboard friends record
+interface FriendRecord {
+  name: string;
+  netProfit: number;
+  yieldPercent: number;
+  wins: number;
+  losses: number;
+  streakText: string;
+  lastUpdated: string;
+}
+let friendsList: FriendRecord[] = [];
 
 // Sleek Toast Notification System
 function showToast(message: string, type: 'success' | 'info' | 'error' = 'success') {
@@ -122,6 +137,10 @@ function loadPreferences() {
     if (savedProvider === 'gemini' || savedProvider === 'openai' || savedProvider === 'openrouter') {
       activeAiProvider = savedProvider;
     }
+    activeModelGemini = localStorage.getItem('parlay_model_gemini') || 'gemini-2.5-flash';
+    activeModelOpenAI = localStorage.getItem('parlay_model_openai') || 'gpt-4o-mini';
+    activeModelOpenRouter = localStorage.getItem('parlay_model_openrouter') || 'meta-llama/llama-3.1-8b-instruct:free';
+    friendsList = JSON.parse(localStorage.getItem('parlay_friends_list') || '[]');
   } catch (e) {
     console.error('Failed to load preferences', e);
   }
@@ -134,6 +153,9 @@ function savePreferences() {
     localStorage.setItem('parlay_bankroll_size', bankrollSize.toString());
     localStorage.setItem('parlay_default_stake', defaultStake.toString());
     localStorage.setItem('parlay_ai_provider', activeAiProvider);
+    localStorage.setItem('parlay_model_gemini', activeModelGemini);
+    localStorage.setItem('parlay_model_openai', activeModelOpenAI);
+    localStorage.setItem('parlay_model_openrouter', activeModelOpenRouter);
   } catch (e) {
     console.error('Failed to save preferences', e);
   }
@@ -640,7 +662,7 @@ function renderFilters(data: BetsData): HTMLElement {
   const sports = new Set<string>();
   data.topValueBets.forEach(bet => sports.add(bet.sport));
 
-  const allCategories = ['All', 'Watchlist', 'Tracker', ...Array.from(sports)];
+  const allCategories = ['All', 'Watchlist', 'Tracker', 'Leaderboard', ...Array.from(sports)];
 
   allCategories.forEach(category => {
     const btn = document.createElement('button');
@@ -650,6 +672,8 @@ function renderFilters(data: BetsData): HTMLElement {
     } else if (category === 'Tracker') {
       const pendingCount = trackedBets.filter(b => b.status === 'pending').length;
       label = `📈 Bet Tracker (${trackedBets.length})${pendingCount > 0 ? ` [${pendingCount}]` : ''}`;
+    } else if (category === 'Leaderboard') {
+      label = `👥 Friends Pool (${friendsList.length + 1})`;
     } else if (category !== 'All') {
       const matchingBet = data.topValueBets.find(b => b.sport === category);
       if (matchingBet) {
@@ -881,7 +905,7 @@ function renderBets(bets: ValueBet[]): HTMLElement {
           <span class="tooltiptext">Expected Value: The theoretical margin of profit relative to the consensus fair odds.</span>
         </span>
       </th>
-      <th scope="col" class="px-4 py-3 w-[250px]">Mathematical Rationale</th>
+      <th scope="col" class="px-4 py-3 text-center w-[110px]">Scout Details</th>
     </tr>
   `;
   table.appendChild(thead);
@@ -975,11 +999,73 @@ function renderBets(bets: ValueBet[]): HTMLElement {
           +${(b.evPercent * 100).toFixed(1)}%
         </span>
       </td>
-      <td class="px-4 py-3.5 text-neutral-450 text-[11px] leading-relaxed">
-        ${b.reasoning}
+      <td class="px-4 py-3.5 text-center">
+        <button class="toggle-scout-btn px-2 py-1 bg-neutral-800 hover:bg-neutral-755 text-primary-500 hover:text-primary-400 border border-neutral-700 hover:border-primary-500/30 rounded text-[10px] font-black uppercase cursor-pointer transition-all active:scale-95">
+          🔍 Scout
+        </button>
       </td>
     `;
     tbody.appendChild(tr);
+
+    // Expandable Desktop Scout Row
+    const scoutTr = document.createElement('tr');
+    scoutTr.id = `scout-row-${b.id}`;
+    scoutTr.className = 'hidden bg-neutral-950/60 border-l border-r border-neutral-850';
+    scoutTr.innerHTML = `
+      <td colspan="9" class="px-6 py-4 border-b border-neutral-850">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-neutral-300">
+          <div class="space-y-3">
+            <div>
+              <span class="text-neutral-500 font-bold uppercase text-[9px] tracking-wider block">AI Projections Confidence</span>
+              <div class="flex items-center gap-3 mt-1.5">
+                <div class="w-full bg-neutral-850 h-2 rounded overflow-hidden relative">
+                  <div class="bg-gradient-to-r from-emerald-500 to-primary-500 h-full rounded shadow-[0_0_8px_#00c6a2]" style="width: ${b.confidenceScore || 75}%"></div>
+                </div>
+                <span class="font-black text-primary-400 text-xs">${b.confidenceScore || 75}%</span>
+              </div>
+            </div>
+            
+            <div class="bg-neutral-900/60 border border-neutral-850 p-3 rounded-lg">
+              <span class="text-neutral-500 font-bold uppercase text-[9px] tracking-wider block">Kelly Portfolio Staker</span>
+              <div class="flex items-center justify-between mt-2">
+                <div>
+                  <span class="text-[10px] text-neutral-450 block">Suggested Stake (1/4 Kelly)</span>
+                  <span class="text-xs font-black text-emerald-450 mt-0.5 block">$${((b.evPercent / (americanToDecimal(b.bestPrice) - 1)) * 0.25 * bankrollSize).toFixed(2)}</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-[10px] text-neutral-450 block">Edge</span>
+                  <span class="text-xs font-black text-primary-400 mt-0.5 block">+${(b.evPercent * 100).toFixed(1)}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2 border-l border-neutral-850 pl-6">
+            <div>
+              <span class="text-neutral-500 font-bold uppercase text-[9px] tracking-wider block">Matchup Injury Report</span>
+              ${b.injuries && b.injuries.length > 0 ? `
+                <ul class="list-disc list-inside space-y-1 mt-1.5 text-neutral-350 text-[11px]">
+                  ${b.injuries.map(inj => `<li>${inj}</li>`).join('')}
+                </ul>
+              ` : `
+                <p class="text-[11px] text-neutral-500 mt-1.5 italic">No major injuries reported.</p>
+              `}
+            </div>
+            ${b.injuryImpact ? `
+              <div class="mt-2 text-[10px] bg-rose-500/5 text-rose-300 border border-rose-500/10 p-2 rounded leading-relaxed">
+                <strong>Impact:</strong> ${b.injuryImpact}
+              </div>
+            ` : ''}
+          </div>
+
+          <div class="space-y-1.5 border-l border-neutral-850 pl-6">
+            <span class="text-neutral-500 font-bold uppercase text-[9px] tracking-wider block">Scout Matchup Vetting</span>
+            <p class="text-[11px] text-neutral-350 leading-relaxed mt-1.5 font-medium">${b.reasoning}</p>
+          </div>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(scoutTr);
 
     const card = document.createElement('div');
     card.className = `card border border-neutral-800 bg-neutral-900/40 p-4 space-y-3 relative overflow-hidden new-bet-row${cardHighlightClass}`;
@@ -1033,9 +1119,51 @@ function renderBets(bets: ValueBet[]): HTMLElement {
         </div>
       </div>
 
-      <div class="text-[11px] text-neutral-450 leading-relaxed border-t border-neutral-850/50 pt-2 pb-1">
-        <span class="text-neutral-550 block text-[9px] font-bold uppercase tracking-wider mb-0.5">Scout Analysis</span>
-        ${b.reasoning}
+      <button class="toggle-scout-mobile-btn w-full mt-2 py-1.5 bg-neutral-950 border border-neutral-850 rounded text-[10px] font-black uppercase text-primary-400 hover:text-primary-300 flex items-center justify-center gap-1 cursor-pointer transition-all active:scale-95" data-id="${b.id}">
+        <span>🔍</span> Show Scout & Injury Report
+      </button>
+      <div id="scout-drawer-mobile-${b.id}" class="hidden space-y-4 pt-3 border-t border-neutral-850/50 mt-3 text-xs">
+        <div>
+          <span class="text-neutral-550 block text-[9px] font-bold uppercase tracking-wider mb-1">AI Projections Confidence</span>
+          <div class="flex items-center gap-3">
+            <div class="w-full bg-neutral-850 h-2 rounded overflow-hidden relative">
+              <div class="bg-gradient-to-r from-emerald-500 to-primary-500 h-full rounded shadow-[0_0_8px_#00c6a2]" style="width: ${b.confidenceScore || 75}%"></div>
+            </div>
+            <span class="font-black text-primary-400">${b.confidenceScore || 75}%</span>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3 bg-neutral-950/60 p-2.5 rounded-lg border border-neutral-850">
+          <div>
+            <span class="text-[9px] text-neutral-500 font-bold uppercase block">1/4 Kelly Stake</span>
+            <span class="text-xs font-black text-emerald-450 block mt-0.5">$${((b.evPercent / (americanToDecimal(b.bestPrice) - 1)) * 0.25 * bankrollSize).toFixed(2)}</span>
+          </div>
+          <div class="text-right">
+            <span class="text-[9px] text-neutral-500 font-bold uppercase block">Portfolio Edge</span>
+            <span class="text-xs font-black text-primary-400 block mt-0.5">+${(b.evPercent * 100).toFixed(1)}%</span>
+          </div>
+        </div>
+
+        <div>
+          <span class="text-neutral-550 block text-[9px] font-bold uppercase tracking-wider mb-1">Injuries Report</span>
+          ${b.injuries && b.injuries.length > 0 ? `
+            <ul class="list-disc list-inside space-y-1 text-neutral-350 text-[11px]">
+              ${b.injuries.map(inj => `<li>${inj}</li>`).join('')}
+            </ul>
+          ` : `
+            <p class="text-[11px] text-neutral-500 italic">No major injuries reported.</p>
+          `}
+          ${b.injuryImpact ? `
+            <p class="text-[10px] text-rose-300 bg-rose-500/5 border border-rose-500/10 p-2 rounded leading-relaxed mt-2">
+              <strong>Impact:</strong> ${b.injuryImpact}
+            </p>
+          ` : ''}
+        </div>
+
+        <div>
+          <span class="text-neutral-550 block text-[9px] font-bold uppercase tracking-wider mb-1">Matchup Scout Vetting</span>
+          <p class="text-[11px] text-neutral-350 leading-relaxed font-medium">${b.reasoning}</p>
+        </div>
       </div>
 
       <div class="flex gap-2 border-t border-neutral-850 pt-2.5">
@@ -1050,6 +1178,24 @@ function renderBets(bets: ValueBet[]): HTMLElement {
     setTimeout(() => {
       tr.querySelector(`#compare-btn-${b.id}`)?.addEventListener('click', () => openComparisonModal(b));
       card.querySelector(`#compare-btn-mobile-${b.id}`)?.addEventListener('click', () => openComparisonModal(b));
+      
+      tr.querySelector(`.toggle-scout-btn`)?.addEventListener('click', (e) => {
+        const btn = e.currentTarget as HTMLButtonElement;
+        const row = tbody.querySelector(`#scout-row-${b.id}`) as HTMLElement;
+        if (row) {
+          const isHidden = row.classList.toggle('hidden');
+          btn.textContent = isHidden ? '🔍 Scout' : '❌ Hide';
+        }
+      });
+
+      card.querySelector(`.toggle-scout-mobile-btn`)?.addEventListener('click', (e) => {
+        const btn = e.currentTarget as HTMLButtonElement;
+        const drawer = card.querySelector(`#scout-drawer-mobile-${b.id}`) as HTMLElement;
+        if (drawer) {
+          const isHidden = drawer.classList.toggle('hidden');
+          btn.innerHTML = isHidden ? '<span>🔍</span> Show Scout & Injury Report' : '<span>❌</span> Hide Scout Report';
+        }
+      });
     }, 0);
   });
 
@@ -1097,6 +1243,184 @@ function renderBets(bets: ValueBet[]): HTMLElement {
           simulatedLegs = simulatedLegs.filter(l => l.betId !== id);
         }
         renderSimulatorApp();
+      });
+    });
+  }, 0);
+
+  return container;
+}
+
+// Render Peer-to-Peer Leaderboard (Friends Pool) tab
+function renderLeaderboardView(): HTMLElement {
+  const container = document.createElement('section');
+  container.className = 'mb-10 animate-fade-in';
+
+  const resolved = trackedBets.filter(b => b.status !== 'pending');
+  const wins = resolved.filter(b => b.status === 'won').length;
+  const losses = resolved.filter(b => b.status === 'lost').length;
+  
+  const totalRisked = resolved.reduce((sum, b) => sum + b.stake, 0);
+  const totalProfit = resolved.reduce((sum, b) => {
+    if (b.status === 'lost') return sum - b.stake;
+    const multiplier = americanToDecimal(b.price);
+    const profit = b.stake * (multiplier - 1);
+    return sum + profit;
+  }, 0);
+  const yieldPercent = totalRisked > 0 ? (totalProfit / totalRisked) * 100 : 0;
+
+  const chronologicalResolved = [...resolved]
+    .sort((a, b) => new Date(a.trackedAt).getTime() - new Date(b.trackedAt).getTime());
+  
+  let streakText = 'No streak';
+  if (chronologicalResolved.length > 0) {
+    const lastBet = chronologicalResolved[chronologicalResolved.length - 1];
+    const type = lastBet.status;
+    let count = 0;
+    for (let i = chronologicalResolved.length - 1; i >= 0; i--) {
+      if (chronologicalResolved[i].status === type) {
+        count++;
+      } else {
+        break;
+      }
+    }
+    streakText = type === 'won' ? `🔥 ${count} W` : `❄️ ${count} L`;
+  }
+
+  const myRecord: FriendRecord = {
+    name: 'You (Base)',
+    netProfit: totalProfit,
+    yieldPercent: yieldPercent,
+    wins: wins,
+    losses: losses,
+    streakText: streakText,
+    lastUpdated: new Date().toISOString()
+  };
+
+  const leaderboard: FriendRecord[] = [myRecord, ...friendsList];
+  leaderboard.sort((a, b) => b.yieldPercent - a.yieldPercent);
+
+  container.innerHTML = `
+    <div class="card bg-neutral-900 border border-neutral-850 p-6 space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-neutral-800 pb-4">
+        <div>
+          <h2 class="text-lg font-black tracking-tight text-neutral-100 uppercase">👥 Friend Group Pool</h2>
+          <p class="text-xs text-neutral-450 mt-1 leading-normal">Compare your yield and betting performance side-by-side with friends using serverless client-side sharing.</p>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <button id="generate-share-code" class="px-3 py-2 bg-primary-500 hover:bg-primary-400 text-neutral-950 font-black rounded-lg cursor-pointer text-xs transition-all active:scale-95">
+            📤 Copy My Share Code
+          </button>
+          <button id="import-friend-code" class="px-3 py-2 bg-neutral-800 hover:bg-neutral-750 text-neutral-200 border border-neutral-750 font-black rounded-lg cursor-pointer text-xs transition-all active:scale-95">
+            📥 Import Friend Code
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs leading-normal border-collapse">
+          <thead>
+            <tr class="border-b border-neutral-800 text-[10px] font-black uppercase text-neutral-450 tracking-wider">
+              <th class="py-3 px-2">Rank</th>
+              <th class="py-3 px-2">Nickname</th>
+              <th class="py-3 px-2 text-right">Yield %</th>
+              <th class="py-3 px-2 text-right">Net Profit</th>
+              <th class="py-3 px-2 text-center">Record (W-L)</th>
+              <th class="py-3 px-2 text-center">Streak</th>
+              <th class="py-3 px-2 text-right">Last Sync</th>
+              <th class="py-3 px-2 text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-neutral-850">
+            ${leaderboard.map((f, idx) => {
+              const isUser = f.name.includes('You');
+              const yieldClass = f.yieldPercent > 0 ? 'text-emerald-450 font-black' : f.yieldPercent < 0 ? 'text-rose-400 font-bold' : 'text-neutral-400';
+              const profitClass = f.netProfit > 0 ? 'text-emerald-450' : f.netProfit < 0 ? 'text-rose-400' : 'text-neutral-400';
+              const dateStr = new Date(f.lastUpdated).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+              
+              return `
+                <tr class="${isUser ? 'bg-primary-500/5 font-extrabold border-l-2 border-primary-500' : ''} hover:bg-neutral-850/30 transition-colors">
+                  <td class="py-4 px-2 font-black">${idx + 1}</td>
+                  <td class="py-4 px-2 flex items-center gap-2">
+                    <span>${isUser ? '🏆' : '👤'}</span>
+                    <span>${f.name}</span>
+                  </td>
+                  <td class="py-4 px-2 text-right ${yieldClass}">${f.yieldPercent.toFixed(2)}%</td>
+                  <td class="py-4 px-2 text-right ${profitClass}">$${f.netProfit.toFixed(2)}</td>
+                  <td class="py-4 px-2 text-center font-mono">${f.wins}W - ${f.losses}L</td>
+                  <td class="py-4 px-2 text-center">${f.streakText}</td>
+                  <td class="py-4 px-2 text-right text-[10px] text-neutral-500">${dateStr}</td>
+                  <td class="py-4 px-2 text-center">
+                    ${isUser ? '<span class="text-neutral-600">-</span>' : `
+                      <button data-remove-name="${f.name}" class="remove-friend-btn text-rose-400 hover:text-rose-300 hover:underline cursor-pointer font-bold text-[10px]">
+                        Remove
+                      </button>
+                    `}
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+  setTimeout(() => {
+    container.querySelector('#generate-share-code')?.addEventListener('click', () => {
+      const shareData = {
+        name: 'You',
+        netProfit: totalProfit,
+        yieldPercent: yieldPercent,
+        wins: wins,
+        losses: losses,
+        streakText: streakText,
+        lastUpdated: new Date().toISOString()
+      };
+      
+      const shareCode = btoa(JSON.stringify(shareData));
+      navigator.clipboard.writeText(shareCode).then(() => {
+        showToast('Your share code has been copied to your clipboard! Send it to your friends.', 'success');
+      }).catch(err => {
+        console.error('Clipboard copy failed:', err);
+        window.prompt('Copy your share code:', shareCode);
+      });
+    });
+
+    container.querySelector('#import-friend-code')?.addEventListener('click', () => {
+      const code = window.prompt('Paste your friend\'s share code here:');
+      if (!code) return;
+      try {
+        const decoded = JSON.parse(atob(code.trim())) as FriendRecord;
+        if (typeof decoded.yieldPercent !== 'number' || typeof decoded.name !== 'string') {
+          throw new Error('Invalid code format');
+        }
+
+        const nick = window.prompt(`Enter a nickname for this friend (e.g. "${decoded.name}"):`, decoded.name);
+        if (!nick) return;
+
+        decoded.name = nick.trim();
+        decoded.lastUpdated = new Date().toISOString();
+
+        friendsList = friendsList.filter(f => f.name !== decoded.name);
+        friendsList.push(decoded);
+
+        localStorage.setItem('parlay_friends_list', JSON.stringify(friendsList));
+        showToast(`Friend "${decoded.name}" successfully added to pool!`, 'success');
+        renderApp();
+      } catch (err) {
+        showToast('Failed to parse share code. Please make sure you copied the entire code.', 'error');
+      }
+    });
+
+    container.querySelectorAll('.remove-friend-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const name = (e.currentTarget as HTMLElement).getAttribute('data-remove-name');
+        if (name && window.confirm(`Are you sure you want to remove "${name}" from your pool?`)) {
+          friendsList = friendsList.filter(f => f.name !== name);
+          localStorage.setItem('parlay_friends_list', JSON.stringify(friendsList));
+          showToast(`Removed "${name}" from pool.`, 'info');
+          renderApp();
+        }
       });
     });
   }, 0);
@@ -2639,6 +2963,9 @@ function renderApp() {
   if (currentSportFilter === 'Tracker') {
     app.appendChild(renderFilters(currentData));
     app.appendChild(renderTrackerView());
+  } else if (currentSportFilter === 'Leaderboard') {
+    app.appendChild(renderFilters(currentData));
+    app.appendChild(renderLeaderboardView());
   } else {
     // AI Daily Insights panel
     const aiPanel = renderAIAnalysis(currentData);
@@ -2701,6 +3028,16 @@ async function handleRefresh() {
 
 // App Initialization with skeleton loading states
 async function init() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlKey = urlParams.get('openai_key') || urlParams.get('key');
+  if (urlKey) {
+    localStorage.setItem('openai_api_key', urlKey);
+    localStorage.setItem('parlay_ai_provider', 'openai');
+    activeAiProvider = 'openai';
+    window.history.replaceState({}, document.title, window.location.pathname);
+    showToast('OpenAI API Key configured from URL!', 'success');
+  }
+
   const app = document.getElementById('app')!;
   app.innerHTML = `
     <div class="space-y-6">
@@ -2721,9 +3058,20 @@ async function init() {
   loadTrackedBets();
 
   try {
-    await new Promise(resolve => setTimeout(resolve, 600));
+    await new Promise(resolve => setTimeout(resolve, 300));
     currentData = await loadData();
     renderApp();
+
+    const activeKey = activeAiProvider === 'gemini' 
+      ? localStorage.getItem('gemini_api_key') 
+      : activeAiProvider === 'openai'
+        ? localStorage.getItem('openai_api_key')
+        : localStorage.getItem('openrouter_api_key');
+
+    if (activeKey) {
+      showToast(`Running background AI sync (${activeAiProvider.toUpperCase()})...`, 'info');
+      runAiAgentScanBackground('Find current value bets for MLB, WNBA, Soccer, NCAA');
+    }
   } catch (err) {
     console.error(err);
     app.innerHTML = `
@@ -2784,6 +3132,10 @@ function openAiConfigModal() {
           </label>
           <input id="gemini-key-input" type="password" value="${savedGemini}" placeholder="AIzaSy..." 
                  class="w-full px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-252 font-bold rounded focus:outline-none focus:border-primary-500 text-xs" />
+          <select id="gemini-model-select" class="w-full mt-1.5 px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs">
+            <option value="gemini-2.5-flash" ${activeModelGemini === 'gemini-2.5-flash' ? 'selected' : ''}>Gemini 2.5 Flash (Default)</option>
+            <option value="gemini-2.5-pro" ${activeModelGemini === 'gemini-2.5-pro' ? 'selected' : ''}>Gemini 2.5 Pro (Precision)</option>
+          </select>
         </div>
 
         <div class="flex flex-col gap-1.5">
@@ -2793,6 +3145,10 @@ function openAiConfigModal() {
           </label>
           <input id="openai-key-input" type="password" value="${savedOpenAI}" placeholder="sk-..." 
                  class="w-full px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-252 font-bold rounded focus:outline-none focus:border-primary-500 text-xs" />
+          <select id="openai-model-select" class="w-full mt-1.5 px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs">
+            <option value="gpt-4o-mini" ${activeModelOpenAI === 'gpt-4o-mini' ? 'selected' : ''}>GPT-4o Mini (Ultra-fast)</option>
+            <option value="gpt-4o" ${activeModelOpenAI === 'gpt-4o' ? 'selected' : ''}>GPT-4o (Premium Precision)</option>
+          </select>
         </div>
 
         <div class="flex flex-col gap-1.5">
@@ -2802,6 +3158,11 @@ function openAiConfigModal() {
           </label>
           <input id="openrouter-key-input" type="password" value="${savedOpenRouter}" placeholder="sk-or-..." 
                  class="w-full px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-252 font-bold rounded focus:outline-none focus:border-primary-500 text-xs" />
+          <select id="openrouter-model-select" class="w-full mt-1.5 px-3 py-2 bg-neutral-950 border border-neutral-850 text-neutral-200 font-bold rounded focus:outline-none focus:border-primary-500 text-xs">
+            <option value="meta-llama/llama-3.1-8b-instruct:free" ${activeModelOpenRouter === 'meta-llama/llama-3.1-8b-instruct:free' ? 'selected' : ''}>Llama 3.1 8B (Free)</option>
+            <option value="google/gemma-2-9b-it:free" ${activeModelOpenRouter === 'google/gemma-2-9b-it:free' ? 'selected' : ''}>Gemma 2 9B (Free)</option>
+            <option value="mistralai/mistral-7b-instruct:free" ${activeModelOpenRouter === 'mistralai/mistral-7b-instruct:free' ? 'selected' : ''}>Mistral 7B (Free)</option>
+          </select>
         </div>
       </div>
 
@@ -2825,7 +3186,15 @@ function openAiConfigModal() {
     const oaiKey = (modal.querySelector('#openai-key-input') as HTMLInputElement).value.trim();
     const orKey = (modal.querySelector('#openrouter-key-input') as HTMLInputElement).value.trim();
 
+    const gemModel = (modal.querySelector('#gemini-model-select') as HTMLSelectElement).value;
+    const oaiModel = (modal.querySelector('#openai-model-select') as HTMLSelectElement).value;
+    const orModel = (modal.querySelector('#openrouter-model-select') as HTMLSelectElement).value;
+
     activeAiProvider = prov;
+    activeModelGemini = gemModel;
+    activeModelOpenAI = oaiModel;
+    activeModelOpenRouter = orModel;
+
     if (gemKey) localStorage.setItem('gemini_api_key', gemKey);
     else localStorage.removeItem('gemini_api_key');
 
@@ -2836,7 +3205,7 @@ function openAiConfigModal() {
     else localStorage.removeItem('openrouter_api_key');
 
     savePreferences();
-    showToast(`AI settings saved. Active Engine: ${prov.toUpperCase()}`, 'success');
+    showToast(`AI settings saved. Active Engine: ${prov.toUpperCase()} (${(prov === 'gemini' ? gemModel : prov === 'openai' ? oaiModel : orModel)})`, 'success');
     modal.remove();
   });
   modal.querySelector('#clear-ai-config')?.addEventListener('click', () => {
@@ -3017,6 +3386,9 @@ CRITICAL INSTRUCTIONS:
    - The matchup context (e.g., starting pitchers, key team injuries, recent form).
    - The fair no-vig line comparison.
    - Why the selected bookmaker's line is mispriced and represents a strong positive EV edge.
+3. For each bet, include the 'confidenceScore' field (0 to 100 integer representing model confidence rating).
+4. For each bet, include 'injuries' (string array of key out/doubtful players).
+5. For each bet, include 'injuryImpact' (1-sentence summary of the injuries' overall impact).
 
 Return a JSON object conforming EXACTLY to the following TypeScript interface:
 interface BetsData {
@@ -3028,7 +3400,7 @@ interface BetsData {
   disclaimer: string;
   topValueBets: {
     id: string; // unique ID
-    sport: string; // e.g. "MLB", "World Cup", "Soccer"
+    sport: string; // e.g. "MLB", "World Cup", "Soccer", "WNBA"
     sportKey: string;
     sportTitle: string;
     league: string;
@@ -3046,6 +3418,9 @@ interface BetsData {
     trueOdds: number; // American odds
     evPercent: number; // float e.g. 0.05 for 5% edge
     reasoning: string; // VETTING REASON: detailed pitcher matchup, team news, and EV value
+    confidenceScore: number; // 0 to 100 rating
+    injuries: string[]; // key player injuries
+    injuryImpact: string; // 1-sentence impact analysis
     allOdds: { bookmaker: string; bookmakerTitle: string; price: number }[];
   }[];
   parlays: {
@@ -3078,7 +3453,7 @@ Query details: "${query}"
 
     let rawText = '';
     if (provider === 'gemini') {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${activeModelGemini}:generateContent?key=${key}`;
       const body = {
         contents: [
           {
@@ -3116,7 +3491,7 @@ Query details: "${query}"
     } else if (provider === 'openai') {
       const url = 'https://api.openai.com/v1/chat/completions';
       const body = {
-        model: 'gpt-4o',
+        model: activeModelOpenAI,
         response_format: { type: 'json_object' },
         messages: [
           {
@@ -3148,7 +3523,7 @@ Query details: "${query}"
     } else if (provider === 'openrouter') {
       const url = 'https://openrouter.ai/api/v1/chat/completions';
       const body = {
-        model: 'meta-llama/llama-3.1-8b-instruct:free',
+        model: activeModelOpenRouter,
         messages: [
           {
             role: 'system',
@@ -3197,6 +3572,176 @@ Query details: "${query}"
     showToast(`AI Scan failed: ${err?.message || err}`, 'error');
   } finally {
     hideLoadingOverlay();
+  }
+}
+
+// Background silent AI scanner triggered on page load
+async function runAiAgentScanBackground(query: string) {
+  const provider = activeAiProvider;
+  let key = '';
+  if (provider === 'gemini') {
+    key = localStorage.getItem('gemini_api_key') || '';
+  } else if (provider === 'openai') {
+    key = localStorage.getItem('openai_api_key') || '';
+  } else if (provider === 'openrouter') {
+    key = localStorage.getItem('openrouter_api_key') || '';
+  }
+
+  if (!key) return;
+
+  try {
+    const promptText = `
+Perform a live Google Search to find current real-world sports betting odds for matches taking place today or tomorrow.
+Find real prices across licensed bookmakers (like DraftKings, FanDuel, Bet365, Caesars) and calculate positive Expected Value (+EV) opportunities relative to no-vig fair odds.
+
+CRITICAL INSTRUCTIONS:
+1. You MUST find and return between 5 to 8 distinct, high-value +EV bet opportunities.
+2. For each bet, the 'reasoning' field MUST contain a detailed, high-quality matchup vetting analysis (3-4 sentences) explaining:
+   - The matchup context (e.g., starting pitchers, key team injuries, recent form).
+   - The fair no-vig line comparison.
+   - Why the selected bookmaker's line is mispriced and represents a strong positive EV edge.
+3. For each bet, include the 'confidenceScore' field (0 to 100 integer representing model confidence rating).
+4. For each bet, include 'injuries' (string array of key out/doubtful players).
+5. For each bet, include 'injuryImpact' (1-sentence summary of the injuries' overall impact).
+
+Return a JSON object conforming EXACTLY to the following TypeScript interface:
+interface BetsData {
+  generatedAt: string; // ISO date string of now
+  nextUpdateAt: string; // ISO date string
+  activeCreditsUsed: number;
+  creditsRemaining: number;
+  lastSportsQueried: string[];
+  disclaimer: string;
+  topValueBets: {
+    id: string; // unique ID
+    sport: string; // e.g. "MLB", "World Cup", "Soccer", "WNBA"
+    sportKey: string;
+    sportTitle: string;
+    league: string;
+    eventId: string;
+    homeTeam: string;
+    awayTeam: string;
+    commenceTime: string; // ISO string
+    outcome: string; // winner selection home/away/draw
+    market: string; // "h2h"
+    marketLabel: string; // "Moneyline"
+    bestPrice: number; // American odds e.g. +150, -110
+    bestBookmaker: string;
+    bestBookmakerTitle: string;
+    consensusImpliedProb: number; // float 0 to 1
+    trueOdds: number; // American odds
+    evPercent: number; // float e.g. 0.05 for 5% edge
+    reasoning: string; // VETTING REASON: detailed pitcher matchup, team news, and EV value
+    confidenceScore: number; // 0 to 100 rating
+    injuries: string[]; // key player injuries
+    injuryImpact: string; // 1-sentence impact analysis
+    allOdds: { bookmaker: string; bookmakerTitle: string; price: number }[];
+  }[];
+  parlays: {
+    id: string;
+    legs: {
+      bet: any; // matches topValueBets structure
+      price: number;
+    }[];
+    combinedAmericanOdds: number;
+    combinedDecimalOdds: number;
+    impliedProbability: number;
+    estimatedEvPercent: number;
+    sports: string[];
+    reasoning: string;
+    tier: "elite" | "strong";
+  }[];
+  aiAnalysis: {
+    summary: string;
+    topPickId: string;
+    topPickRationale: string;
+    parlayAnalysis: string;
+    riskRating: string;
+    lastUpdated: string;
+  };
+}
+
+Only return raw JSON. Do not wrap in markdown or code blocks.
+Query details: "${query}"
+`;
+
+    let rawText = '';
+    if (provider === 'gemini') {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${activeModelGemini}:generateContent?key=${key}`;
+      const body = {
+        contents: [{ parts: [{ text: promptText }] }],
+        tools: [{ googleSearch: {} }],
+        generationConfig: { responseMimeType: "application/json" }
+      };
+
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      }
+    } else if (provider === 'openai') {
+      const url = 'https://api.openai.com/v1/chat/completions';
+      const body = {
+        model: activeModelOpenAI,
+        response_format: { type: 'json_object' },
+        messages: [
+          { role: 'system', content: 'You are a sports betting quantitative analyst. Output a structured JSON feed.' },
+          { role: 'user', content: promptText }
+        ]
+      };
+
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`
+        },
+        body: JSON.stringify(body)
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        rawText = data?.choices?.[0]?.message?.content;
+      }
+    } else if (provider === 'openrouter') {
+      const url = 'https://openrouter.ai/api/v1/chat/completions';
+      const body = {
+        model: activeModelOpenRouter,
+        messages: [
+          { role: 'system', content: 'You are a sports betting quantitative analyst. Return ONLY the raw JSON object.' },
+          { role: 'user', content: promptText }
+        ]
+      };
+
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`,
+          'HTTP-Referer': 'https://DylanGrow.github.io/Parlay/',
+          'X-Title': 'Parlay EV Engine'
+        },
+        body: JSON.stringify(body)
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        rawText = data?.choices?.[0]?.message?.content;
+      }
+    }
+
+    if (rawText) {
+      const parsed = cleanAndParseJson(rawText) as BetsData;
+      if (parsed.topValueBets && Array.isArray(parsed.topValueBets)) {
+        currentData = parsed;
+        renderApp();
+        showToast('AI background sync complete: Loaded live bets!', 'success');
+      }
+    }
+  } catch (err) {
+    console.error('Background AI Scan failed:', err);
   }
 }
 

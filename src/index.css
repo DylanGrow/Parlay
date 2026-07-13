@@ -216,3 +216,39 @@
 .animate-ticker:hover {
   animation-play-state: paused;
 }
+
+/* Neon glow utility borders */
+.glow-border-gold {
+  border-color: rgba(250, 204, 21, 0.45) !important;
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.15) !important;
+}
+
+.glow-border-emerald {
+  border-color: rgba(0, 198, 162, 0.45) !important;
+  box-shadow: 0 0 10px rgba(0, 198, 162, 0.15) !important;
+}
+
+/* Mobile UX Overrides for better text sizing and larger touch targets */
+@media (max-width: 768px) {
+  .card {
+    padding: 1.25rem !important;
+  }
+  .text-xs {
+    font-size: 0.8rem !important;
+  }
+  .text-\[11px\] {
+    font-size: 0.75rem !important;
+  }
+  .text-\[10px\] {
+    font-size: 0.7rem !important;
+  }
+  .track-bet-btn {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    font-size: 0.75rem !important;
+  }
+  input[type="number"], select {
+    font-size: 0.8rem !important;
+    height: 2.25rem !important;
+  }
+}

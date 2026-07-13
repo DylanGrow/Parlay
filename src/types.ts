@@ -32,6 +32,9 @@ export interface ValueBet {
   allOdds: BookmakerOdds[];
   point?: number; // spread or total line
   reasoning: string; // human-readable why this is a value bet
+  confidenceScore?: number; // 0-100 consensus confidence rating
+  injuries?: string[]; // list of key out/doubtful players
+  injuryImpact?: string; // 1-sentence injury analysis
 }
 
 export interface ParlayLeg {
