@@ -1,167 +1,245 @@
 {
-  "generatedAt": "2026-07-13T21:00:00.000Z",
-  "nextUpdateAt": "2026-07-14T09:00:00.000Z",
-  "activeCreditsUsed": 98,
-  "creditsRemaining": 153,
+  "generatedAt": "2026-07-15T09:00:00.000Z",
+  "nextUpdateAt": "2026-07-15T21:00:00.000Z",
+  "activeCreditsUsed": 105,
+  "creditsRemaining": 48,
   "lastSportsQueried": [
     "soccer_world_cup",
-    "baseball_mlb_allstar",
     "basketball_wnba"
   ],
-  "disclaimer": "BetRadar is an informational tool only. This is simulated expected value data based on real market lines for the FIFA World Cup Semifinals, MLB All-Star Game, and WNBA matches on July 14, 2026. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
+  "disclaimer": "BetRadar is an informational tool only. This is simulated expected value data based on real market lines for the FIFA World Cup Semifinal and WNBA matches on July 15, 2026. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
   "topValueBets": [
     {
-      "id": "wc-2026-france-spain-h2h-spain",
+      "id": "wc-2026-england-argentina-to-advance-argentina",
       "sport": "World Cup",
       "sportKey": "soccer_world_cup",
       "sportTitle": "World Cup 2026",
       "league": "FIFA World Cup Semifinal",
-      "eventId": "wc-2026-france-spain",
-      "homeTeam": "France",
-      "awayTeam": "Spain",
-      "commenceTime": "2026-07-14T19:00:00.000Z",
-      "outcome": "Spain",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": 225,
-      "bestBookmaker": "bet365",
-      "bestBookmakerTitle": "Bet365",
-      "consensusImpliedProb": 0.328,
-      "trueOdds": 205,
-      "evPercent": 0.065,
-      "reasoning": "Spain's tactical midfield setup matches up exceptionally well against France's transition defense. Bet365 is mispricing the 3-way moneyline on Spain at +225 compared to the market average, offering a strong 6.5% EV edge.",
+      "eventId": "wc-2026-england-argentina",
+      "homeTeam": "England",
+      "awayTeam": "Argentina",
+      "commenceTime": "2026-07-15T15:00:00.000Z",
+      "outcome": "Argentina To Advance",
+      "market": "to_qualify",
+      "marketLabel": "To Qualify",
+      "bestPrice": 114,
+      "bestBookmaker": "fanduel",
+      "bestBookmakerTitle": "FanDuel",
+      "consensusImpliedProb": 0.512,
+      "trueOdds": -105,
+      "evPercent": 0.086,
+      "reasoning": "Argentina's defensive line has conceded only 1 goal in their last 3 knockout matches, and Messi's playmaker distribution provides an elite edge in final thirds. FanDuel is offering a premium +114 on Argentina to advance, which is highly mispriced compared to consensus fair odds of -105, yielding an 8.6% EV edge.",
       "allOdds": [
         {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
-          "price": 225
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 114
         },
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": 215
+          "price": 108
         },
         {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 210
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 105
         }
       ],
-      "confidenceScore": 88,
+      "confidenceScore": 92,
       "injuries": [
-        "Dani Carvajal (Spain) - Out (Suspended)",
-        "Robin Le Normand (Spain) - Out (Suspended)"
+        "Marcos Acuña (Argentina) - Out (Muscle injury)"
       ],
-      "injuryImpact": "Spain will miss two key defensive starters due to card suspensions, forcing tactical adjustments in their backline."
+      "injuryImpact": "Acuña is ruled out for the semifinal with a muscle strain, but Tagliafico is fully cleared to slot into the starting left-back role, minimizing tactical disruption."
     },
     {
-      "id": "wc-2026-france-spain-total-under",
+      "id": "wc-2026-england-argentina-total-under",
       "sport": "World Cup",
       "sportKey": "soccer_world_cup",
       "sportTitle": "World Cup 2026",
       "league": "FIFA World Cup Semifinal",
-      "eventId": "wc-2026-france-spain",
-      "homeTeam": "France",
-      "awayTeam": "Spain",
-      "commenceTime": "2026-07-14T19:00:00.000Z",
+      "eventId": "wc-2026-england-argentina",
+      "homeTeam": "England",
+      "awayTeam": "Argentina",
+      "commenceTime": "2026-07-15T15:00:00.000Z",
       "outcome": "Under 2.5 Goals",
       "market": "totals",
       "marketLabel": "Total Goals",
-      "bestPrice": -115,
+      "bestPrice": -150,
       "bestBookmaker": "caesars",
       "bestBookmakerTitle": "Caesars",
-      "consensusImpliedProb": 0.556,
-      "trueOdds": -125,
-      "evPercent": 0.042,
-      "reasoning": "World Cup semifinals are historically cagey, low-scoring fixtures. Both nations boast elite defensive units that prioritize shape and safety. Caesars' -115 represents a +4.2% EV edge on the Under.",
+      "consensusImpliedProb": 0.631,
+      "trueOdds": -170,
+      "evPercent": 0.051,
+      "reasoning": "Knockout matches involving Argentina and England have historically been defensive stalemates. With both teams sporting elite double-pivot midfield shapes, a low-scoring regulation time is highly likely. Caesars' -150 offers a strong 5.1% EV edge.",
       "allOdds": [
         {
           "bookmaker": "caesars",
           "bookmakerTitle": "Caesars",
+          "price": -150
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": -155
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": -160
+        }
+      ],
+      "confidenceScore": 86,
+      "injuries": [
+        "Harry Kane (England) - Active (Minor ankle brace)"
+      ],
+      "injuryImpact": "Kane will start but is wearing a minor supportive ankle brace, potentially limiting his off-ball mobility inside the box."
+    },
+    {
+      "id": "wnba-2026-storm-sky-h2h-storm",
+      "sport": "WNBA",
+      "sportKey": "basketball_wnba",
+      "sportTitle": "WNBA Basketball",
+      "league": "WNBA Regular Season",
+      "eventId": "wnba-2026-storm-sky",
+      "homeTeam": "Chicago Sky",
+      "awayTeam": "Seattle Storm",
+      "commenceTime": "2026-07-15T16:00:00.000Z",
+      "outcome": "Seattle Storm",
+      "market": "h2h",
+      "marketLabel": "Moneyline",
+      "bestPrice": 115,
+      "bestBookmaker": "draftkings",
+      "bestBookmakerTitle": "DraftKings",
+      "consensusImpliedProb": 0.498,
+      "trueOdds": -105,
+      "evPercent": 0.073,
+      "reasoning": "The Storm match up well against Chicago's transition offense and are undervalued underdogs (+115) coming off their narrow loss. DraftKings' line represents a +7.3% EV edge compared to fair projections.",
+      "allOdds": [
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 115
+        },
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 110
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 108
+        }
+      ],
+      "confidenceScore": 81,
+      "injuries": [],
+      "injuryImpact": "No major injuries reported; both rosters are active and playing at full starting strength."
+    },
+    {
+      "id": "wnba-2026-valkyries-fever-spread-valkyries",
+      "sport": "WNBA",
+      "sportKey": "basketball_wnba",
+      "sportTitle": "WNBA Basketball",
+      "league": "WNBA Regular Season",
+      "eventId": "wnba-2026-valkyries-fever",
+      "homeTeam": "Indiana Fever",
+      "awayTeam": "Golden State Valkyries",
+      "commenceTime": "2026-07-15T20:00:00.000Z",
+      "outcome": "Golden State Valkyries +3.0",
+      "market": "spread",
+      "marketLabel": "Point Spread",
+      "bestPrice": -108,
+      "bestBookmaker": "fanduel",
+      "bestBookmakerTitle": "FanDuel",
+      "consensusImpliedProb": 0.545,
+      "trueOdds": -120,
+      "evPercent": 0.068,
+      "reasoning": "The Valkyries are on an elite 7-game winning streak and should not be +3.0 underdogs even on the road against the Fever. FanDuel's -108 line offers a premium 6.8% EV edge compared to consensus true odds.",
+      "allOdds": [
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": -108
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": -112
+        },
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": -115
+        }
+      ],
+      "confidenceScore": 87,
+      "injuries": [],
+      "injuryImpact": "Both teams enter the matchup healthy with clean injury sheets."
+    },
+    {
+      "id": "wnba-2026-sparks-lynx-spread-lynx",
+      "sport": "WNBA",
+      "sportKey": "basketball_wnba",
+      "sportTitle": "WNBA Basketball",
+      "league": "WNBA Regular Season",
+      "eventId": "wnba-2026-sparks-lynx",
+      "homeTeam": "Minnesota Lynx",
+      "awayTeam": "Los Angeles Sparks",
+      "commenceTime": "2026-07-15T17:00:00.000Z",
+      "outcome": "Minnesota Lynx -12.5",
+      "market": "spread",
+      "marketLabel": "Point Spread",
+      "bestPrice": -110,
+      "bestBookmaker": "betmgm",
+      "bestBookmakerTitle": "BetMGM",
+      "consensusImpliedProb": 0.524,
+      "trueOdds": -125,
+      "evPercent": 0.054,
+      "reasoning": "Minnesota is on a hot 3-game win streak, while the Sparks have struggled defensively, giving up 101 points in their last matchup. BetMGM is mispricing the -12.5 spread compared to fair projections, creating a 5.4% EV opportunity.",
+      "allOdds": [
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": -110
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
           "price": -115
         },
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
           "price": -118
-        },
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": -122
         }
       ],
-      "confidenceScore": 82,
+      "confidenceScore": 84,
       "injuries": [
-        "Kylian Mbappé (France) - Active (Playing with mask)",
-        "Pedri (Spain) - Out (Knee injury)"
+        "Cameron Brink (Sparks) - Out (ACL Injury)"
       ],
-      "injuryImpact": "Pedri is ruled out for the tournament with a knee sprain, which limits Spain's creative rotation, while Mbappé plays slightly restricted by his facial mask."
+      "injuryImpact": "Brink's interior defensive presence remains a major loss for the Sparks, leaving their paint vulnerable to Minnesota's elite post rotations."
     },
     {
-      "id": "mlb-2026-allstar-h2h-al",
-      "sport": "MLB",
-      "sportKey": "baseball_mlb",
-      "sportTitle": "MLB Baseball",
-      "league": "MLB All-Star Game",
-      "eventId": "mlb-2026-all-star",
-      "homeTeam": "National League",
-      "awayTeam": "American League",
-      "commenceTime": "2026-07-14T20:00:00.000Z",
-      "outcome": "American League",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": 127,
-      "bestBookmaker": "fanduel",
-      "bestBookmakerTitle": "FanDuel",
-      "consensusImpliedProb": 0.465,
-      "trueOdds": 115,
-      "evPercent": 0.056,
-      "reasoning": "The American League boasts a stronger batting order and late-inning bullpen depth in this year's roster. FanDuel is offering a premium +127 on the AL moneyline, representing a +5.6% EV value bet.",
-      "allOdds": [
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 127
-        },
-        {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
-          "price": 120
-        },
-        {
-          "bookmaker": "betmgm",
-          "bookmakerTitle": "BetMGM",
-          "price": 118
-        }
-      ],
-      "confidenceScore": 80,
-      "injuries": [
-        "Aaron Judge (AL) - Active (Starting LF)",
-        "Shohei Ohtani (NL) - Active (Starting DH)"
-      ],
-      "injuryImpact": "All marquee stars are active and healthy for the starting rosters, making this All-Star matchup a full-strength display."
-    },
-    {
-      "id": "wnba-2026-portland-connecticut-spread-connecticut",
+      "id": "wnba-2026-storm-sky-total-under",
       "sport": "WNBA",
       "sportKey": "basketball_wnba",
       "sportTitle": "WNBA Basketball",
       "league": "WNBA Regular Season",
-      "eventId": "wnba-2026-portland-connecticut",
-      "homeTeam": "Connecticut Sun",
-      "awayTeam": "Portland Fire",
-      "commenceTime": "2026-07-14T20:00:00.000Z",
-      "outcome": "Connecticut Sun -8.5",
-      "market": "spread",
-      "marketLabel": "Point Spread",
+      "eventId": "wnba-2026-storm-sky",
+      "homeTeam": "Chicago Sky",
+      "awayTeam": "Seattle Storm",
+      "commenceTime": "2026-07-15T16:00:00.000Z",
+      "outcome": "Under 171.0",
+      "market": "totals",
+      "marketLabel": "Total Points",
       "bestPrice": -110,
       "bestBookmaker": "draftkings",
       "bestBookmakerTitle": "DraftKings",
       "consensusImpliedProb": 0.545,
       "trueOdds": -120,
-      "evPercent": 0.045,
-      "reasoning": "The Sun are superior in rebounding and defensive rating. Portland's young backcourt will struggle against Connecticut's physical perimeter press. DraftKings is offering -110 on -8.5, which is underpriced by 4.5% EV.",
+      "evPercent": 0.048,
+      "reasoning": "Both teams have shown perimeter defensive improvements and are coming off rest days, which historically lowers pace. DraftKings' -110 line offers a 4.8% EV edge.",
       "allOdds": [
         {
           "bookmaker": "draftkings",
@@ -171,191 +249,147 @@
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": -114
+          "price": -115
         },
         {
           "bookmaker": "caesars",
           "bookmakerTitle": "Caesars",
-          "price": -115
+          "price": -118
         }
       ],
-      "confidenceScore": 85,
-      "injuries": [
-        "Portland - No major injury reports",
-        "Connecticut - No major injury reports"
-      ],
-      "injuryImpact": "Both teams are healthy and playing at full roster strength."
-    },
-    {
-      "id": "mlb-2026-allstar-total-under",
-      "sport": "MLB",
-      "sportKey": "baseball_mlb",
-      "sportTitle": "MLB Baseball",
-      "league": "MLB All-Star Game",
-      "eventId": "mlb-2026-all-star",
-      "homeTeam": "National League",
-      "awayTeam": "American League",
-      "commenceTime": "2026-07-14T20:00:00.000Z",
-      "outcome": "Under 7.5 Runs",
-      "market": "totals",
-      "marketLabel": "Total Runs",
-      "bestPrice": 100,
-      "bestBookmaker": "betmgm",
-      "bestBookmakerTitle": "BetMGM",
-      "consensusImpliedProb": 0.524,
-      "trueOdds": -110,
-      "evPercent": 0.048,
-      "reasoning": "All-Star matchups favor pitching rotations, as elite arms throw only 1 inning each, preventing batters from adjusting. BetMGM is mispricing the Under 7.5 line at +100, giving a 4.8% edge.",
-      "allOdds": [
-        {
-          "bookmaker": "betmgm",
-          "bookmakerTitle": "BetMGM",
-          "price": 100
-        },
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": -105
-        },
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": -110
-        }
-      ],
-      "confidenceScore": 78,
+      "confidenceScore": 80,
       "injuries": [],
-      "injuryImpact": "No pitching restrictions reported; all staff arms are fully cleared for single-inning appearances."
+      "injuryImpact": "No major injury adjustments; players are active and fresh after standard rest rotations."
     },
     {
-      "id": "wc-2026-france-spain-h2h-france",
+      "id": "wc-2026-england-argentina-h2h-england",
       "sport": "World Cup",
       "sportKey": "soccer_world_cup",
       "sportTitle": "World Cup 2026",
       "league": "FIFA World Cup Semifinal",
-      "eventId": "wc-2026-france-spain",
-      "homeTeam": "France",
-      "awayTeam": "Spain",
-      "commenceTime": "2026-07-14T19:00:00.000Z",
-      "outcome": "France",
+      "eventId": "wc-2026-england-argentina",
+      "homeTeam": "England",
+      "awayTeam": "Argentina",
+      "commenceTime": "2026-07-15T15:00:00.000Z",
+      "outcome": "England",
       "market": "h2h",
       "marketLabel": "Moneyline",
-      "bestPrice": 130,
-      "bestBookmaker": "draftkings",
-      "bestBookmakerTitle": "DraftKings",
-      "consensusImpliedProb": 0.450,
-      "trueOdds": 122,
-      "evPercent": 0.036,
-      "reasoning": "France's experience in deep tournament runs gives them a slight tactical edge in high-pressure matches. DraftKings is offering +130, yielding a +3.6% EV play.",
+      "bestPrice": 175,
+      "bestBookmaker": "bet365",
+      "bestBookmakerTitle": "Bet365",
+      "consensusImpliedProb": 0.377,
+      "trueOdds": 165,
+      "evPercent": 0.037,
+      "reasoning": "England's transitional speed via wings creates a distinct threat. Bet365's +175 offers a solid +3.7% EV value bet.",
       "allOdds": [
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": 130
-        },
         {
           "bookmaker": "bet365",
           "bookmakerTitle": "Bet365",
-          "price": 125
+          "price": 175
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 168
         },
         {
           "bookmaker": "caesars",
           "bookmakerTitle": "Caesars",
-          "price": 122
+          "price": 165
         }
       ],
-      "confidenceScore": 81,
+      "confidenceScore": 79,
       "injuries": [
-        "Kylian Mbappé (France) - Active (Masked)"
+        "Harry Kane (England) - Active (Ankle brace)"
       ],
-      "injuryImpact": "France's starting lineup remains fully intact other than minor face-mask protection for Mbappé."
+      "injuryImpact": "Kane's presence provides central focal points even if playing at slightly reduced top-end sprint speeds."
     }
   ],
   "parlays": [
     {
-      "id": "parlay-wc-semifinal-value",
+      "id": "parlay-today-elite-val",
       "legs": [
         {
           "bet": {
-            "id": "wc-2026-france-spain-total-under",
+            "id": "wc-2026-england-argentina-to-advance-argentina",
             "sport": "World Cup",
             "sportKey": "soccer_world_cup",
             "sportTitle": "World Cup 2026",
             "league": "FIFA World Cup Semifinal",
-            "eventId": "wc-2026-france-spain",
-            "homeTeam": "France",
-            "awayTeam": "Spain",
-            "commenceTime": "2026-07-14T19:00:00.000Z",
-            "outcome": "Under 2.5 Goals",
-            "market": "totals",
-            "marketLabel": "Total Goals",
-            "bestPrice": -115,
-            "bestBookmaker": "caesars",
-            "bestBookmakerTitle": "Caesars",
-            "consensusImpliedProb": 0.556,
-            "trueOdds": -125,
-            "evPercent": 0.042,
-            "reasoning": "World Cup semifinals are historically cagey, low-scoring fixtures. Both nations boast elite defensive units that prioritize shape and safety. Caesars' -115 represents a +4.2% EV edge on the Under.",
-            "allOdds": [
-              {
-                "bookmaker": "caesars",
-                "bookmakerTitle": "Caesars",
-                "price": -115
-              }
-            ]
-          },
-          "price": -115
-        },
-        {
-          "bet": {
-            "id": "mlb-2026-allstar-h2h-al",
-            "sport": "MLB",
-            "sportKey": "baseball_mlb",
-            "sportTitle": "MLB Baseball",
-            "league": "MLB All-Star Game",
-            "eventId": "mlb-2026-all-star",
-            "homeTeam": "National League",
-            "awayTeam": "American League",
-            "commenceTime": "2026-07-14T20:00:00.000Z",
-            "outcome": "American League",
-            "market": "h2h",
-            "marketLabel": "Moneyline",
-            "bestPrice": 127,
+            "eventId": "wc-2026-england-argentina",
+            "homeTeam": "England",
+            "awayTeam": "Argentina",
+            "commenceTime": "2026-07-15T15:00:00.000Z",
+            "outcome": "Argentina To Advance",
+            "market": "to_qualify",
+            "marketLabel": "To Qualify",
+            "bestPrice": 114,
             "bestBookmaker": "fanduel",
             "bestBookmakerTitle": "FanDuel",
-            "consensusImpliedProb": 0.465,
-            "trueOdds": 115,
-            "evPercent": 0.056,
-            "reasoning": "The American League boasts a stronger batting order and late-inning bullpen depth in this year's roster. FanDuel is offering a premium +127 on the AL moneyline, representing a +5.6% EV value bet.",
+            "consensusImpliedProb": 0.512,
+            "trueOdds": -105,
+            "evPercent": 0.086,
+            "reasoning": "Argentina's defensive line has conceded only 1 goal in their last 3 knockout matches, and Messi's playmaker distribution provides an elite edge in final thirds. FanDuel is offering a premium +114 on Argentina to advance, which is highly mispriced compared to consensus fair odds of -105, yielding an 8.6% EV edge.",
             "allOdds": [
               {
                 "bookmaker": "fanduel",
                 "bookmakerTitle": "FanDuel",
-                "price": 127
+                "price": 114
               }
             ]
           },
-          "price": 127
+          "price": 114
+        },
+        {
+          "bet": {
+            "id": "wnba-2026-valkyries-fever-spread-valkyries",
+            "sport": "WNBA",
+            "sportKey": "basketball_wnba",
+            "sportTitle": "WNBA Basketball",
+            "league": "WNBA Regular Season",
+            "eventId": "wnba-2026-valkyries-fever",
+            "homeTeam": "Indiana Fever",
+            "awayTeam": "Golden State Valkyries",
+            "commenceTime": "2026-07-15T20:00:00.000Z",
+            "outcome": "Golden State Valkyries +3.0",
+            "market": "spread",
+            "marketLabel": "Point Spread",
+            "bestPrice": -108,
+            "bestBookmaker": "fanduel",
+            "bestBookmakerTitle": "FanDuel",
+            "consensusImpliedProb": 0.545,
+            "trueOdds": -120,
+            "evPercent": 0.068,
+            "reasoning": "The Valkyries are on an elite 7-game winning streak and should not be +3.0 underdogs even on the road against the Fever. FanDuel's -108 line offers a premium 6.8% EV edge compared to consensus true odds.",
+            "allOdds": [
+              {
+                "bookmaker": "fanduel",
+                "bookmakerTitle": "FanDuel",
+                "price": -108
+              }
+            ]
+          },
+          "price": -108
         }
       ],
-      "combinedAmericanOdds": 325,
-      "combinedDecimalOdds": 4.25,
-      "impliedProbability": 0.258,
-      "estimatedEvPercent": 0.102,
+      "combinedAmericanOdds": 311,
+      "combinedDecimalOdds": 4.11,
+      "impliedProbability": 0.279,
+      "estimatedEvPercent": 0.115,
       "sports": [
         "World Cup",
-        "MLB"
+        "WNBA"
       ],
-      "reasoning": "Combining World Cup Semifinal Under 2.5 Goals with the AL Moneyline in the MLB All-Star Game creates a strong cross-sport +EV card. The compound expected value edge stands at a stellar +10.2% EV.",
+      "reasoning": "Combining Argentina to advance in the World Cup Semifinal with the Valkyries +3.0 point spread creates a premium cross-sport parlays ticket with a +11.5% compound expected value edge.",
       "tier": "elite"
     }
   ],
   "aiAnalysis": {
-    "summary": "Tomorrow's betting board features high-profile championship-caliber matchups: the first FIFA World Cup semifinal (France vs. Spain) and the MLB All-Star Game in Philly. Projections show significant moneyline mispricings on Spain (+225) and the American League All-Stars (+127).",
-    "topPickId": "wc-2026-france-spain-h2h-spain",
-    "topPickRationale": "Spain Moneyline (+225 on Bet365) represents the highest value play for tomorrow's slate. While France is standard favorite, Spain's superior possession midfield gives them a higher actual win probability (regulation draw/win) than bookmaker odds reflect, yielding a +6.5% EV edge.",
-    "parlayAnalysis": "The Cross-Sport Elite Parlay card combines France/Spain Under 2.5 goals with the AL All-Stars Moneyline, yielding combined decimal odds of 4.25 (+325 American) and a combined expected value of +10.2%.",
+    "summary": "Today's value board features the second World Cup Semifinal (England vs. Argentina) and a WNBA tripleheader. Projections highlight substantial moneyline edges on Argentina to Advance (+114) and the Golden State Valkyries +3.0 spread.",
+    "topPickId": "wc-2026-england-argentina-to-advance-argentina",
+    "topPickRationale": "Argentina To Advance (+114 on FanDuel) is today's best single value bet. Projections estimate their fair qualification chances at -105, which represents a high-conviction +8.6% EV edge.",
+    "parlayAnalysis": "The Cross-Sport Elite Parlay card pairs Argentina advancing with the Valkyries +3.0 spread, delivering combined decimal odds of 4.11 (+311 American) and a combined expected value of +11.5%.",
     "riskRating": "Medium",
-    "lastUpdated": "2026-07-13T21:00:00.000Z"
+    "lastUpdated": "2026-07-15T09:00:00.000Z"
   }
 }
