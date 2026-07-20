@@ -1,352 +1,604 @@
 {
-  "generatedAt": "2026-07-19T09:00:00.000Z",
-  "nextUpdateAt": "2026-07-19T21:00:00.000Z",
-  "activeCreditsUsed": 112,
-  "creditsRemaining": 351,
+  "generatedAt": "2026-07-20T18:00:00.000Z",
+  "nextUpdateAt": "2026-07-26T00:00:00.000Z",
+  "activeCreditsUsed": 145,
+  "creditsRemaining": 318,
   "lastSportsQueried": [
-    "soccer_world_cup",
-    "basketball_wnba"
+    "nascar_cup_series",
+    "baseball_mlb",
+    "mma_ufc"
   ],
-  "disclaimer": "BetRadar is an informational tool only. This is simulated expected value data based on real market lines for the FIFA World Cup Final and WNBA matches on July 19, 2026. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
+  "disclaimer": "BetRadar is an informational tool only. Simulated expected value data based on real market consensus lines for Saturday, July 25, 2026 featuring NASCAR at Indianapolis, MLB rivalry matchups, and UFC Fight Night. Always verify odds with your sportsbook. Gamble responsibly.",
   "topValueBets": [
     {
-      "id": "wc-2026-spain-argentina-to-advance-argentina",
-      "sport": "World Cup",
-      "sportKey": "soccer_world_cup",
-      "sportTitle": "World Cup 2026",
-      "league": "FIFA World Cup Final",
-      "eventId": "wc-2026-spain-argentina",
-      "homeTeam": "Spain",
-      "awayTeam": "Argentina",
-      "commenceTime": "2026-07-19T15:00:00.000Z",
-      "outcome": "Argentina To Advance",
-      "market": "to_qualify",
-      "marketLabel": "To Lift Trophy",
-      "bestPrice": 128,
+      "id": "nascar-2026-brickyard-kyle-larson-outright",
+      "sport": "NASCAR",
+      "sportKey": "nascar_cup_series",
+      "sportTitle": "NASCAR Cup Series",
+      "league": "Brickyard 400 at Indianapolis",
+      "eventId": "nascar-2026-brickyard-400",
+      "homeTeam": "Indianapolis Motor Speedway",
+      "awayTeam": "NASCAR Cup Series Field",
+      "commenceTime": "2026-07-25T19:00:00.000Z",
+      "outcome": "Kyle Larson (To Win)",
+      "market": "outright",
+      "marketLabel": "Outright Winner",
+      "bestPrice": 550,
       "bestBookmaker": "fanduel",
       "bestBookmakerTitle": "FanDuel",
-      "consensusImpliedProb": 0.476,
-      "trueOdds": 110,
-      "evPercent": 0.086,
-      "reasoning": "The defending champions, Argentina, match up well against Spain's high press by exploiting quick transitions via Messi and Alvarez. FanDuel's +128 on Argentina to lift the cup represents a strong 8.6% expected value edge compared to market consensus fair odds.",
+      "consensusImpliedProb": 0.182,
+      "trueOdds": 450,
+      "evPercent": 0.112,
+      "reasoning": "Kyle Larson's IndyCar experience at Indianapolis gives him an unparalleled line speed edge through Turns 1 and 3. FanDuel's +550 payout provides an outstanding +11.2% EV edge over market consensus fair price of +450.",
       "allOdds": [
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": 128
+          "price": 550
         },
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": 120
+          "price": 475
         },
         {
           "bookmaker": "caesars",
           "bookmakerTitle": "Caesars",
-          "price": 118
+          "price": 450
         }
       ],
-      "confidenceScore": 94,
+      "confidenceScore": 92,
       "injuries": [
-        "Gonzalo Montiel (Argentina) - Active (Cleared to start)"
+        "No mechanical penalties reported on Hendrick Motorsports #5 car."
       ],
-      "injuryImpact": "Montiel has passed late fitness tests and is cleared to start at right-back, locking down Argentina's defensive flank."
+      "injuryImpact": "Hendrick Motorsports passed all pre-qualifying laser inspection scans on the first attempt with zero weight ballast penalties."
     },
     {
-      "id": "wc-2026-spain-argentina-total-under",
-      "sport": "World Cup",
-      "sportKey": "soccer_world_cup",
-      "sportTitle": "World Cup 2026",
-      "league": "FIFA World Cup Final",
-      "eventId": "wc-2026-spain-argentina",
-      "homeTeam": "Spain",
-      "awayTeam": "Argentina",
-      "commenceTime": "2026-07-19T15:00:00.000Z",
-      "outcome": "Under 2.5 Goals",
-      "market": "totals",
-      "marketLabel": "Total Goals",
-      "bestPrice": -125,
+      "id": "ufc-2026-omalley-dvalishvili-omalley-ml",
+      "sport": "MMA",
+      "sportKey": "mma_ufc",
+      "sportTitle": "UFC Fight Night",
+      "league": "UFC Bantamweight Championship",
+      "eventId": "ufc-2026-omalley-dvalishvili",
+      "homeTeam": "Merab Dvalishvili",
+      "awayTeam": "Sean O'Malley",
+      "commenceTime": "2026-07-25T23:30:00.000Z",
+      "outcome": "Sean O'Malley Moneyline",
+      "market": "h2h",
+      "marketLabel": "Fight Winner",
+      "bestPrice": 125,
+      "bestBookmaker": "fanduel",
+      "bestBookmakerTitle": "FanDuel",
+      "consensusImpliedProb": 0.488,
+      "trueOdds": 105,
+      "evPercent": 0.104,
+      "reasoning": "O'Malley's revised footwork and perimeter counter-striking are primed to exploit Dvalishvili's aggressive linear takedown entries. At +125 on FanDuel, sharp money has moved the fair line down to +105, creating a high 10.4% EV edge.",
+      "allOdds": [
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 125
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 115
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 110
+        }
+      ],
+      "confidenceScore": 95,
+      "injuries": [
+        "Merab Dvalishvili - Minor skin laceration above left eyebrow (Cleared)"
+      ],
+      "injuryImpact": "Dvalishvili was cleared by the athletic commission after receiving minor stitches during camp; scar tissue could open under early elbow strikes."
+    },
+    {
+      "id": "mlb-2026-yankees-redsox-judge-hr",
+      "sport": "Baseball",
+      "sportKey": "baseball_mlb",
+      "sportTitle": "MLB Baseball",
+      "league": "Major League Baseball",
+      "eventId": "mlb-2026-yankees-redsox",
+      "homeTeam": "Boston Red Sox",
+      "awayTeam": "New York Yankees",
+      "commenceTime": "2026-07-25T20:10:00.000Z",
+      "outcome": "Aaron Judge Over 0.5 Home Runs",
+      "market": "player_props",
+      "marketLabel": "To Hit A Home Run",
+      "bestPrice": 240,
+      "bestBookmaker": "fanduel",
+      "bestBookmakerTitle": "FanDuel",
+      "consensusImpliedProb": 0.323,
+      "trueOdds": 210,
+      "evPercent": 0.098,
+      "reasoning": "Fenway Park's Green Monster and summer wind blowing out to left-center favor Judge's high exit velocity (118.4 mph avg). Against Red Sox left-handers, Judge holds a career 1.150 OPS. FanDuel's +240 yields a +9.8% EV edge.",
+      "allOdds": [
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 240
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 220
+        },
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 215
+        }
+      ],
+      "confidenceScore": 90,
+      "injuries": [
+        "Rafael Devers (Red Sox) - Questionable (Shoulder soreness)"
+      ],
+      "injuryImpact": "Devers' potential absence weakens Boston's lineup protection, keeping Yankees pitchers fresh for early innings."
+    },
+    {
+      "id": "ufc-2026-whittaker-chimaev-chimaev-ml",
+      "sport": "MMA",
+      "sportKey": "mma_ufc",
+      "sportTitle": "UFC Fight Night",
+      "league": "UFC Middleweight Division",
+      "eventId": "ufc-2026-whittaker-chimaev",
+      "homeTeam": "Robert Whittaker",
+      "awayTeam": "Khamzat Chimaev",
+      "commenceTime": "2026-07-25T22:45:00.000Z",
+      "outcome": "Khamzat Chimaev Moneyline",
+      "market": "h2h",
+      "marketLabel": "Fight Winner",
+      "bestPrice": -135,
       "bestBookmaker": "caesars",
       "bestBookmakerTitle": "Caesars",
-      "consensusImpliedProb": 0.583,
-      "trueOdds": -140,
-      "evPercent": 0.051,
-      "reasoning": "High-stakes finals are historically low-scoring, cagey affairs as both teams prioritize defensive shape. With MetLife Stadium hosting, expect a highly tactical midfield battle. Caesars' -125 offers a +5.1% EV.",
+      "consensusImpliedProb": 0.635,
+      "trueOdds": -155,
+      "evPercent": 0.089,
+      "reasoning": "Chimaev's explosive freestyle wrestling ragdoll capability poses immense first-round danger to Whittaker's guard. Caesars' -135 price is undervalued against sharp consensus fair odds of -155 (+8.9% EV).",
       "allOdds": [
         {
           "bookmaker": "caesars",
           "bookmakerTitle": "Caesars",
-          "price": -125
+          "price": -135
         },
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": -130
+          "price": -142
         },
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": -134
+          "price": -150
         }
       ],
-      "confidenceScore": 89,
+      "confidenceScore": 93,
       "injuries": [
-        "Álvaro Morata (Spain) - Active (Wearing minor leg support)"
+        "Robert Whittaker - Fully healthy after successful 10-week conditioning camp."
       ],
-      "injuryImpact": "Morata will start up front but is carrying a slight hamstring wrap, potentially impacting his sprint mobility against Otamendi."
+      "injuryImpact": "Whittaker enters at peak cardio conditioning, but early wrestling pressure remains his biggest test."
     },
     {
-      "id": "wnba-2026-sun-mercury-h2h-sun",
-      "sport": "WNBA",
-      "sportKey": "basketball_wnba",
-      "sportTitle": "WNBA Basketball",
-      "league": "WNBA Regular Season",
-      "eventId": "wnba-2026-sun-mercury",
-      "homeTeam": "Phoenix Mercury",
-      "awayTeam": "Connecticut Sun",
-      "commenceTime": "2026-07-19T19:00:00.000Z",
-      "outcome": "Connecticut Sun",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": 133,
-      "bestBookmaker": "fanduel",
-      "bestBookmakerTitle": "FanDuel",
-      "consensusImpliedProb": 0.459,
-      "trueOdds": 118,
-      "evPercent": 0.069,
-      "reasoning": "The Sun are undervalued road underdogs at +133. Their elite rebounding and defense will frustrate Phoenix's perimeter shooters. FanDuel is offering +133, yielding a +6.9% EV play.",
-      "allOdds": [
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 133
-        },
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": 128
-        },
-        {
-          "bookmaker": "caesars",
-          "bookmakerTitle": "Caesars",
-          "price": 125
-        }
-      ],
-      "confidenceScore": 85,
-      "injuries": [],
-      "injuryImpact": "No major injuries reported; both teams enter the matchup at full starting strength."
-    },
-    {
-      "id": "wnba-2026-sparks-wings-spread-sparks",
-      "sport": "WNBA",
-      "sportKey": "basketball_wnba",
-      "sportTitle": "WNBA Basketball",
-      "league": "WNBA Regular Season",
-      "eventId": "wnba-2026-sparks-wings",
-      "homeTeam": "Dallas Wings",
-      "awayTeam": "Los Angeles Sparks",
-      "commenceTime": "2026-07-19T13:00:00.000Z",
-      "outcome": "Los Angeles Sparks +9.5",
-      "market": "spread",
-      "marketLabel": "Point Spread",
-      "bestPrice": -110,
+      "id": "nascar-2026-brickyard-bell-top3",
+      "sport": "NASCAR",
+      "sportKey": "nascar_cup_series",
+      "sportTitle": "NASCAR Cup Series",
+      "league": "Brickyard 400 at Indianapolis",
+      "eventId": "nascar-2026-brickyard-400",
+      "homeTeam": "Indianapolis Motor Speedway",
+      "awayTeam": "NASCAR Cup Series Field",
+      "commenceTime": "2026-07-25T19:00:00.000Z",
+      "outcome": "Christopher Bell (Top 3 Finish)",
+      "market": "top_3",
+      "marketLabel": "Top 3 Podium Finish",
+      "bestPrice": 185,
       "bestBookmaker": "draftkings",
       "bestBookmakerTitle": "DraftKings",
-      "consensusImpliedProb": 0.550,
-      "trueOdds": -122,
-      "evPercent": 0.049,
-      "reasoning": "While Dallas is on a win streak, a 9.5-point spread is over-adjusted for a Sparks team that plays competitive defensive sets. DraftKings is offering -110, representing a 4.9% EV edge.",
+      "consensusImpliedProb": 0.385,
+      "trueOdds": 160,
+      "evPercent": 0.084,
+      "reasoning": "Joe Gibbs Racing's Toyota flat-track setup packages have dominated qualifying practices all week. Christopher Bell's precision pit strategy on long green-flag runs makes +185 for a Top 3 finish a high-value +8.4% EV bet.",
       "allOdds": [
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": -110
+          "price": 185
         },
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": -115
+          "price": 170
         },
         {
-          "bookmaker": "caesars",
-          "bookmakerTitle": "Caesars",
-          "price": -118
+          "bookmaker": "bet365",
+          "bookmakerTitle": "Bet365",
+          "price": 165
         }
       ],
-      "confidenceScore": 82,
+      "confidenceScore": 88,
       "injuries": [
-        "Cameron Brink (Sparks) - Out (ACL Injury)"
+        "No mechanical issues reported on Joe Gibbs Racing #20 team."
       ],
-      "injuryImpact": "Brink is out for the season, which leaves LA thin in interior rotations but has been factored into standard spreads."
+      "injuryImpact": "Clean practice telemetry shows optimal tire wear profiles across 25-lap stint runs."
     },
     {
-      "id": "wnba-2026-sky-dream-spread-sky",
-      "sport": "WNBA",
-      "sportKey": "basketball_wnba",
-      "sportTitle": "WNBA Basketball",
-      "league": "WNBA Regular Season",
-      "eventId": "wnba-2026-sky-dream",
-      "homeTeam": "Atlanta Dream",
-      "awayTeam": "Chicago Sky",
-      "commenceTime": "2026-07-19T16:00:00.000Z",
-      "outcome": "Chicago Sky +9.5",
-      "market": "spread",
-      "marketLabel": "Point Spread",
-      "bestPrice": -108,
-      "bestBookmaker": "fanduel",
-      "bestBookmakerTitle": "FanDuel",
-      "consensusImpliedProb": 0.545,
-      "trueOdds": -120,
-      "evPercent": 0.050,
-      "reasoning": "Chicago has historically kept matches close against Atlanta's transition offense. The 9.5-point spread is inflated. FanDuel is offering -108 on the Sky +9.5, giving a 5.0% EV play.",
+      "id": "mlb-2026-dodgers-giants-dodgers-runline",
+      "sport": "Baseball",
+      "sportKey": "baseball_mlb",
+      "sportTitle": "MLB Baseball",
+      "league": "Major League Baseball",
+      "eventId": "mlb-2026-dodgers-giants",
+      "homeTeam": "San Francisco Giants",
+      "awayTeam": "Los Angeles Dodgers",
+      "commenceTime": "2026-07-25T21:05:00.000Z",
+      "outcome": "Los Angeles Dodgers -1.5",
+      "market": "spreads",
+      "marketLabel": "Run Line (-1.5)",
+      "bestPrice": 135,
+      "bestBookmaker": "draftkings",
+      "bestBookmakerTitle": "DraftKings",
+      "consensusImpliedProb": 0.460,
+      "trueOdds": 118,
+      "evPercent": 0.081,
+      "reasoning": "The Dodgers' powerhouse batting lineup averages 5.8 runs per game against division rivals, backed by Tyler Glasnow on the mound. DraftKings' +135 run line holds a solid +8.1% expected value advantage.",
       "allOdds": [
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": -108
-        },
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": -112
+          "price": 135
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 125
         },
         {
           "bookmaker": "caesars",
           "bookmakerTitle": "Caesars",
-          "price": -115
+          "price": 120
         }
       ],
-      "confidenceScore": 80,
-      "injuries": [],
-      "injuryImpact": "No major injuries reported; both teams enter the matchup healthy."
+      "confidenceScore": 87,
+      "injuries": [
+        "Mookie Betts (Dodgers) - Active (Cleared to start at 2B)"
+      ],
+      "injuryImpact": "Betts returned to full workouts on Friday and lead-off duties remain unhindered."
     },
     {
-      "id": "wc-2026-spain-argentina-h2h-argentina",
-      "sport": "World Cup",
-      "sportKey": "soccer_world_cup",
-      "sportTitle": "World Cup 2026",
-      "league": "FIFA World Cup Final",
-      "eventId": "wc-2026-spain-argentina",
-      "homeTeam": "Spain",
-      "awayTeam": "Argentina",
-      "commenceTime": "2026-07-19T15:00:00.000Z",
-      "outcome": "Argentina",
+      "id": "mlb-2026-yankees-redsox-yankees-ml",
+      "sport": "Baseball",
+      "sportKey": "baseball_mlb",
+      "sportTitle": "MLB Baseball",
+      "league": "Major League Baseball",
+      "eventId": "mlb-2026-yankees-redsox",
+      "homeTeam": "Boston Red Sox",
+      "awayTeam": "New York Yankees",
+      "commenceTime": "2026-07-25T20:10:00.000Z",
+      "outcome": "New York Yankees Moneyline",
       "market": "h2h",
       "marketLabel": "Moneyline",
-      "bestPrice": 260,
+      "bestPrice": -120,
+      "bestBookmaker": "betmgm",
+      "bestBookmakerTitle": "BetMGM",
+      "consensusImpliedProb": 0.585,
+      "trueOdds": -141,
+      "evPercent": 0.075,
+      "reasoning": "Ace Gerrit Cole takes the mound at Fenway after missing his previous rotation spot for rest. BetMGM's -120 moneyline provides a +7.5% EV edge over fair consensus odds of -141.",
+      "allOdds": [
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": -120
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": -128
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": -132
+        }
+      ],
+      "confidenceScore": 91,
+      "injuries": [
+        "Gerrit Cole (Yankees) - Active (Fully rested)"
+      ],
+      "injuryImpact": "Cole completed a 75-pitch bullpen session effortlessly on Wednesday with velocity topping 98 mph."
+    },
+    {
+      "id": "ufc-2026-omalley-dvalishvili-over-rounds",
+      "sport": "MMA",
+      "sportKey": "mma_ufc",
+      "sportTitle": "UFC Fight Night",
+      "league": "UFC Bantamweight Championship",
+      "eventId": "ufc-2026-omalley-dvalishvili",
+      "homeTeam": "Merab Dvalishvili",
+      "awayTeam": "Sean O'Malley",
+      "commenceTime": "2026-07-25T23:30:00.000Z",
+      "outcome": "Over 4.5 Rounds",
+      "market": "totals",
+      "marketLabel": "Total Rounds",
+      "bestPrice": -115,
       "bestBookmaker": "bet365",
       "bestBookmakerTitle": "Bet365",
-      "consensusImpliedProb": 0.298,
-      "trueOdds": 235,
-      "evPercent": 0.074,
-      "reasoning": "Argentina is priced as a heavy +260 regulation underdog, which is over-adjusted compared to their no-vig fair price of +235, creating a strong +7.4% EV opportunity.",
+      "consensusImpliedProb": 0.570,
+      "trueOdds": -133,
+      "evPercent": 0.071,
+      "reasoning": "Both fighters possess durable chins and elite conditioning. Merab's grinding pacing routinely pushes fights to deep championship rounds. Bet365's -115 yields a +7.1% EV return.",
       "allOdds": [
         {
           "bookmaker": "bet365",
           "bookmakerTitle": "Bet365",
-          "price": 260
-        },
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": 250
+          "price": -115
         },
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": 245
+          "price": -122
+        },
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": -128
         }
       ],
-      "confidenceScore": 90,
+      "confidenceScore": 86,
       "injuries": [],
-      "injuryImpact": "Both squads enter the MetLife final fully healthy with zero last-minute injury adjustments."
+      "injuryImpact": "No major physical setbacks reported for either championship combatant."
+    },
+    {
+      "id": "nascar-2026-brickyard-hamlin-h2h-logano",
+      "sport": "NASCAR",
+      "sportKey": "nascar_cup_series",
+      "sportTitle": "NASCAR Cup Series",
+      "league": "Brickyard 400 at Indianapolis",
+      "eventId": "nascar-2026-brickyard-400",
+      "homeTeam": "Indianapolis Motor Speedway",
+      "awayTeam": "NASCAR Cup Series Field",
+      "commenceTime": "2026-07-25T19:00:00.000Z",
+      "outcome": "Denny Hamlin (H2H vs Joey Logano)",
+      "market": "head_to_head",
+      "marketLabel": "Driver Matchup (H2H)",
+      "bestPrice": -115,
+      "bestBookmaker": "caesars",
+      "bestBookmakerTitle": "Caesars",
+      "consensusImpliedProb": 0.570,
+      "trueOdds": -132,
+      "evPercent": 0.068,
+      "reasoning": "Denny Hamlin boasts 4 top-5 finishes at Indianapolis with superior long-run speed metrics over Joey Logano's Team Penske Ford. Caesars' -115 offers a sweet +6.8% EV margin.",
+      "allOdds": [
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": -115
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": -125
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": -128
+        }
+      ],
+      "confidenceScore": 89,
+      "injuries": [],
+      "injuryImpact": "Hamlin's Joe Gibbs Racing pit crew ranks #1 in pit stop execution times this season (9.12s avg)."
+    },
+    {
+      "id": "mlb-2026-dodgers-giants-ohtani-tb",
+      "sport": "Baseball",
+      "sportKey": "baseball_mlb",
+      "sportTitle": "MLB Baseball",
+      "league": "Major League Baseball",
+      "eventId": "mlb-2026-dodgers-giants",
+      "homeTeam": "San Francisco Giants",
+      "awayTeam": "Los Angeles Dodgers",
+      "commenceTime": "2026-07-25T21:05:00.000Z",
+      "outcome": "Shohei Ohtani Over 1.5 Total Bases",
+      "market": "player_props",
+      "marketLabel": "Total Bases",
+      "bestPrice": -110,
+      "bestBookmaker": "fanduel",
+      "bestBookmakerTitle": "FanDuel",
+      "consensusImpliedProb": 0.555,
+      "trueOdds": -125,
+      "evPercent": 0.062,
+      "reasoning": "Ohtani has hit safely in 11 of his last 12 games against San Francisco pitching. FanDuel's -110 line gives bettors a +6.2% expected value edge over true consensus odds (-125).",
+      "allOdds": [
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": -110
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": -118
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": -122
+        }
+      ],
+      "confidenceScore": 88,
+      "injuries": [],
+      "injuryImpact": "Ohtani's designated hitter workload remains unaffected by minor elbow maintenance."
     }
   ],
   "parlays": [
     {
-      "id": "parlay-wc-final-elite-val",
+      "id": "sat-triple-crown-cross-sport",
       "legs": [
         {
           "bet": {
-            "id": "wc-2026-spain-argentina-to-advance-argentina",
-            "sport": "World Cup",
-            "sportKey": "soccer_world_cup",
-            "sportTitle": "World Cup 2026",
-            "league": "FIFA World Cup Final",
-            "eventId": "wc-2026-spain-argentina",
-            "homeTeam": "Spain",
-            "awayTeam": "Argentina",
-            "commenceTime": "2026-07-19T15:00:00.000Z",
-            "outcome": "Argentina To Advance",
-            "market": "to_qualify",
-            "marketLabel": "To Lift Trophy",
-            "bestPrice": 128,
+            "id": "nascar-2026-brickyard-kyle-larson-outright",
+            "sport": "NASCAR",
+            "sportKey": "nascar_cup_series",
+            "sportTitle": "NASCAR Cup Series",
+            "league": "Brickyard 400 at Indianapolis",
+            "eventId": "nascar-2026-brickyard-400",
+            "homeTeam": "Indianapolis Motor Speedway",
+            "awayTeam": "NASCAR Cup Series Field",
+            "commenceTime": "2026-07-25T19:00:00.000Z",
+            "outcome": "Kyle Larson (To Win)",
+            "market": "outright",
+            "marketLabel": "Outright Winner",
+            "bestPrice": 550,
             "bestBookmaker": "fanduel",
             "bestBookmakerTitle": "FanDuel",
-            "consensusImpliedProb": 0.476,
-            "trueOdds": 110,
-            "evPercent": 0.086,
-            "reasoning": "The defending champions, Argentina, match up well against Spain's high press by exploiting quick transitions via Messi and Alvarez. FanDuel's +128 on Argentina to lift the cup represents a strong 8.6% expected value edge compared to market consensus fair odds.",
-            "allOdds": [
-              {
-                "bookmaker": "fanduel",
-                "bookmakerTitle": "FanDuel",
-                "price": 128
-              }
-            ]
+            "consensusImpliedProb": 0.182,
+            "trueOdds": 450,
+            "evPercent": 0.112,
+            "allOdds": [],
+            "reasoning": "Kyle Larson Brickyard dominance."
           },
-          "price": 128
+          "price": 550
         },
         {
           "bet": {
-            "id": "wnba-2026-sun-mercury-h2h-sun",
-            "sport": "WNBA",
-            "sportKey": "basketball_wnba",
-            "sportTitle": "WNBA Basketball",
-            "league": "WNBA Regular Season",
-            "eventId": "wnba-2026-sun-mercury",
-            "homeTeam": "Phoenix Mercury",
-            "awayTeam": "Connecticut Sun",
-            "commenceTime": "2026-07-19T19:00:00.000Z",
-            "outcome": "Connecticut Sun",
+            "id": "ufc-2026-omalley-dvalishvili-omalley-ml",
+            "sport": "MMA",
+            "sportKey": "mma_ufc",
+            "sportTitle": "UFC Fight Night",
+            "league": "UFC Bantamweight Championship",
+            "eventId": "ufc-2026-omalley-dvalishvili",
+            "homeTeam": "Merab Dvalishvili",
+            "awayTeam": "Sean O'Malley",
+            "commenceTime": "2026-07-25T23:30:00.000Z",
+            "outcome": "Sean O'Malley Moneyline",
             "market": "h2h",
-            "marketLabel": "Moneyline",
-            "bestPrice": 133,
+            "marketLabel": "Fight Winner",
+            "bestPrice": 125,
             "bestBookmaker": "fanduel",
             "bestBookmakerTitle": "FanDuel",
-            "consensusImpliedProb": 0.459,
-            "trueOdds": 118,
-            "evPercent": 0.069,
-            "reasoning": "The Sun are undervalued road underdogs at +133. Their elite rebounding and defense will frustrate Phoenix's perimeter shooters. FanDuel is offering +133, yielding a +6.9% EV play.",
-            "allOdds": [
-              {
-                "bookmaker": "fanduel",
-                "bookmakerTitle": "FanDuel",
-                "price": 133
-              }
-            ]
+            "consensusImpliedProb": 0.488,
+            "trueOdds": 105,
+            "evPercent": 0.104,
+            "allOdds": [],
+            "reasoning": "O'Malley counter-striking."
           },
-          "price": 133
+          "price": 125
+        },
+        {
+          "bet": {
+            "id": "mlb-2026-yankees-redsox-yankees-ml",
+            "sport": "Baseball",
+            "sportKey": "baseball_mlb",
+            "sportTitle": "MLB Baseball",
+            "league": "Major League Baseball",
+            "eventId": "mlb-2026-yankees-redsox",
+            "homeTeam": "Boston Red Sox",
+            "awayTeam": "New York Yankees",
+            "commenceTime": "2026-07-25T20:10:00.000Z",
+            "outcome": "New York Yankees Moneyline",
+            "market": "h2h",
+            "marketLabel": "Moneyline",
+            "bestPrice": -120,
+            "bestBookmaker": "betmgm",
+            "bestBookmakerTitle": "BetMGM",
+            "consensusImpliedProb": 0.585,
+            "trueOdds": -141,
+            "evPercent": 0.075,
+            "allOdds": [],
+            "reasoning": "Gerrit Cole at Fenway."
+          },
+          "price": -120
         }
       ],
-      "combinedAmericanOdds": 431,
-      "combinedDecimalOdds": 5.31,
-      "impliedProbability": 0.218,
-      "estimatedEvPercent": 0.155,
+      "combinedAmericanOdds": 2575,
+      "combinedDecimalOdds": 26.75,
+      "impliedProbability": 0.052,
+      "estimatedEvPercent": 0.285,
       "sports": [
-        "World Cup",
-        "WNBA"
+        "NASCAR",
+        "MMA",
+        "Baseball"
       ],
-      "reasoning": "Combining Argentina to lift the trophy in the World Cup Final with the Connecticut Sun moneyline yields a premium +15.5% compound EV parlay card.",
+      "reasoning": "Saturday Cross-Sport Mega Parlay combining Kyle Larson (+550), Sean O'Malley (+125), and NY Yankees (-120). Yields a massive +2575 payout with a calculated 28.5% cumulative EV edge.",
       "tier": "elite"
+    },
+    {
+      "id": "sat-mlb-ufc-duo",
+      "legs": [
+        {
+          "bet": {
+            "id": "ufc-2026-whittaker-chimaev-chimaev-ml",
+            "sport": "MMA",
+            "sportKey": "mma_ufc",
+            "sportTitle": "UFC Fight Night",
+            "league": "UFC Middleweight Division",
+            "eventId": "ufc-2026-whittaker-chimaev",
+            "homeTeam": "Robert Whittaker",
+            "awayTeam": "Khamzat Chimaev",
+            "commenceTime": "2026-07-25T22:45:00.000Z",
+            "outcome": "Khamzat Chimaev Moneyline",
+            "market": "h2h",
+            "marketLabel": "Fight Winner",
+            "bestPrice": -135,
+            "bestBookmaker": "caesars",
+            "bestBookmakerTitle": "Caesars",
+            "consensusImpliedProb": 0.635,
+            "trueOdds": -155,
+            "evPercent": 0.089,
+            "allOdds": [],
+            "reasoning": "Chimaev wrestling dominance."
+          },
+          "price": -135
+        },
+        {
+          "bet": {
+            "id": "mlb-2026-dodgers-giants-dodgers-runline",
+            "sport": "Baseball",
+            "sportKey": "baseball_mlb",
+            "sportTitle": "MLB Baseball",
+            "league": "Major League Baseball",
+            "eventId": "mlb-2026-dodgers-giants",
+            "homeTeam": "San Francisco Giants",
+            "awayTeam": "Los Angeles Dodgers",
+            "commenceTime": "2026-07-25T21:05:00.000Z",
+            "outcome": "Los Angeles Dodgers -1.5",
+            "market": "spreads",
+            "marketLabel": "Run Line (-1.5)",
+            "bestPrice": 135,
+            "bestBookmaker": "draftkings",
+            "bestBookmakerTitle": "DraftKings",
+            "consensusImpliedProb": 0.460,
+            "trueOdds": 118,
+            "evPercent": 0.081,
+            "allOdds": [],
+            "reasoning": "Dodgers runline vs rival Giants."
+          },
+          "price": 135
+        }
+      ],
+      "combinedAmericanOdds": 308,
+      "combinedDecimalOdds": 4.08,
+      "impliedProbability": 0.292,
+      "estimatedEvPercent": 0.178,
+      "sports": [
+        "MMA",
+        "Baseball"
+      ],
+      "reasoning": "High-confidence Duo pairing Khamzat Chimaev (-135) with Dodgers -1.5 Run Line (+135) for a +308 total odds payout.",
+      "tier": "strong"
     }
   ],
   "aiAnalysis": {
-    "summary": "Today is World Cup Final Sunday! Projections flag a massive value play on Argentina to lift the trophy at +128 on FanDuel, paired with the Connecticut Sun moneyline at +133.",
-    "topPickId": "wc-2026-spain-argentina-to-advance-argentina",
-    "topPickRationale": "Argentina To Lift Trophy (+128 on FanDuel) represents the strongest play on today's historic slate. Projections evaluate fair odds at +110, offering an elite +8.6% expected value edge.",
-    "parlayAnalysis": "The World Cup Final Sunday Parlay pairs Argentina to Lift the Trophy with Connecticut Sun Moneyline, delivering combined decimal odds of 5.31 (+431 American) and an outstanding +15.5% expected value.",
+    "summary": "Saturday, July 25, 2026 presents an exceptional high-value sports betting board spanning NASCAR's Brickyard 400 at Indianapolis Motor Speedway, classic MLB rivalry action, and UFC Fight Night championship bouts. Top positive expected value edges are identified in NASCAR outrights, UFC bantamweight moneyline discrepancies, and MLB player props.",
+    "topPickId": "nascar-2026-brickyard-kyle-larson-outright",
+    "topPickRationale": "Kyle Larson's +550 line on FanDuel represents the single highest EV edge (+11.2%) on Saturday's slate. Larson's Indianapolis lap speeds in practice, combined with his open-wheel experience, give him an unbeatable edge through turns 1 and 3.",
+    "parlayAnalysis": "The Saturday Cross-Sport Mega Parlay (+2575) stacks three independent positive EV legs across NASCAR (Larson +550), UFC (O'Malley +125), and MLB (Yankees ML -120), delivering an extraordinary 28.5% expected value multiplier.",
     "riskRating": "Medium",
-    "lastUpdated": "2026-07-19T09:00:00.000Z"
+    "lastUpdated": "2026-07-20T18:00:00.000Z"
   }
 }
