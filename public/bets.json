@@ -1,352 +1,605 @@
 {
-  "generatedAt": "2026-07-19T09:00:00.000Z",
-  "nextUpdateAt": "2026-07-19T21:00:00.000Z",
-  "activeCreditsUsed": 112,
-  "creditsRemaining": 351,
+  "generatedAt": "2026-07-22T10:00:00.000Z",
+  "nextUpdateAt": "2026-07-23T10:00:00.000Z",
+  "activeCreditsUsed": 172,
+  "creditsRemaining": 291,
   "lastSportsQueried": [
-    "soccer_world_cup",
+    "golf_pga",
+    "nascar_cup_series",
+    "baseball_mlb",
     "basketball_wnba"
   ],
-  "disclaimer": "BetRadar is an informational tool only. This is simulated expected value data based on real market lines for the FIFA World Cup Final and WNBA matches on July 19, 2026. Always verify odds with your bookmaker before placing any bets. Sports betting involves risk. Please gamble responsibly.",
+  "disclaimer": "Parlay is an informational tool only. Simulated expected value data based on real market consensus lines for Tuesday, July 22, 2026 featuring PGA 3M Open, NASCAR Brickyard 400 outrights, MLB slate action, and WNBA matchups. Always verify odds with your sportsbook. Gamble responsibly.",
   "topValueBets": [
     {
-      "id": "wc-2026-spain-argentina-to-advance-argentina",
-      "sport": "World Cup",
-      "sportKey": "soccer_world_cup",
-      "sportTitle": "World Cup 2026",
-      "league": "FIFA World Cup Final",
-      "eventId": "wc-2026-spain-argentina",
-      "homeTeam": "Spain",
-      "awayTeam": "Argentina",
-      "commenceTime": "2026-07-19T15:00:00.000Z",
-      "outcome": "Argentina To Advance",
-      "market": "to_qualify",
-      "marketLabel": "To Lift Trophy",
-      "bestPrice": 128,
+      "id": "golf-2026-3m-open-schauffele-outright",
+      "sport": "Golf",
+      "sportKey": "golf_pga",
+      "sportTitle": "PGA Tour",
+      "league": "3M Open at TPC Twin Cities",
+      "eventId": "golf-2026-3m-open",
+      "homeTeam": "TPC Twin Cities",
+      "awayTeam": "PGA Tour Field",
+      "commenceTime": "2026-07-22T13:00:00.000Z",
+      "outcome": "Xander Schauffele (To Win)",
+      "market": "outright",
+      "marketLabel": "Tournament Winner",
+      "bestPrice": 900,
       "bestBookmaker": "fanduel",
       "bestBookmakerTitle": "FanDuel",
-      "consensusImpliedProb": 0.476,
-      "trueOdds": 110,
-      "evPercent": 0.086,
-      "reasoning": "The defending champions, Argentina, match up well against Spain's high press by exploiting quick transitions via Messi and Alvarez. FanDuel's +128 on Argentina to lift the cup represents a strong 8.6% expected value edge compared to market consensus fair odds.",
+      "consensusImpliedProb": 0.125,
+      "trueOdds": 700,
+      "evPercent": 0.128,
+      "reasoning": "Schauffele's ball-striking metrics (1st in SG: Approach, 3rd in SG: Tee-to-Green) are elite on TPC Twin Cities' bermudagrass greens. FanDuel's +900 provides a massive +12.8% EV edge over the consensus fair price of +700.",
       "allOdds": [
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": 128
+          "price": 900
         },
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
+          "price": 800
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 750
+        }
+      ],
+      "confidenceScore": 91,
+      "injuries": [
+        "No injury concerns reported for Schauffele heading into Round 1."
+      ],
+      "injuryImpact": "Schauffele completed a full practice round Monday with zero physical limitations."
+    },
+    {
+      "id": "wnba-2026-aces-liberty-aces-ml",
+      "sport": "WNBA",
+      "sportKey": "basketball_wnba",
+      "sportTitle": "WNBA Basketball",
+      "league": "Women's National Basketball Association",
+      "eventId": "wnba-2026-aces-liberty",
+      "homeTeam": "New York Liberty",
+      "awayTeam": "Las Vegas Aces",
+      "commenceTime": "2026-07-22T19:30:00.000Z",
+      "outcome": "Las Vegas Aces Moneyline",
+      "market": "h2h",
+      "marketLabel": "Moneyline",
+      "bestPrice": 135,
+      "bestBookmaker": "draftkings",
+      "bestBookmakerTitle": "DraftKings",
+      "consensusImpliedProb": 0.445,
+      "trueOdds": 110,
+      "evPercent": 0.115,
+      "reasoning": "A'ja Wilson is averaging 26.8 PPG and 11.2 RPG on the road this season, and the Aces have won 4 of their last 5 against the Liberty. DraftKings' +135 underdog line gives a stellar +11.5% EV edge over fair value of +110.",
+      "allOdds": [
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 135
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
           "price": 120
         },
         {
           "bookmaker": "caesars",
           "bookmakerTitle": "Caesars",
-          "price": 118
+          "price": 115
         }
       ],
       "confidenceScore": 94,
       "injuries": [
-        "Gonzalo Montiel (Argentina) - Active (Cleared to start)"
+        "Breanna Stewart (Liberty) - Questionable (Ankle soreness)"
       ],
-      "injuryImpact": "Montiel has passed late fitness tests and is cleared to start at right-back, locking down Argentina's defensive flank."
+      "injuryImpact": "Stewart is listed as questionable after rolling her left ankle in Saturday's practice. Her limited mobility weakens the Liberty's interior defense against Wilson."
     },
     {
-      "id": "wc-2026-spain-argentina-total-under",
-      "sport": "World Cup",
-      "sportKey": "soccer_world_cup",
-      "sportTitle": "World Cup 2026",
-      "league": "FIFA World Cup Final",
-      "eventId": "wc-2026-spain-argentina",
-      "homeTeam": "Spain",
-      "awayTeam": "Argentina",
-      "commenceTime": "2026-07-19T15:00:00.000Z",
-      "outcome": "Under 2.5 Goals",
-      "market": "totals",
-      "marketLabel": "Total Goals",
-      "bestPrice": -125,
-      "bestBookmaker": "caesars",
-      "bestBookmakerTitle": "Caesars",
-      "consensusImpliedProb": 0.583,
-      "trueOdds": -140,
-      "evPercent": 0.051,
-      "reasoning": "High-stakes finals are historically low-scoring, cagey affairs as both teams prioritize defensive shape. With MetLife Stadium hosting, expect a highly tactical midfield battle. Caesars' -125 offers a +5.1% EV.",
+      "id": "mlb-2026-yankees-redsox-judge-hr",
+      "sport": "Baseball",
+      "sportKey": "baseball_mlb",
+      "sportTitle": "MLB Baseball",
+      "league": "Major League Baseball",
+      "eventId": "mlb-2026-yankees-redsox",
+      "homeTeam": "Boston Red Sox",
+      "awayTeam": "New York Yankees",
+      "commenceTime": "2026-07-22T23:10:00.000Z",
+      "outcome": "Aaron Judge Over 0.5 Home Runs",
+      "market": "player_props",
+      "marketLabel": "To Hit A Home Run",
+      "bestPrice": 240,
+      "bestBookmaker": "fanduel",
+      "bestBookmakerTitle": "FanDuel",
+      "consensusImpliedProb": 0.323,
+      "trueOdds": 210,
+      "evPercent": 0.098,
+      "reasoning": "Fenway Park's Green Monster and summer wind blowing out to left-center favor Judge's elite exit velocity (118.4 mph avg). Against Red Sox left-handers, Judge holds a career 1.150 OPS. FanDuel's +240 yields a +9.8% EV edge.",
       "allOdds": [
-        {
-          "bookmaker": "caesars",
-          "bookmakerTitle": "Caesars",
-          "price": -125
-        },
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": -130
+          "price": 240
         },
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": -134
+          "price": 220
+        },
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 215
+        }
+      ],
+      "confidenceScore": 90,
+      "injuries": [
+        "Rafael Devers (Red Sox) - Questionable (Shoulder soreness)"
+      ],
+      "injuryImpact": "Devers' potential absence weakens Boston's lineup protection, keeping Yankees pitchers fresh for early innings."
+    },
+    {
+      "id": "golf-2026-3m-open-morikawa-top5",
+      "sport": "Golf",
+      "sportKey": "golf_pga",
+      "sportTitle": "PGA Tour",
+      "league": "3M Open at TPC Twin Cities",
+      "eventId": "golf-2026-3m-open",
+      "homeTeam": "TPC Twin Cities",
+      "awayTeam": "PGA Tour Field",
+      "commenceTime": "2026-07-22T13:00:00.000Z",
+      "outcome": "Collin Morikawa (Top 5 Finish)",
+      "market": "top_5",
+      "marketLabel": "Top 5 Finish",
+      "bestPrice": 425,
+      "bestBookmaker": "caesars",
+      "bestBookmakerTitle": "Caesars",
+      "consensusImpliedProb": 0.215,
+      "trueOdds": 360,
+      "evPercent": 0.094,
+      "reasoning": "Morikawa's iron play ranks 2nd on Tour this season and TPC Twin Cities rewards precision approach shots into small greens. Caesars' +425 for a Top 5 represents a +9.4% EV edge over fair consensus of +360.",
+      "allOdds": [
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 425
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 380
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 365
         }
       ],
       "confidenceScore": 89,
-      "injuries": [
-        "Álvaro Morata (Spain) - Active (Wearing minor leg support)"
-      ],
-      "injuryImpact": "Morata will start up front but is carrying a slight hamstring wrap, potentially impacting his sprint mobility against Otamendi."
+      "injuries": [],
+      "injuryImpact": "Morikawa is fully healthy and played a full 36-hole practice block Sunday-Monday."
     },
     {
-      "id": "wnba-2026-sun-mercury-h2h-sun",
-      "sport": "WNBA",
-      "sportKey": "basketball_wnba",
-      "sportTitle": "WNBA Basketball",
-      "league": "WNBA Regular Season",
-      "eventId": "wnba-2026-sun-mercury",
-      "homeTeam": "Phoenix Mercury",
-      "awayTeam": "Connecticut Sun",
-      "commenceTime": "2026-07-19T19:00:00.000Z",
-      "outcome": "Connecticut Sun",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": 133,
+      "id": "nascar-2026-brickyard-kyle-larson-outright",
+      "sport": "NASCAR",
+      "sportKey": "nascar_cup_series",
+      "sportTitle": "NASCAR Cup Series",
+      "league": "Brickyard 400 at Indianapolis",
+      "eventId": "nascar-2026-brickyard-400",
+      "homeTeam": "Indianapolis Motor Speedway",
+      "awayTeam": "NASCAR Cup Series Field",
+      "commenceTime": "2026-07-26T19:00:00.000Z",
+      "outcome": "Kyle Larson (To Win)",
+      "market": "outright",
+      "marketLabel": "Outright Winner",
+      "bestPrice": 550,
       "bestBookmaker": "fanduel",
       "bestBookmakerTitle": "FanDuel",
-      "consensusImpliedProb": 0.459,
-      "trueOdds": 118,
-      "evPercent": 0.069,
-      "reasoning": "The Sun are undervalued road underdogs at +133. Their elite rebounding and defense will frustrate Phoenix's perimeter shooters. FanDuel is offering +133, yielding a +6.9% EV play.",
+      "consensusImpliedProb": 0.182,
+      "trueOdds": 450,
+      "evPercent": 0.112,
+      "reasoning": "Kyle Larson's IndyCar experience at Indianapolis gives him an unparalleled line speed edge through Turns 1 and 3. FanDuel's +550 payout provides an outstanding +11.2% EV edge over market consensus fair price of +450.",
       "allOdds": [
         {
           "bookmaker": "fanduel",
           "bookmakerTitle": "FanDuel",
-          "price": 133
+          "price": 550
         },
         {
           "bookmaker": "draftkings",
           "bookmakerTitle": "DraftKings",
-          "price": 128
+          "price": 475
         },
         {
           "bookmaker": "caesars",
           "bookmakerTitle": "Caesars",
+          "price": 450
+        }
+      ],
+      "confidenceScore": 92,
+      "injuries": [
+        "No mechanical penalties reported on Hendrick Motorsports #5 car."
+      ],
+      "injuryImpact": "Hendrick Motorsports passed all pre-qualifying laser inspection scans on the first attempt with zero weight ballast penalties."
+    },
+    {
+      "id": "wnba-2026-storm-sun-ionescu-pts",
+      "sport": "WNBA",
+      "sportKey": "basketball_wnba",
+      "sportTitle": "WNBA Basketball",
+      "league": "Women's National Basketball Association",
+      "eventId": "wnba-2026-storm-sun",
+      "homeTeam": "Connecticut Sun",
+      "awayTeam": "Seattle Storm",
+      "commenceTime": "2026-07-22T19:00:00.000Z",
+      "outcome": "Jewell Loyd Over 22.5 Points",
+      "market": "player_props",
+      "marketLabel": "Player Points",
+      "bestPrice": 105,
+      "bestBookmaker": "fanduel",
+      "bestBookmakerTitle": "FanDuel",
+      "consensusImpliedProb": 0.498,
+      "trueOdds": -110,
+      "evPercent": 0.088,
+      "reasoning": "Loyd has scored 23+ in 7 of her last 10 games and Connecticut's perimeter defense ranks 27th in the league. FanDuel's +105 line holds an +8.8% EV advantage over the sharp consensus of -110.",
+      "allOdds": [
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 105
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": -105
+        },
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": -110
+        }
+      ],
+      "confidenceScore": 87,
+      "injuries": [
+        "Alyssa Thomas (Sun) - Probable (Knee management)"
+      ],
+      "injuryImpact": "Thomas is expected to play but may see reduced minutes, weakening Connecticut's ability to control tempo and keep Loyd off the ball."
+    },
+    {
+      "id": "mlb-2026-dodgers-giants-dodgers-runline",
+      "sport": "Baseball",
+      "sportKey": "baseball_mlb",
+      "sportTitle": "MLB Baseball",
+      "league": "Major League Baseball",
+      "eventId": "mlb-2026-dodgers-giants",
+      "homeTeam": "San Francisco Giants",
+      "awayTeam": "Los Angeles Dodgers",
+      "commenceTime": "2026-07-22T21:45:00.000Z",
+      "outcome": "Los Angeles Dodgers -1.5",
+      "market": "spreads",
+      "marketLabel": "Run Line (-1.5)",
+      "bestPrice": 135,
+      "bestBookmaker": "draftkings",
+      "bestBookmakerTitle": "DraftKings",
+      "consensusImpliedProb": 0.460,
+      "trueOdds": 118,
+      "evPercent": 0.081,
+      "reasoning": "The Dodgers' powerhouse batting lineup averages 5.8 runs per game against division rivals, backed by Tyler Glasnow on the mound. DraftKings' +135 run line holds a solid +8.1% expected value advantage.",
+      "allOdds": [
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 135
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
           "price": 125
+        },
+        {
+          "bookmaker": "caesars",
+          "bookmakerTitle": "Caesars",
+          "price": 120
+        }
+      ],
+      "confidenceScore": 87,
+      "injuries": [
+        "Mookie Betts (Dodgers) - Active (Cleared to start at 2B)"
+      ],
+      "injuryImpact": "Betts returned to full workouts and lead-off duties remain unhindered."
+    },
+    {
+      "id": "nascar-2026-brickyard-bell-top3",
+      "sport": "NASCAR",
+      "sportKey": "nascar_cup_series",
+      "sportTitle": "NASCAR Cup Series",
+      "league": "Brickyard 400 at Indianapolis",
+      "eventId": "nascar-2026-brickyard-400",
+      "homeTeam": "Indianapolis Motor Speedway",
+      "awayTeam": "NASCAR Cup Series Field",
+      "commenceTime": "2026-07-26T19:00:00.000Z",
+      "outcome": "Christopher Bell (Top 3 Finish)",
+      "market": "top_3",
+      "marketLabel": "Top 3 Podium Finish",
+      "bestPrice": 185,
+      "bestBookmaker": "draftkings",
+      "bestBookmakerTitle": "DraftKings",
+      "consensusImpliedProb": 0.385,
+      "trueOdds": 160,
+      "evPercent": 0.084,
+      "reasoning": "Joe Gibbs Racing's Toyota flat-track setup packages have dominated qualifying practices all week. Christopher Bell's precision pit strategy on long green-flag runs makes +185 for a Top 3 finish a high-value +8.4% EV bet.",
+      "allOdds": [
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 185
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 170
+        },
+        {
+          "bookmaker": "bet365",
+          "bookmakerTitle": "Bet365",
+          "price": 165
+        }
+      ],
+      "confidenceScore": 88,
+      "injuries": [
+        "No mechanical issues reported on Joe Gibbs Racing #20 team."
+      ],
+      "injuryImpact": "Clean practice telemetry shows optimal tire wear profiles across 25-lap stint runs."
+    },
+    {
+      "id": "golf-2026-3m-open-spieth-top20",
+      "sport": "Golf",
+      "sportKey": "golf_pga",
+      "sportTitle": "PGA Tour",
+      "league": "3M Open at TPC Twin Cities",
+      "eventId": "golf-2026-3m-open",
+      "homeTeam": "TPC Twin Cities",
+      "awayTeam": "PGA Tour Field",
+      "commenceTime": "2026-07-22T13:00:00.000Z",
+      "outcome": "Jordan Spieth (Top 20 Finish)",
+      "market": "top_20",
+      "marketLabel": "Top 20 Finish",
+      "bestPrice": 155,
+      "bestBookmaker": "betmgm",
+      "bestBookmakerTitle": "BetMGM",
+      "consensusImpliedProb": 0.415,
+      "trueOdds": 130,
+      "evPercent": 0.078,
+      "reasoning": "Spieth has made 6 consecutive cuts and his short game (SG: Around-the-Green top 10) compensates for driving inconsistencies at TPC Twin Cities. BetMGM's +155 for Top 20 delivers a +7.8% EV edge.",
+      "allOdds": [
+        {
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": 155
+        },
+        {
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
+          "price": 140
+        },
+        {
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
+          "price": 135
         }
       ],
       "confidenceScore": 85,
       "injuries": [],
-      "injuryImpact": "No major injuries reported; both teams enter the matchup at full starting strength."
+      "injuryImpact": "Spieth reports full health with no wrist or back concerns heading into the tournament."
     },
     {
-      "id": "wnba-2026-sparks-wings-spread-sparks",
-      "sport": "WNBA",
-      "sportKey": "basketball_wnba",
-      "sportTitle": "WNBA Basketball",
-      "league": "WNBA Regular Season",
-      "eventId": "wnba-2026-sparks-wings",
-      "homeTeam": "Dallas Wings",
-      "awayTeam": "Los Angeles Sparks",
-      "commenceTime": "2026-07-19T13:00:00.000Z",
-      "outcome": "Los Angeles Sparks +9.5",
-      "market": "spread",
-      "marketLabel": "Point Spread",
+      "id": "mlb-2026-dodgers-giants-ohtani-tb",
+      "sport": "Baseball",
+      "sportKey": "baseball_mlb",
+      "sportTitle": "MLB Baseball",
+      "league": "Major League Baseball",
+      "eventId": "mlb-2026-dodgers-giants",
+      "homeTeam": "San Francisco Giants",
+      "awayTeam": "Los Angeles Dodgers",
+      "commenceTime": "2026-07-22T21:45:00.000Z",
+      "outcome": "Shohei Ohtani Over 1.5 Total Bases",
+      "market": "player_props",
+      "marketLabel": "Total Bases",
       "bestPrice": -110,
-      "bestBookmaker": "draftkings",
-      "bestBookmakerTitle": "DraftKings",
-      "consensusImpliedProb": 0.550,
-      "trueOdds": -122,
-      "evPercent": 0.049,
-      "reasoning": "While Dallas is on a win streak, a 9.5-point spread is over-adjusted for a Sparks team that plays competitive defensive sets. DraftKings is offering -110, representing a 4.9% EV edge.",
+      "bestBookmaker": "fanduel",
+      "bestBookmakerTitle": "FanDuel",
+      "consensusImpliedProb": 0.555,
+      "trueOdds": -125,
+      "evPercent": 0.062,
+      "reasoning": "Ohtani has hit safely in 11 of his last 12 games against San Francisco pitching. FanDuel's -110 line gives bettors a +6.2% expected value edge over true consensus odds (-125).",
       "allOdds": [
         {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
+          "bookmaker": "fanduel",
+          "bookmakerTitle": "FanDuel",
           "price": -110
         },
         {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": -115
-        },
-        {
-          "bookmaker": "caesars",
-          "bookmakerTitle": "Caesars",
+          "bookmaker": "draftkings",
+          "bookmakerTitle": "DraftKings",
           "price": -118
-        }
-      ],
-      "confidenceScore": 82,
-      "injuries": [
-        "Cameron Brink (Sparks) - Out (ACL Injury)"
-      ],
-      "injuryImpact": "Brink is out for the season, which leaves LA thin in interior rotations but has been factored into standard spreads."
-    },
-    {
-      "id": "wnba-2026-sky-dream-spread-sky",
-      "sport": "WNBA",
-      "sportKey": "basketball_wnba",
-      "sportTitle": "WNBA Basketball",
-      "league": "WNBA Regular Season",
-      "eventId": "wnba-2026-sky-dream",
-      "homeTeam": "Atlanta Dream",
-      "awayTeam": "Chicago Sky",
-      "commenceTime": "2026-07-19T16:00:00.000Z",
-      "outcome": "Chicago Sky +9.5",
-      "market": "spread",
-      "marketLabel": "Point Spread",
-      "bestPrice": -108,
-      "bestBookmaker": "fanduel",
-      "bestBookmakerTitle": "FanDuel",
-      "consensusImpliedProb": 0.545,
-      "trueOdds": -120,
-      "evPercent": 0.050,
-      "reasoning": "Chicago has historically kept matches close against Atlanta's transition offense. The 9.5-point spread is inflated. FanDuel is offering -108 on the Sky +9.5, giving a 5.0% EV play.",
-      "allOdds": [
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": -108
         },
         {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": -112
-        },
-        {
-          "bookmaker": "caesars",
-          "bookmakerTitle": "Caesars",
-          "price": -115
+          "bookmaker": "betmgm",
+          "bookmakerTitle": "BetMGM",
+          "price": -122
         }
       ],
-      "confidenceScore": 80,
+      "confidenceScore": 88,
       "injuries": [],
-      "injuryImpact": "No major injuries reported; both teams enter the matchup healthy."
-    },
-    {
-      "id": "wc-2026-spain-argentina-h2h-argentina",
-      "sport": "World Cup",
-      "sportKey": "soccer_world_cup",
-      "sportTitle": "World Cup 2026",
-      "league": "FIFA World Cup Final",
-      "eventId": "wc-2026-spain-argentina",
-      "homeTeam": "Spain",
-      "awayTeam": "Argentina",
-      "commenceTime": "2026-07-19T15:00:00.000Z",
-      "outcome": "Argentina",
-      "market": "h2h",
-      "marketLabel": "Moneyline",
-      "bestPrice": 260,
-      "bestBookmaker": "bet365",
-      "bestBookmakerTitle": "Bet365",
-      "consensusImpliedProb": 0.298,
-      "trueOdds": 235,
-      "evPercent": 0.074,
-      "reasoning": "Argentina is priced as a heavy +260 regulation underdog, which is over-adjusted compared to their no-vig fair price of +235, creating a strong +7.4% EV opportunity.",
-      "allOdds": [
-        {
-          "bookmaker": "bet365",
-          "bookmakerTitle": "Bet365",
-          "price": 260
-        },
-        {
-          "bookmaker": "draftkings",
-          "bookmakerTitle": "DraftKings",
-          "price": 250
-        },
-        {
-          "bookmaker": "fanduel",
-          "bookmakerTitle": "FanDuel",
-          "price": 245
-        }
-      ],
-      "confidenceScore": 90,
-      "injuries": [],
-      "injuryImpact": "Both squads enter the MetLife final fully healthy with zero last-minute injury adjustments."
+      "injuryImpact": "Ohtani's designated hitter workload remains unaffected by minor elbow maintenance."
     }
   ],
   "parlays": [
     {
-      "id": "parlay-wc-final-elite-val",
+      "id": "tue-quad-sport-parlay",
       "legs": [
         {
           "bet": {
-            "id": "wc-2026-spain-argentina-to-advance-argentina",
-            "sport": "World Cup",
-            "sportKey": "soccer_world_cup",
-            "sportTitle": "World Cup 2026",
-            "league": "FIFA World Cup Final",
-            "eventId": "wc-2026-spain-argentina",
-            "homeTeam": "Spain",
-            "awayTeam": "Argentina",
-            "commenceTime": "2026-07-19T15:00:00.000Z",
-            "outcome": "Argentina To Advance",
-            "market": "to_qualify",
-            "marketLabel": "To Lift Trophy",
-            "bestPrice": 128,
+            "id": "golf-2026-3m-open-schauffele-outright",
+            "sport": "Golf",
+            "sportKey": "golf_pga",
+            "sportTitle": "PGA Tour",
+            "league": "3M Open at TPC Twin Cities",
+            "eventId": "golf-2026-3m-open",
+            "homeTeam": "TPC Twin Cities",
+            "awayTeam": "PGA Tour Field",
+            "commenceTime": "2026-07-22T13:00:00.000Z",
+            "outcome": "Xander Schauffele (To Win)",
+            "market": "outright",
+            "marketLabel": "Tournament Winner",
+            "bestPrice": 900,
             "bestBookmaker": "fanduel",
             "bestBookmakerTitle": "FanDuel",
-            "consensusImpliedProb": 0.476,
-            "trueOdds": 110,
-            "evPercent": 0.086,
-            "reasoning": "The defending champions, Argentina, match up well against Spain's high press by exploiting quick transitions via Messi and Alvarez. FanDuel's +128 on Argentina to lift the cup represents a strong 8.6% expected value edge compared to market consensus fair odds.",
-            "allOdds": [
-              {
-                "bookmaker": "fanduel",
-                "bookmakerTitle": "FanDuel",
-                "price": 128
-              }
-            ]
+            "consensusImpliedProb": 0.125,
+            "trueOdds": 700,
+            "evPercent": 0.128,
+            "allOdds": [],
+            "reasoning": "Schauffele ball-striking dominance at TPC Twin Cities."
           },
-          "price": 128
+          "price": 900
         },
         {
           "bet": {
-            "id": "wnba-2026-sun-mercury-h2h-sun",
+            "id": "wnba-2026-aces-liberty-aces-ml",
             "sport": "WNBA",
             "sportKey": "basketball_wnba",
             "sportTitle": "WNBA Basketball",
-            "league": "WNBA Regular Season",
-            "eventId": "wnba-2026-sun-mercury",
-            "homeTeam": "Phoenix Mercury",
-            "awayTeam": "Connecticut Sun",
-            "commenceTime": "2026-07-19T19:00:00.000Z",
-            "outcome": "Connecticut Sun",
+            "league": "Women's National Basketball Association",
+            "eventId": "wnba-2026-aces-liberty",
+            "homeTeam": "New York Liberty",
+            "awayTeam": "Las Vegas Aces",
+            "commenceTime": "2026-07-22T19:30:00.000Z",
+            "outcome": "Las Vegas Aces Moneyline",
             "market": "h2h",
             "marketLabel": "Moneyline",
-            "bestPrice": 133,
+            "bestPrice": 135,
+            "bestBookmaker": "draftkings",
+            "bestBookmakerTitle": "DraftKings",
+            "consensusImpliedProb": 0.445,
+            "trueOdds": 110,
+            "evPercent": 0.115,
+            "allOdds": [],
+            "reasoning": "A'ja Wilson road dominance vs Liberty."
+          },
+          "price": 135
+        },
+        {
+          "bet": {
+            "id": "mlb-2026-yankees-redsox-judge-hr",
+            "sport": "Baseball",
+            "sportKey": "baseball_mlb",
+            "sportTitle": "MLB Baseball",
+            "league": "Major League Baseball",
+            "eventId": "mlb-2026-yankees-redsox",
+            "homeTeam": "Boston Red Sox",
+            "awayTeam": "New York Yankees",
+            "commenceTime": "2026-07-22T23:10:00.000Z",
+            "outcome": "Aaron Judge Over 0.5 Home Runs",
+            "market": "player_props",
+            "marketLabel": "To Hit A Home Run",
+            "bestPrice": 240,
             "bestBookmaker": "fanduel",
             "bestBookmakerTitle": "FanDuel",
-            "consensusImpliedProb": 0.459,
-            "trueOdds": 118,
-            "evPercent": 0.069,
-            "reasoning": "The Sun are undervalued road underdogs at +133. Their elite rebounding and defense will frustrate Phoenix's perimeter shooters. FanDuel is offering +133, yielding a +6.9% EV play.",
-            "allOdds": [
-              {
-                "bookmaker": "fanduel",
-                "bookmakerTitle": "FanDuel",
-                "price": 133
-              }
-            ]
+            "consensusImpliedProb": 0.323,
+            "trueOdds": 210,
+            "evPercent": 0.098,
+            "allOdds": [],
+            "reasoning": "Judge power vs Fenway Green Monster."
           },
-          "price": 133
+          "price": 240
         }
       ],
-      "combinedAmericanOdds": 431,
-      "combinedDecimalOdds": 5.31,
-      "impliedProbability": 0.218,
-      "estimatedEvPercent": 0.155,
+      "combinedAmericanOdds": 4850,
+      "combinedDecimalOdds": 49.50,
+      "impliedProbability": 0.018,
+      "estimatedEvPercent": 0.341,
       "sports": [
-        "World Cup",
-        "WNBA"
+        "Golf",
+        "WNBA",
+        "Baseball"
       ],
-      "reasoning": "Combining Argentina to lift the trophy in the World Cup Final with the Connecticut Sun moneyline yields a premium +15.5% compound EV parlay card.",
+      "reasoning": "Tuesday Quad-Sport Mega Parlay combining Schauffele (+900), Aces ML (+135), and Judge HR (+240). Yields a massive +4850 payout with a calculated 34.1% cumulative EV edge across three independent sporting events.",
       "tier": "elite"
+    },
+    {
+      "id": "tue-wnba-mlb-duo",
+      "legs": [
+        {
+          "bet": {
+            "id": "wnba-2026-aces-liberty-aces-ml",
+            "sport": "WNBA",
+            "sportKey": "basketball_wnba",
+            "sportTitle": "WNBA Basketball",
+            "league": "Women's National Basketball Association",
+            "eventId": "wnba-2026-aces-liberty",
+            "homeTeam": "New York Liberty",
+            "awayTeam": "Las Vegas Aces",
+            "commenceTime": "2026-07-22T19:30:00.000Z",
+            "outcome": "Las Vegas Aces Moneyline",
+            "market": "h2h",
+            "marketLabel": "Moneyline",
+            "bestPrice": 135,
+            "bestBookmaker": "draftkings",
+            "bestBookmakerTitle": "DraftKings",
+            "consensusImpliedProb": 0.445,
+            "trueOdds": 110,
+            "evPercent": 0.115,
+            "allOdds": [],
+            "reasoning": "A'ja Wilson road dominance."
+          },
+          "price": 135
+        },
+        {
+          "bet": {
+            "id": "mlb-2026-dodgers-giants-dodgers-runline",
+            "sport": "Baseball",
+            "sportKey": "baseball_mlb",
+            "sportTitle": "MLB Baseball",
+            "league": "Major League Baseball",
+            "eventId": "mlb-2026-dodgers-giants",
+            "homeTeam": "San Francisco Giants",
+            "awayTeam": "Los Angeles Dodgers",
+            "commenceTime": "2026-07-22T21:45:00.000Z",
+            "outcome": "Los Angeles Dodgers -1.5",
+            "market": "spreads",
+            "marketLabel": "Run Line (-1.5)",
+            "bestPrice": 135,
+            "bestBookmaker": "draftkings",
+            "bestBookmakerTitle": "DraftKings",
+            "consensusImpliedProb": 0.460,
+            "trueOdds": 118,
+            "evPercent": 0.081,
+            "allOdds": [],
+            "reasoning": "Dodgers runline vs rival Giants."
+          },
+          "price": 135
+        }
+      ],
+      "combinedAmericanOdds": 408,
+      "combinedDecimalOdds": 5.08,
+      "impliedProbability": 0.248,
+      "estimatedEvPercent": 0.196,
+      "sports": [
+        "WNBA",
+        "Baseball"
+      ],
+      "reasoning": "High-confidence Duo pairing Las Vegas Aces ML (+135) with Dodgers -1.5 Run Line (+135) for a +408 total odds payout across tonight's action.",
+      "tier": "strong"
     }
   ],
   "aiAnalysis": {
-    "summary": "Today is World Cup Final Sunday! Projections flag a massive value play on Argentina to lift the trophy at +128 on FanDuel, paired with the Connecticut Sun moneyline at +133.",
-    "topPickId": "wc-2026-spain-argentina-to-advance-argentina",
-    "topPickRationale": "Argentina To Lift Trophy (+128 on FanDuel) represents the strongest play on today's historic slate. Projections evaluate fair odds at +110, offering an elite +8.6% expected value edge.",
-    "parlayAnalysis": "The World Cup Final Sunday Parlay pairs Argentina to Lift the Trophy with Connecticut Sun Moneyline, delivering combined decimal odds of 5.31 (+431 American) and an outstanding +15.5% expected value.",
+    "summary": "Tuesday, July 22, 2026 delivers a stacked four-sport betting board spanning the PGA Tour's 3M Open at TPC Twin Cities, full MLB rivalry slate, WNBA marquee matchups, and early NASCAR Brickyard 400 futures. Top positive expected value edges are found in Golf outrights, WNBA moneylines, and MLB player props.",
+    "topPickId": "golf-2026-3m-open-schauffele-outright",
+    "topPickRationale": "Xander Schauffele's +900 line on FanDuel represents the single highest EV edge (+12.8%) on Tuesday's board. His elite ball-striking and approach play perfectly fit TPC Twin Cities' demanding precision layout.",
+    "parlayAnalysis": "The Tuesday Quad-Sport Mega Parlay (+4850) stacks three independent positive EV legs across Golf (Schauffele +900), WNBA (Aces +135), and MLB (Judge HR +240), delivering an extraordinary 34.1% expected value multiplier.",
     "riskRating": "Medium",
-    "lastUpdated": "2026-07-19T09:00:00.000Z"
+    "lastUpdated": "2026-07-22T10:00:00.000Z"
   }
 }

@@ -14,14 +14,14 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", monospace;
 
-  /* Primary color palette – a vibrant teal + dark‑mode friendly */
+  /* Primary color palette – mapped to CSS custom variables */
   --color-primary-50:  #e0f8f7;
   --color-primary-100: #b3efe5;
   --color-primary-200: #80e5d2;
-  --color-primary-300: #4ddac0;
-  --color-primary-400: #26d0b1;
-  --color-primary-500: #00c6a2; /* main accent */
-  --color-primary-600: #00b494;
+  --color-primary-300: var(--accent-300);
+  --color-primary-400: var(--accent-400);
+  --color-primary-500: var(--accent-500); /* main accent */
+  --color-primary-600: var(--accent-600);
   --color-primary-700: #00a386;
   --color-primary-800: #009278;
   --color-primary-900: #00675d;
@@ -41,6 +41,27 @@
   /* Utility classes for background glassmorphism */
   --bg-glass: rgba(255, 255, 255, 0.12);
   --bg-glass-dark: rgba(0, 0, 0, 0.24);
+}
+
+:root {
+  --accent-300: #4ddac0;
+  --accent-400: #26d0b1;
+  --accent-500: #00c6a2;
+  --accent-600: #00b494;
+}
+
+:root.theme-navy {
+  --accent-300: #93c5fd;
+  --accent-400: #60a5fa;
+  --accent-500: #3b82f6;
+  --accent-600: #2563eb;
+}
+
+:root.theme-stealth {
+  --accent-300: #6ee7b7;
+  --accent-400: #34d399;
+  --accent-500: #10b981;
+  --accent-600: #059669;
 }
 
 /* ------------------------------------------------------------
